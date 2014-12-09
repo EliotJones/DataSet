@@ -1,0 +1,6 @@
+C:\git\EliotJones.DataSet\EliotJones.DataSet\obj\Debug\EliotJones.DataSet.csprojResolveAssemblyReference.cache
+C:\git\EliotJones.DataSet\EliotJones.DataSet\bin\Debug\EliotJones.DataSet.XML
+C:\git\EliotJones.DataSet\EliotJones.DataSet\bin\Debug\EliotJones.DataSet.dll
+C:\git\EliotJones.DataSet\EliotJones.DataSet\bin\Debug\EliotJones.DataSet.pdb
+C:\git\EliotJones.DataSet\EliotJones.DataSet\obj\Debug\EliotJones.DataSet.dll
+C:\git\EliotJones.DataSet\EliotJones.DataSet\obj\Debug\EliotJones.DataSet.pdb
