@@ -60,6 +60,12 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EliotJones.DataSet\EliotJones.DataSet.csproj">
+      <Project>{e749c305-103b-4d69-9982-7370924b1d52}</Project>
+      <Name>EliotJones.DataSet</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
