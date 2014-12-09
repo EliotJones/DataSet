@@ -1,15 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EliotJones.DataSet.ConsoleRunner
+﻿namespace EliotJones.DataSet.ConsoleRunner
 {
-    class Program
+    using System;
+    using System.Diagnostics;
+    using System.Text;
+
+    public class Program
     {
         static void Main(string[] args)
         {
+            var pi = typeof(StringBuilder).GetProperties();
+
+            foreach (var p in pi)
+            {
+                Console.WriteLine(p.Name);
+            }
+            if (Debugger.IsAttached) Debugger.Break();
         }
     }
 }
