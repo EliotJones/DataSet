@@ -6,6 +6,8 @@
     public enum MappingMatchOrder
     {
         PropertyNameFirst = 1,
-        AttributeValueFirst = 2
+        AttributeValueFirst = 2,
+        IgnorePropertyNames = 3,
+        IgnoreAttributes = 4
     }
 }

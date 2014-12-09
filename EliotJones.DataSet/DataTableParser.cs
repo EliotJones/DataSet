@@ -8,7 +8,7 @@
     /// </summary>
     public class DataTableParser
     {
-        private const DataTableParserSettings DefaultDataTableParserSettings = new DataTableParserSettings();
+        private DataTableParserSettings DefaultDataTableParserSettings = new DataTableParserSettings();
 
         private DataTableParserSettings dataTableParserSettings;
 
@@ -40,7 +40,7 @@
             return parser;
         }
 
-        public virtual IEnumerable<T> AddToExistingCollection<T>(DataTable table, IEnumerable<T> enumerable)
+        public virtual IEnumerable<T> AddToExistingCollection<T>(DataTable table, IEnumerable<T> enumerable) where T : new()
         {
             return this.ToObjects<T>(table);
         }
@@ -51,19 +51,19 @@
         /// <typeparam name="T">The type of object to return.</typeparam>
         /// <param name="table">The <see cref="DataTable"/> to convert.</param>
         /// <returns>An IEnumerable&lt;T&gt; with objects initialized.</returns>
-        public virtual IEnumerable<T> ToObjects<T>(DataTable table)
+        public virtual IEnumerable<T> ToObjects<T>(DataTable table) where T : new()
         {
             DataTableParserSettings dataTableParserSettingsLocal = dataTableParserSettings ?? DefaultDataTableParserSettings;
 
             return ToObjectsInternal<T>(table, dataTableParserSettingsLocal);
         }
 
-        public virtual IEnumerable<T> ToObjects<T>(DataTable table, DataTableParserSettings dataTableParserSettingsLocal)
+        public virtual IEnumerable<T> ToObjects<T>(DataTable table, DataTableParserSettings dataTableParserSettingsLocal) where T : new()
         {
             return ToObjectsInternal<T>(table, dataTableParserSettingsLocal);
         }
 
-        protected virtual IEnumerable<T> ToObjectsInternal<T>(DataTable table, DataTableParserSettings dataTableParserSettingsLocal)
+        protected virtual IEnumerable<T> ToObjectsInternal<T>(DataTable table, DataTableParserSettings dataTableParserSettingsLocal) where T : new()
         {
             DataTableConverter dataTableConverter = GetConverter(dataTableParserSettingsLocal);
 
