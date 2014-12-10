@@ -1,5 +1,6 @@
 ﻿namespace EliotJones.DataSet.Tests.Tests
 {
+    using EliotJones.DataSet.Enums;
     using EliotJones.DataSet.Tests.Factories;
     using EliotJones.DataSet.Tests.POCOs;
     using System;
@@ -12,13 +13,12 @@
     public class DefaultMappingResolverTests
     {
         DefaultMappingResolver defaultMappingResolver = new DefaultMappingResolver();
+        DataTableParserSettings defaultDataTableParserSettings = new DataTableParserSettings();
 
         [Fact]
         public void GetPropertyMappings_NullDataTable_ThrowsNullReferenceException()
         {
-            DataTableParserSettings dtps = new DataTableParserSettings();
-
-            Assert.Throws(typeof(NullReferenceException), () => defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoMappings>(null, dtps));
+            Assert.Throws(typeof(NullReferenceException), () => defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoMappings>(null, defaultDataTableParserSettings));
         }
 
         [Fact]
@@ -40,9 +40,7 @@
         {
             DataTable dt = DataTableFactory.GenerateEmptyDataTableWithStringColumns();
 
-            DataTableParserSettings dtps = new DataTableParserSettings();
-
-            ICollection<ExtendedPropertyInfo> results = defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoMappings>(dt, dtps);
+            ICollection<ExtendedPropertyInfo> results = defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoMappings>(dt, defaultDataTableParserSettings);
 
             Assert.True(results.Count == 0);
         }
@@ -52,9 +50,7 @@
         {
             DataTable dt = DataTableFactory.GenerateEmptyDataTableWithStringColumns(null);
 
-            DataTableParserSettings dtps = new DataTableParserSettings();
-
-            ICollection<ExtendedPropertyInfo> results = defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoMappings>(dt, dtps);
+            ICollection<ExtendedPropertyInfo> results = defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoMappings>(dt, defaultDataTableParserSettings);
 
             Assert.True(results.Count == 0);
         }
@@ -66,9 +62,7 @@
 
             DataTable dt = DataTableFactory.GenerateEmptyDataTableWithStringColumns(anyName);
 
-            DataTableParserSettings dtps = new DataTableParserSettings();
-
-            ICollection<ExtendedPropertyInfo> results = defaultMappingResolver.GetPropertyMappings<SimpleNoProperties>(dt, dtps);
+            ICollection<ExtendedPropertyInfo> results = defaultMappingResolver.GetPropertyMappings<SimpleNoProperties>(dt, defaultDataTableParserSettings);
 
             Assert.True(results.Count == 0);
         }
@@ -80,9 +74,7 @@
 
             DataTable dt = DataTableFactory.GenerateEmptyDataTableWithStringColumns("PropertyOne");
 
-            DataTableParserSettings dtps = new DataTableParserSettings();
-
-            ICollection<ExtendedPropertyInfo> results = defaultMappingResolver.GetPropertyMappings<SimpleOnePropertyNoIdNoMappings>(dt, dtps);
+            ICollection<ExtendedPropertyInfo> results = defaultMappingResolver.GetPropertyMappings<SimpleOnePropertyNoIdNoMappings>(dt, defaultDataTableParserSettings);
 
             Assert.True(results.Count == 1);
         }
@@ -94,9 +86,7 @@
 
             DataTable dt = DataTableFactory.GenerateEmptyDataTableWithStringColumns("PropertyOne");
 
-            DataTableParserSettings dtps = new DataTableParserSettings();
-
-            ICollection<ExtendedPropertyInfo> results = defaultMappingResolver.GetPropertyMappings<SimpleOnePropertyNoIdNoMappings>(dt, dtps);
+            ICollection<ExtendedPropertyInfo> results = defaultMappingResolver.GetPropertyMappings<SimpleOnePropertyNoIdNoMappings>(dt, defaultDataTableParserSettings);
 
             ExtendedPropertyInfo propInfo = results.First();
 
@@ -105,16 +95,50 @@
             Assert.True(propInfo.ColumnIndex == 0);
         }
 
-        [Theory, InlineData("propertyOnE"), InlineData("PROPERTYONE"), InlineData("propertyone")]
+        [Theory, 
+        InlineData("propertyOnE"), 
+        InlineData("PROPERTYONE"), 
+        InlineData("propertyone")]
         public void GetPropertyMappings_OnePropertyWithMatchingColumnIncorrectCase_ReturnsCollectionWithOneResult(string columnName)
         {
-            SimpleOnePropertyNoIdNoMappings poco = new SimpleOnePropertyNoIdNoMappings();
-
             DataTable dt = DataTableFactory.GenerateEmptyDataTableWithStringColumns(columnName);
 
-            DataTableParserSettings dtps = new DataTableParserSettings();
+            ICollection<ExtendedPropertyInfo> results = defaultMappingResolver.GetPropertyMappings<SimpleOnePropertyNoIdNoMappings>(dt, defaultDataTableParserSettings);
 
-            ICollection<ExtendedPropertyInfo> results = defaultMappingResolver.GetPropertyMappings<SimpleOnePropertyNoIdNoMappings>(dt, dtps);
+            Assert.True(results.Count == 1);
+        }
+
+        [Theory, 
+        InlineData("propertyOne", "PropertyTwo"), 
+        InlineData("PropertyOne", "PropertyTwo"), 
+        InlineData("PropertyTwo", "PropertyOne")]
+        public void GetPropertyMappings_TwoPropertiesWithMatchingColumn_ReturnsCollectionWithTwoResults(string column1, string column2)
+        {
+            DataTable dt = DataTableFactory.GenerateEmptyDataTableWithStringColumns(column1, column2);
+
+            var results = defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoMappings>(dt, defaultDataTableParserSettings);
+
+            Assert.True(results.Count == 2);
+        }
+
+        [Fact]
+        public void GetPropertyMappings_TwoPropertiesOneMatching_MissingMappingHandlingCausesError()
+        {
+            DataTable dt = DataTableFactory.GenerateEmptyDataTableWithStringColumns("PropertyOne");
+
+            DataTableParserSettings dtps = new DataTableParserSettings { MissingMappingHandling = MissingMappingHandling.Error };
+
+            Assert.Throws(typeof(Exception), () => defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoMappings>(dt, dtps));
+        }
+
+        [Fact]
+        public void GetPropertyMappings_TwoPropertiesOneMatching_MissingMappingHandlingIgnores()
+        {
+            DataTable dt = DataTableFactory.GenerateEmptyDataTableWithStringColumns("PropertyOne");
+
+            DataTableParserSettings dtps = new DataTableParserSettings { MissingMappingHandling = MissingMappingHandling.Ignore };
+
+            var results = defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoMappings>(dt, dtps);
 
             Assert.True(results.Count == 1);
         }
