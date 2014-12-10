@@ -8,3 +8,7 @@ C:\git\EliotJones.DataSet\EliotJones.DataSet.Tests\bin\Debug\EliotJones.DataSet.
 C:\git\EliotJones.DataSet\EliotJones.DataSet.Tests\bin\Debug\FakeItEasy.xml
 C:\git\EliotJones.DataSet\EliotJones.DataSet.Tests\obj\Debug\EliotJones.DataSet.Tests.dll
 C:\git\EliotJones.DataSet\EliotJones.DataSet.Tests\obj\Debug\EliotJones.DataSet.Tests.pdb
+C:\git\EliotJones.DataSet\EliotJones.DataSet.Tests\bin\Debug\xunit.dll
+C:\git\EliotJones.DataSet\EliotJones.DataSet.Tests\bin\Debug\xunit.xml
+C:\git\EliotJones.DataSet\EliotJones.DataSet.Tests\bin\Debug\xunit.extensions.dll
+C:\git\EliotJones.DataSet\EliotJones.DataSet.Tests\bin\Debug\xunit.extensions.xml

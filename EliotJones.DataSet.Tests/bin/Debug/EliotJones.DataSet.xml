@@ -55,6 +55,20 @@
             <param name="field">Field to convert.</param>
             <returns>object of the correct type.</returns>
         </member>
+        <member name="T:EliotJones.DataSet.DefaultMappingResolver">
+            <summary>
+            Resolves mappings from an object's properties to DataTable columns.
+            </summary>
+        </member>
+        <member name="M:EliotJones.DataSet.DefaultMappingResolver.GetPropertyMappings``1(System.Data.DataTable,EliotJones.DataSet.DataTableParserSettings)">
+            <summary>
+            Gets property mappings for a specified type from a DataTable.
+            </summary>
+            <typeparam name="T">The type of object to map.</typeparam>
+            <param name="dataTable">The DataTable to map from.</param>
+            <param name="settings">The settings to use while mapping.</param>
+            <returns>A list of the mappings.</returns>
+        </member>
         <member name="T:EliotJones.DataSet.Enums.EmptyInputHandling">
             <summary>
             Handles how the <see cref="T:EliotJones.DataSet.DataTableParser"/> will respond to being passed an empty <see cref="!:DataTable"/>.
