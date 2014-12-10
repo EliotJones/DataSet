@@ -12,7 +12,7 @@
     /// </summary>
     public class DefaultMappingResolver : IMappingResolver
     {
-        private const string id = "id";
+        private const string Id = "id";
 
         /// <summary>
         /// Gets property mappings for a specified type from a DataTable.
@@ -28,7 +28,7 @@
             var mappedProperties = new List<ExtendedPropertyInfo>();
 
             PropertyInfo[] typeProperties = typeof(T).GetProperties();
-            
+
             // For non-overwriting mappings the execution order is important.
             switch (settings.MappingMatchOrder)
             {
@@ -83,9 +83,10 @@
 
                 if (matchedAttribute != null)
                 {
-                    mappedProperties.Add(new ExtendedPropertyInfo(fieldName: matchedAttribute.Name, 
-                        propertyInfo: property, 
-                        columnIndex: dataTable.Columns.IndexOf(matchedAttribute.Name)));
+                    mappedProperties.Add(new ExtendedPropertyInfo(
+                            fieldName: matchedAttribute.Name,
+                            propertyInfo: property,
+                            columnIndex: dataTable.Columns.IndexOf(matchedAttribute.Name)));
                 }
             }
         }
@@ -129,17 +130,17 @@
                 }
 
                 // Special case handling for Id columns/properties.
-                if (!mappingFound && property.Name.ToLowerInvariant().Contains(id))
+                if (!mappingFound && property.Name.ToLowerInvariant().Contains(Id))
                 {
                     string searchTerm = null;
 
-                    if (property.Name.ToLowerInvariant() == id)
+                    if (property.Name.ToLowerInvariant() == Id)
                     {
-                        searchTerm = property.DeclaringType.Name + id;
+                        searchTerm = property.DeclaringType.Name + Id;
                     }
                     else
                     {
-                        searchTerm = id;
+                        searchTerm = Id;
                     }
 
                     if (dataTable.Columns.Contains(searchTerm))
