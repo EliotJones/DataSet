@@ -30,7 +30,6 @@
             PropertyInfo[] typeProperties = typeof(T).GetProperties();
             
             // For non-overwriting mappings the execution order is important.
-            // The other 2 enum values are dealt with in the private methods.
             switch (settings.MappingMatchOrder)
             {
                 case MappingMatchOrder.PropertyNameFirst:
@@ -39,6 +38,12 @@
                     break;
                 case MappingMatchOrder.AttributeValueFirst:
                     GenerateMappingsFromAttributes(ref mappedProperties, typeProperties, dataTable, settings);
+                    GenerateMappingsFromProperties(ref mappedProperties, typeProperties, dataTable, settings);
+                    break;
+                case MappingMatchOrder.IgnorePropertyNames:
+                    GenerateMappingsFromAttributes(ref mappedProperties, typeProperties, dataTable, settings);
+                    break;
+                case MappingMatchOrder.IgnoreAttributes:
                     GenerateMappingsFromProperties(ref mappedProperties, typeProperties, dataTable, settings);
                     break;
                 default:
@@ -58,8 +63,6 @@
 
         private void GenerateMappingsFromAttributes(ref List<ExtendedPropertyInfo> mappedProperties, PropertyInfo[] properties, DataTable dataTable, DataTableParserSettings settings)
         {
-            if (settings.MappingMatchOrder == MappingMatchOrder.IgnoreAttributes) return;
-
             bool isFirstMapper = mappedProperties.Count == 0;
 
             foreach (PropertyInfo property in properties)
@@ -107,8 +110,6 @@
 
         private void GenerateMappingsFromProperties(ref List<ExtendedPropertyInfo> mappedProperties, PropertyInfo[] properties, DataTable dataTable, DataTableParserSettings settings)
         {
-            if (settings.MappingMatchOrder == MappingMatchOrder.IgnorePropertyNames) return;
-
             bool isFirstMapper = mappedProperties.Count == 0;
 
             foreach (PropertyInfo property in properties)
