@@ -2,7 +2,7 @@
 {
     using System.Reflection;
 
-    internal class ExtendedPropertyInfo
+    public class ExtendedPropertyInfo
     {
         public string FieldName { get; private set; }
 

@@ -45,12 +45,14 @@
     <Compile Include="DataTableParser.cs" />
     <Compile Include="DataTableParserSettings.cs" />
     <Compile Include="DefaultDataTypeConverter.cs" />
+    <Compile Include="DefaultMappingResolver.cs" />
     <Compile Include="Enums\EmptyInputHandling.cs" />
     <Compile Include="Enums\MappingMatchOrder.cs" />
     <Compile Include="Enums\MissingMappingHandling.cs" />
     <Compile Include="Enums\NullInputHandling.cs" />
     <Compile Include="ExtendedPropertyInfo.cs" />
     <Compile Include="IDataTypeConverter.cs" />
+    <Compile Include="IMappingResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

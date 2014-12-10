@@ -11,6 +11,7 @@
     {
         private DataTableParserSettings dataTableParserSettings;
         private IDataTypeConverter dataTypeConverter = new DefaultDataTypeConverter();
+        private IMappingResolver mappingResolver;
 
         public IDataTypeConverter DataTypeConverter 
         {
@@ -18,12 +19,13 @@
             set { dataTypeConverter = value; }
         }
 
-        public DataTableConverter(DataTableParserSettings dataTableParserSettings)
+        public DataTableConverter(DataTableParserSettings dataTableParserSettings, IMappingResolver mappingResolver)
         {
             this.dataTableParserSettings = dataTableParserSettings;
+            this.mappingResolver = mappingResolver;
         }
 
-        public IEnumerable<T> ConvertToType<T>(DataTable dataTable) where T : new()
+        public virtual IEnumerable<T> ConvertToType<T>(DataTable dataTable) where T : new()
         {
             if (dataTable == null)
             {
@@ -51,27 +53,11 @@
                 }
             }
 
-            List<ExtendedPropertyInfo> mappedProperties = GetPropertyMappings<T>(dataTable);
+            ICollection<ExtendedPropertyInfo> mappedProperties = mappingResolver.GetPropertyMappings<T>(dataTable, dataTableParserSettings);
 
             List<T> initializedObjects = new List<T>();
 
             return initializedObjects;
-        }
-
-        private List<ExtendedPropertyInfo> GetPropertyMappings<T>(DataTable dataTable) where T : new()
-        {
-            var mappedProperties = new List<ExtendedPropertyInfo>();
-
-            foreach (PropertyInfo property in typeof(T).GetProperties())
-            {
-                string fieldName = ((ColumnMapping)property.GetCustomAttributes(typeof(ColumnMapping), false)[0]).Name;
-                if (dataTable.Columns.Contains(fieldName))
-                {
-                    mappedProperties.Add(new ExtendedPropertyInfo(fieldName: fieldName, propertyInfo: property, columnIndex: dataTable.Columns.IndexOf(fieldName)));
-                }
-            }
-
-            return new List<ExtendedPropertyInfo>();
         }
     }
 }

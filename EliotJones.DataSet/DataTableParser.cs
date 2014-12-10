@@ -9,8 +9,10 @@
     public class DataTableParser
     {
         private DataTableParserSettings DefaultDataTableParserSettings = new DataTableParserSettings();
+        private IMappingResolver DefaultMappingResolver = new DefaultMappingResolver();
 
         private DataTableParserSettings dataTableParserSettings;
+        private IMappingResolver mappingResolver;
 
         public DataTableParser()
         {
@@ -24,6 +26,12 @@
         {
             get { return dataTableParserSettings ?? DefaultDataTableParserSettings; }
             set { dataTableParserSettings = value; }
+        }
+
+        public virtual IMappingResolver MappingResolver
+        {
+            get { return mappingResolver ?? DefaultMappingResolver; }
+            set { mappingResolver = MappingResolver; }
         }
 
         public static DataTableParser Create()
@@ -72,7 +80,7 @@
 
         protected virtual DataTableConverter GetConverter(DataTableParserSettings dataTableParserSettingsLocal)
         {
-            return new DataTableConverter(dataTableParserSettings);
+            return new DataTableConverter(dataTableParserSettings, mappingResolver);
         }
     }
 }

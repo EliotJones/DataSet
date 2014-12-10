@@ -7,22 +7,17 @@
     /// </summary>
     public class DataTableParserSettings
     {
-        private const MissingMappingHandling DefaultMissingMappingHandling = MissingMappingHandling.Ignore;
-        private const MappingMatchOrder DefaultMappingMatchOrder = MappingMatchOrder.PropertyNameFirst;
-        private const NullInputHandling DefaulNullInputHandling = NullInputHandling.ReturnNull;
-        private const EmptyInputHandling DefaultEmptyInputHandling = EmptyInputHandling.ReturnEmptyEnumerable;
-
-        private MissingMappingHandling? missingMappingHandling;
-        private MappingMatchOrder? mappingMatchOrder;
-        private NullInputHandling? nullInputHandling;
-        private EmptyInputHandling? emptyInputHandling;
+        private MissingMappingHandling missingMappingHandling = MissingMappingHandling.Ignore;
+        private MappingMatchOrder mappingMatchOrder = MappingMatchOrder.PropertyNameFirst;
+        private NullInputHandling nullInputHandling = NullInputHandling.ReturnNull;
+        private EmptyInputHandling emptyInputHandling = EmptyInputHandling.ReturnEmptyEnumerable;
 
         /// <summary>
         /// Gets or sets the handling of an incomplete DataTable to Class mapping.
         /// </summary>
         public MissingMappingHandling MissingMappingHandling 
         {
-            get { return missingMappingHandling ?? DefaultMissingMappingHandling; }
+            get { return missingMappingHandling; }
             set { missingMappingHandling = value; } 
         }
 
@@ -31,7 +26,7 @@
         /// </summary>
         public MappingMatchOrder MappingMatchOrder 
         {
-            get { return mappingMatchOrder ?? DefaultMappingMatchOrder; }
+            get { return mappingMatchOrder; }
             set { mappingMatchOrder = value; } 
         }
 
@@ -40,7 +35,7 @@
         /// </summary>
         public NullInputHandling NullInputHandling
         {
-            get { return nullInputHandling ?? DefaulNullInputHandling; }
+            get { return nullInputHandling; }
             set { nullInputHandling = value; }
         }
 
@@ -49,8 +44,10 @@
         /// </summary>
         public EmptyInputHandling EmptyInputHandling
         {
-            get { return emptyInputHandling ?? DefaultEmptyInputHandling; }
+            get { return emptyInputHandling; }
             set { emptyInputHandling = value; }
         }
+
+        public bool InheritMappings { get; set; }
     }
 }
