@@ -11,6 +11,27 @@
         private MappingMatchOrder mappingMatchOrder = MappingMatchOrder.PropertyNameFirst;
         private NullInputHandling nullInputHandling = NullInputHandling.ReturnNull;
         private EmptyInputHandling emptyInputHandling = EmptyInputHandling.ReturnEmptyEnumerable;
+        private bool subsequentMappingsShouldOverwrite = false;
+        private bool allowDuplicateMappings = false;
+
+        /// <summary>
+        /// Sets whether the mappings that come after the first set (property after attribute or vice versa) should
+        /// overwrite the previous mappings if both map. False by default.
+        /// </summary>
+        public bool SubsequentMappingsShouldOverwrite 
+        {
+            get { return subsequentMappingsShouldOverwrite; }
+            set { subsequentMappingsShouldOverwrite = value; }
+        }
+
+        /// <summary>
+        /// Sets whether two properties should be allowed to map to the same column. False by default.
+        /// </summary>
+        public bool AllowDuplicateMappings 
+        {
+            get { return allowDuplicateMappings; }
+            set { allowDuplicateMappings = value; }
+        }
 
         /// <summary>
         /// Gets or sets the handling of an incomplete DataTable to Class mapping.
