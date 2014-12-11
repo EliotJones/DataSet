@@ -1,13 +1,6 @@
 ﻿namespace EliotJones.DataSet.Tests.POCOs
 {
-    internal class SimpleNoIdNoMappings
-    {
-        public int PropertyOne { get; set; }
-
-        public string PropertyTwo { get; set; }
-    }
-
-    internal class SimpleNoIdWithMappings
+    internal class SimpleNoIdNoAttributes
     {
         public int PropertyOne { get; set; }
 
@@ -19,8 +12,15 @@
         public int PropertyOne = 0;
     }
 
-    internal class SimpleOnePropertyNoIdNoMappings
+    internal class SimpleOnePropertyNoIdNoAttributes
     {
         public int PropertyOne { get; set; }
+    }
+
+    internal class SimpleIdNoAttributes
+    {
+        public int Id { get; set; }
+
+        public string PropertyOne { get; set; }
     }
 }

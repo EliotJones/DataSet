@@ -64,6 +64,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Factories\DataTableFactory.cs" />
+    <Compile Include="POCOs\AttributePocos.cs" />
     <Compile Include="POCOs\InheritancePocos.cs" />
     <Compile Include="POCOs\SimplePocos.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

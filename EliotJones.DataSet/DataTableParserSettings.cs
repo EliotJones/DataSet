@@ -13,6 +13,7 @@
         private EmptyInputHandling emptyInputHandling = EmptyInputHandling.ReturnEmptyEnumerable;
         private bool subsequentMappingsShouldOverwrite = false;
         private bool allowDuplicateMappings = false;
+        private bool inheritMappings = true;
 
         /// <summary>
         /// Sets whether the mappings that come after the first set (property after attribute or vice versa) should
@@ -69,6 +70,13 @@
             set { emptyInputHandling = value; }
         }
 
-        public bool InheritMappings { get; set; }
+        /// <summary>
+        /// Gets or sets the handling of inherited properties. True by default.
+        /// </summary>
+        public bool InheritMappings 
+        {
+            get { return inheritMappings; }
+            set { inheritMappings = value; }
+        }
     }
 }

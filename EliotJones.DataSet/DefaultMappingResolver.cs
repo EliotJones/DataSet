@@ -27,7 +27,11 @@
 
             var mappedProperties = new List<ExtendedPropertyInfo>();
 
-            PropertyInfo[] typeProperties = typeof(T).GetProperties();
+            // If we shouldn't inherit properties we need to declare the binding flags to ignore inherited properties.
+            // All 3 flags are required for correct return.
+            PropertyInfo[] typeProperties = (settings.InheritMappings) ? 
+                typeof(T).GetProperties() 
+                : typeof(T).GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
 
             // For non-overwriting mappings the execution order is important.
             switch (settings.MappingMatchOrder)

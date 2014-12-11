@@ -18,7 +18,7 @@
         [Fact]
         public void GetPropertyMappings_NullDataTable_ThrowsNullReferenceException()
         {
-            Assert.Throws(typeof(NullReferenceException), () => defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoMappings>(null, defaultDataTableParserSettings));
+            Assert.Throws(typeof(NullReferenceException), () => defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoAttributes>(null, defaultDataTableParserSettings));
         }
 
         [Fact]
@@ -26,13 +26,13 @@
         {
             DataTable dt = DataTableFactory.GenerateEmptyDataTableWithStringColumns();
 
-            Assert.Throws(typeof(NullReferenceException), () => defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoMappings>(dt, null));
+            Assert.Throws(typeof(NullReferenceException), () => defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoAttributes>(dt, null));
         }
 
         [Fact]
         public void GetPropertyMappings_NullSettingsAndDataTable_ThrowsNullReferenceException()
         {
-            Assert.Throws(typeof(NullReferenceException), () => defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoMappings>(null, null));
+            Assert.Throws(typeof(NullReferenceException), () => defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoAttributes>(null, null));
         }
 
         [Fact]
@@ -40,7 +40,7 @@
         {
             DataTable dt = DataTableFactory.GenerateEmptyDataTableWithStringColumns();
 
-            ICollection<ExtendedPropertyInfo> results = defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoMappings>(dt, defaultDataTableParserSettings);
+            ICollection<ExtendedPropertyInfo> results = defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoAttributes>(dt, defaultDataTableParserSettings);
 
             Assert.True(results.Count == 0);
         }
@@ -50,7 +50,7 @@
         {
             DataTable dt = DataTableFactory.GenerateEmptyDataTableWithStringColumns(null);
 
-            ICollection<ExtendedPropertyInfo> results = defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoMappings>(dt, defaultDataTableParserSettings);
+            ICollection<ExtendedPropertyInfo> results = defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoAttributes>(dt, defaultDataTableParserSettings);
 
             Assert.True(results.Count == 0);
         }
@@ -72,7 +72,7 @@
         {
             DataTable dt = DataTableFactory.GenerateEmptyDataTableWithStringColumns("PropertyOne");
 
-            ICollection<ExtendedPropertyInfo> results = defaultMappingResolver.GetPropertyMappings<SimpleOnePropertyNoIdNoMappings>(dt, defaultDataTableParserSettings);
+            ICollection<ExtendedPropertyInfo> results = defaultMappingResolver.GetPropertyMappings<SimpleOnePropertyNoIdNoAttributes>(dt, defaultDataTableParserSettings);
 
             Assert.True(results.Count == 1);
         }
@@ -82,7 +82,7 @@
         {
             DataTable dt = DataTableFactory.GenerateEmptyDataTableWithStringColumns("PropertyOne");
 
-            ICollection<ExtendedPropertyInfo> results = defaultMappingResolver.GetPropertyMappings<SimpleOnePropertyNoIdNoMappings>(dt, defaultDataTableParserSettings);
+            ICollection<ExtendedPropertyInfo> results = defaultMappingResolver.GetPropertyMappings<SimpleOnePropertyNoIdNoAttributes>(dt, defaultDataTableParserSettings);
 
             ExtendedPropertyInfo propInfo = results.First();
 
@@ -99,7 +99,7 @@
         {
             DataTable dt = DataTableFactory.GenerateEmptyDataTableWithStringColumns(columnName);
 
-            ICollection<ExtendedPropertyInfo> results = defaultMappingResolver.GetPropertyMappings<SimpleOnePropertyNoIdNoMappings>(dt, defaultDataTableParserSettings);
+            ICollection<ExtendedPropertyInfo> results = defaultMappingResolver.GetPropertyMappings<SimpleOnePropertyNoIdNoAttributes>(dt, defaultDataTableParserSettings);
 
             Assert.True(results.Count == 1);
         }
@@ -112,7 +112,7 @@
         {
             DataTable dt = DataTableFactory.GenerateEmptyDataTableWithStringColumns(column1, column2);
 
-            var results = defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoMappings>(dt, defaultDataTableParserSettings);
+            var results = defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoAttributes>(dt, defaultDataTableParserSettings);
 
             Assert.True(results.Count == 2);
         }
@@ -124,7 +124,7 @@
 
             DataTableParserSettings dtps = new DataTableParserSettings { MissingMappingHandling = MissingMappingHandling.Error };
 
-            Assert.Throws(typeof(Exception), () => defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoMappings>(dt, dtps));
+            Assert.Throws(typeof(Exception), () => defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoAttributes>(dt, dtps));
         }
 
         [Fact]
@@ -134,7 +134,7 @@
 
             DataTableParserSettings dtps = new DataTableParserSettings { MissingMappingHandling = MissingMappingHandling.Ignore };
 
-            var results = defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoMappings>(dt, dtps);
+            var results = defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoAttributes>(dt, dtps);
 
             Assert.True(results.Count == 1);
         }
@@ -151,6 +151,90 @@
             var results = defaultMappingResolver.GetPropertyMappings<ChildNoAttributes>(dt, dtps);
 
             Assert.True(results.Count == 4);
+        }
+
+        [Fact]
+        public void GetPropertyMappings_ClassWithTwoLevelsOfInheritance_ReturnsAllResults()
+        {
+            string[] columns = { "ParentIntProperty", "ParentStringProperty", "ChildIntProperty", "ChildStringProperty", "LeafIntProperty" };
+
+            DataTable dt = DataTableFactory.GenerateEmptyDataTableWithStringColumns(columns);
+
+            DataTableParserSettings dtps = new DataTableParserSettings { InheritMappings = true };
+
+            var results = defaultMappingResolver.GetPropertyMappings<LeafClassNoAttributes>(dt, dtps);
+
+            Assert.True(results.Count == 5);
+        }
+
+        [Fact]
+        public void GetPropertyMappings_ClassWithInheritedProperties_OnlyReturnsImmediateProperties()
+        {
+            string[] columns = { "ParentIntProperty", "ParentStringProperty", "ChildIntProperty", "ChildStringProperty" };
+
+            DataTable dt = DataTableFactory.GenerateEmptyDataTableWithStringColumns(columns);
+
+            DataTableParserSettings dtps = new DataTableParserSettings { InheritMappings = false };
+
+            var results = defaultMappingResolver.GetPropertyMappings<ChildNoAttributes>(dt, dtps);
+
+            Assert.True(results.Count == 2);
+        }
+
+        [Fact]
+        public void GetPropertyMappings_OneIdPropertyMatchingMapping_ReturnsResults()
+        {
+            string[] columns = { "Id", "PropertyOne" };
+
+            DataTable dt = DataTableFactory.GenerateEmptyDataTableWithStringColumns(columns);
+
+            var results = defaultMappingResolver.GetPropertyMappings<SimpleIdNoAttributes>(dt, defaultDataTableParserSettings);
+
+            Assert.True(results.Count == 2);
+
+            Assert.True(results.Select(r => r.FieldName).Contains("Id", StringComparer.InvariantCultureIgnoreCase));
+        }
+
+        [Fact]
+        public void GetPropertyMappings_OneIdPropertyMatchingMappingCaseVaries_ReturnsResults()
+        {
+            string[] columns = { "iD", "PropertyOne" };
+
+            DataTable dt = DataTableFactory.GenerateEmptyDataTableWithStringColumns(columns);
+
+            var results = defaultMappingResolver.GetPropertyMappings<SimpleIdNoAttributes>(dt, defaultDataTableParserSettings);
+
+            Assert.True(results.Count == 2);
+
+            Assert.True(results.Select(r => r.FieldName).Contains("id", StringComparer.InvariantCultureIgnoreCase));
+        }
+
+        [Fact]
+        public void GetPropertyMappings_OneIdClassNameMapping_ReturnsResults()
+        {
+            string[] columns = { typeof(SimpleIdNoAttributes).Name + "Id", "PropertyOne" };
+
+            DataTable dt = DataTableFactory.GenerateEmptyDataTableWithStringColumns(columns);
+
+            var results = defaultMappingResolver.GetPropertyMappings<SimpleIdNoAttributes>(dt, defaultDataTableParserSettings);
+
+            Assert.True(results.Count == 2);
+
+            Assert.True(results.Select(r => r.PropertyInfo.Name).Contains("Id", StringComparer.InvariantCultureIgnoreCase));
+        }
+
+        [Fact]
+        public void GetPropertyMappings_OneIdClassNameMappingCaseVaries_ReturnsResults()
+        {
+            string[] columns = { typeof(SimpleIdNoAttributes).Name + "iD", "PropertyOne" };
+
+            DataTable dt = DataTableFactory.GenerateEmptyDataTableWithStringColumns(columns);
+
+            var results = defaultMappingResolver.GetPropertyMappings<SimpleIdNoAttributes>(dt, defaultDataTableParserSettings);
+
+            Assert.True(results.Count == 2);
+
+            Assert.True(results.Select(r => r.PropertyInfo.Name).Contains("Id", StringComparer.InvariantCultureIgnoreCase));
         }
     }
 }
