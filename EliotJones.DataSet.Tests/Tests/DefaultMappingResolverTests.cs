@@ -236,5 +236,31 @@
 
             Assert.True(results.Select(r => r.PropertyInfo.Name).Contains("Id", StringComparer.InvariantCultureIgnoreCase));
         }
+
+        [Fact]
+        public void GetPropertyMappings_TwoAttributesWithMatchingColumns_ReturnsAllResults()
+        {
+            DataTable dt = DataTableFactory.GenerateEmptyDataTableWithStringColumns("Prop1", "Prop2");
+
+            var results = defaultMappingResolver.GetPropertyMappings<SimpleClassWithAttributes>(dt, defaultDataTableParserSettings);
+
+            Assert.True(results.Count == 2);
+        }
+
+        [Fact]
+        public void GetPropertyMappings_TwoAttributesWithOneMatchingColumn_ReturnsOneResult()
+        {
+            DataTable dt = DataTableFactory.GenerateEmptyDataTableWithStringColumns("prop1", "PropertyTwo");
+
+            DataTableParserSettings dtps = new DataTableParserSettings
+            {
+                MissingMappingHandling = MissingMappingHandling.Ignore,
+                MappingMatchOrder = MappingMatchOrder.IgnorePropertyNames
+            };
+
+            var results = defaultMappingResolver.GetPropertyMappings<SimpleClassWithAttributes>(dt, dtps);
+
+            Assert.True(results.Count == 1);
+        }
     }
 }
