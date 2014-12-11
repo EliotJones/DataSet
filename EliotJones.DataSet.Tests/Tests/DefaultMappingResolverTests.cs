@@ -70,8 +70,6 @@
         [Fact]
         public void GetPropertyMappings_OnePropertyWithMatchingColumn_ReturnsCollectionWithOneResult()
         {
-            SimpleOnePropertyNoIdNoMappings poco = new SimpleOnePropertyNoIdNoMappings();
-
             DataTable dt = DataTableFactory.GenerateEmptyDataTableWithStringColumns("PropertyOne");
 
             ICollection<ExtendedPropertyInfo> results = defaultMappingResolver.GetPropertyMappings<SimpleOnePropertyNoIdNoMappings>(dt, defaultDataTableParserSettings);
@@ -82,8 +80,6 @@
         [Fact]
         public void GetPropertyMappings_OnePropertyWithMatchingColumn_ReturnsCollectionWithCorrectResult()
         {
-            SimpleOnePropertyNoIdNoMappings poco = new SimpleOnePropertyNoIdNoMappings();
-
             DataTable dt = DataTableFactory.GenerateEmptyDataTableWithStringColumns("PropertyOne");
 
             ICollection<ExtendedPropertyInfo> results = defaultMappingResolver.GetPropertyMappings<SimpleOnePropertyNoIdNoMappings>(dt, defaultDataTableParserSettings);
@@ -112,7 +108,7 @@
         InlineData("propertyOne", "PropertyTwo"), 
         InlineData("PropertyOne", "PropertyTwo"), 
         InlineData("PropertyTwo", "PropertyOne")]
-        public void GetPropertyMappings_TwoPropertiesWithMatchingColumn_ReturnsCollectionWithTwoResults(string column1, string column2)
+        public void GetPropertyMappings_TwoPropertiesWithMatchingColumns_ReturnsCollectionWithTwoResults(string column1, string column2)
         {
             DataTable dt = DataTableFactory.GenerateEmptyDataTableWithStringColumns(column1, column2);
 
@@ -141,6 +137,20 @@
             var results = defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoMappings>(dt, dtps);
 
             Assert.True(results.Count == 1);
+        }
+
+        [Fact]
+        public void GetPropertyMappings_ClassWithInheritedProperties_ReturnsAllResults()
+        {
+            string[] columns = { "ParentIntProperty", "ParentStringProperty", "ChildIntProperty", "ChildStringProperty" };
+
+            DataTable dt = DataTableFactory.GenerateEmptyDataTableWithStringColumns(columns);
+
+            DataTableParserSettings dtps = new DataTableParserSettings {  InheritMappings = true };
+
+            var results = defaultMappingResolver.GetPropertyMappings<ChildNoAttributes>(dt, dtps);
+
+            Assert.True(results.Count == 4);
         }
     }
 }
