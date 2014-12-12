@@ -248,7 +248,7 @@
         }
 
         [Fact]
-        public void GetPropertyMappings_TwoAttributesWithOneMatchingColumn_ReturnsOneResult()
+        public void GetPropertyMappings_TwoAttributesWithOneMatchingColumnIgnoreProperties_ReturnsOneResult()
         {
             DataTable dt = DataTableFactory.GenerateEmptyDataTableWithStringColumns("prop1", "PropertyTwo");
 
@@ -261,6 +261,36 @@
             var results = defaultMappingResolver.GetPropertyMappings<SimpleClassWithAttributes>(dt, dtps);
 
             Assert.True(results.Count == 1);
+        }
+
+        [Fact]
+        public void GetPropertyMappings_TwoAttributesWithOneMatchingColumnErrorOnMissingMapping_ThrowsException()
+        {
+            DataTable dt = DataTableFactory.GenerateEmptyDataTableWithStringColumns("prop1", "PropertyTwo");
+
+            DataTableParserSettings dtps = new DataTableParserSettings
+            {
+                MissingMappingHandling = MissingMappingHandling.Error,
+                MappingMatchOrder = MappingMatchOrder.IgnorePropertyNames
+            };
+
+            Assert.Throws(typeof(Exception), () => defaultMappingResolver.GetPropertyMappings<SimpleClassWithAttributes>(dt, dtps));
+        }
+
+        [Fact]
+        public void GetPropertyMappings_TwoAttributesWithOneMatchingColumnAndPropertyMatch_ReturnsResults()
+        {
+            DataTable dt = DataTableFactory.GenerateEmptyDataTableWithStringColumns("prop1", "PropertyTwo");
+
+            DataTableParserSettings dtps = new DataTableParserSettings
+            {
+                MissingMappingHandling = MissingMappingHandling.Error,
+                MappingMatchOrder = MappingMatchOrder.PropertyNameFirst
+            };
+
+            var results = defaultMappingResolver.GetPropertyMappings<SimpleClassWithAttributes>(dt, dtps);
+
+            Assert.True(results.Count == 2);
         }
     }
 }
