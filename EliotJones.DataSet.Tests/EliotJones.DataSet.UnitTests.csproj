@@ -69,6 +69,7 @@
     <Compile Include="POCOs\SimplePocos.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\DefaultMappingResolverTests.cs" />
+    <Compile Include="Tests\DefaultDataTableResolverTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

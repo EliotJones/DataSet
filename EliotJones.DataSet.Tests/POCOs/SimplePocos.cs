@@ -7,6 +7,13 @@
         public string PropertyTwo { get; set; }
     }
 
+    internal class SimpleNoIdNoAttributesStringsOnly
+    {
+        public string PropertyOne { get; set; }
+
+        public string PropertyTwo { get; set; }
+    }
+
     internal class SimpleNoProperties
     {
         public int PropertyOne = 0;

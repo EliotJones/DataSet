@@ -63,7 +63,7 @@
             Gets or sets the handling of inherited properties. True by default.
             </summary>
         </member>
-        <member name="M:EliotJones.DataSet.IDataTypeConverter.FieldToObject``1(System.Object)">
+        <member name="M:EliotJones.DataSet.IDataTypeConverter.FieldToObject(System.Object,System.Type)">
             <summary>
             Takes an object from the <see cref="!:DataTable"/> and converts it to an object of the specified type.
             </summary>

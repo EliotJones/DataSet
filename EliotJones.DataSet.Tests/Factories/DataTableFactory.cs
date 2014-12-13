@@ -15,5 +15,17 @@
 
             return dt;
         }
+
+        public static DataTable GenerateEmptyDataTableMatchingObjectProperties<T>()
+        {
+            DataTable dt = new DataTable("Test Table");
+
+            foreach (var p in typeof(T).GetProperties())
+            {
+                dt.Columns.Add(new DataColumn(p.Name, p.PropertyType));
+            }
+
+            return dt;
+        }
     }
 }
