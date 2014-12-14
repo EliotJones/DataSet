@@ -85,6 +85,14 @@
             <param name="settings">The settings to use while mapping.</param>
             <returns>A list of the mappings.</returns>
         </member>
+        <member name="M:EliotJones.DataSet.SetterActionUtil.GetGenericPropertySetter``1(System.Reflection.PropertyInfo)">
+            <summary>
+            Generates a generic delegate for setting a property from a PropertyInfo.
+            </summary>
+            <typeparam name="T">The type on which to set the property.</typeparam>
+            <param name="propertyInfo">The property to set.</param>
+            <returns>A delegate which can be invoked for object to set a property.</returns>
+        </member>
         <member name="T:EliotJones.DataSet.Enums.EmptyInputHandling">
             <summary>
             Handles how the <see cref="T:EliotJones.DataSet.DataTableParser"/> will respond to being passed an empty <see cref="!:DataTable"/>.

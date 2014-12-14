@@ -1,5 +1,6 @@
 ﻿namespace EliotJones.DataSet.Tests.Factories
 {
+    using System.Collections.Generic;
     using System.Data;
     using System.Linq;
 
@@ -23,6 +24,25 @@
             foreach (var p in typeof(T).GetProperties())
             {
                 dt.Columns.Add(new DataColumn(p.Name, p.PropertyType));
+            }
+
+            return dt;
+        }
+
+        public static DataTable GenerateDataTableFilledWithObjects<T>(IEnumerable<T> objects)
+        {
+            DataTable dt = GenerateEmptyDataTableMatchingObjectProperties<T>();
+
+            foreach (var obj in objects)
+            {
+                DataRow dr = dt.NewRow();
+
+                foreach (var p in typeof(T).GetProperties())
+                {
+                    dr[p.Name] = p.GetValue(obj);
+                }
+
+                dt.Rows.Add(dr);
             }
 
             return dt;

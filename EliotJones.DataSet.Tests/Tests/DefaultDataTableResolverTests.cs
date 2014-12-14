@@ -67,6 +67,36 @@
             Assert.True(results.Count == 1);
         }
 
+        [Fact]
+        public void ToObjects_DataTableWithManyRowsMatchingColumns_ReturnsEnumerableWithCorrectResult()
+        {
+            int rows = 1000;
+
+            List<SimpleNoIdNoAttributes> objects = new List<SimpleNoIdNoAttributes>(capacity: rows);
+
+            for (int i = 0; i < rows; i++)
+            {
+                objects.Add(new SimpleNoIdNoAttributes
+                    {
+                        PropertyOne = i + 1,
+                        PropertyTwo = "Property" + i
+                    });
+            }
+
+            var mappings = CreatePropertyMappingsDirectlyMatchingObject(typeof(SimpleNoIdNoAttributes));
+
+            DataTable dt = DataTableFactory.GenerateDataTableFilledWithObjects<SimpleNoIdNoAttributes>(objects);
+
+            foreach (var mapping in mappings)
+            {
+                mapping.ColumnIndex = dt.Columns.IndexOf(mapping.FieldName);
+            }
+
+            var results = dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(dt, dataTypeConverter, mappings);
+
+            Assert.True(results.Count == rows);
+        }
+
         private IEnumerable<ExtendedPropertyInfo> CreateEmptyPropertyMappings()
         {
             return new List<ExtendedPropertyInfo>();
@@ -88,7 +118,11 @@
         {
             public object FieldToObject(object field, Type type)
             {
-                return default(Type);
+                if (type.IsValueType)
+                {
+                    return Activator.CreateInstance(type);
+                }
+                return null;
             }
         }
     }
