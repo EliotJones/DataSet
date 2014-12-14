@@ -47,6 +47,16 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EliotJones.DataSet.Tests\EliotJones.DataSet.UnitTests.csproj">
+      <Project>{dbdafc94-e9ae-4c3a-9437-cd659737e5ed}</Project>
+      <Name>EliotJones.DataSet.UnitTests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EliotJones.DataSet\EliotJones.DataSet.csproj">
+      <Project>{e749c305-103b-4d69-9982-7370924b1d52}</Project>
+      <Name>EliotJones.DataSet</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

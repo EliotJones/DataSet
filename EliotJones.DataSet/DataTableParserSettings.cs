@@ -14,9 +14,11 @@
         private bool subsequentMappingsShouldOverwrite = false;
         private bool allowDuplicateMappings = false;
         private bool inheritMappings = true;
+        private bool strictTypeMappings = true;
+        private bool allowDbNullForNonNullableTypes = true;
 
         /// <summary>
-        /// Sets whether the mappings that come after the first set (property after attribute or vice versa) should
+        /// Gets or sets whether the mappings that come after the first set (property after attribute or vice versa) should
         /// overwrite the previous mappings if both map. False by default.
         /// </summary>
         public bool SubsequentMappingsShouldOverwrite 
@@ -25,8 +27,20 @@
             set { subsequentMappingsShouldOverwrite = value; }
         }
 
+        public bool AllowDbNullForNonNullableTypes 
+        {
+            get { return allowDbNullForNonNullableTypes; }
+            set { allowDbNullForNonNullableTypes = value; } 
+        }
+
+        public bool StrictTypeMappings 
+        {
+            get { return strictTypeMappings; }
+            set { strictTypeMappings = value; }
+        }
+
         /// <summary>
-        /// Sets whether two properties should be allowed to map to the same column. False by default.
+        /// Gets or sets whether two properties should be allowed to map to the same column. False by default.
         /// </summary>
         public bool AllowDuplicateMappings 
         {

@@ -4,7 +4,7 @@
     using System.Data;
     using System.Linq;
 
-    internal static class DataTableFactory
+    public static class DataTableFactory
     {
         public static DataTable GenerateEmptyDataTableWithStringColumns(params string[] columnNames)
         {

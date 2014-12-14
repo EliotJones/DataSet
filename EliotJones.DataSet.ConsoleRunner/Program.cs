@@ -1,42 +1,77 @@
 ﻿namespace EliotJones.DataSet.ConsoleRunner
 {
+    using EliotJones.DataSet.Tests.Factories;
     using System;
-using System.Diagnostics;
+    using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Text;
+    using System.Linq.Expressions;
+    using System.Reflection;
+    using System.Text;
 
     public class Program
     {
         static void Main(string[] args)
         {
-            InitializeTonies it = new InitializeTonies();
+            DataTableParser dtp = new DataTableParser();
 
-            int count = 10000000;
+            int count = 1000000;
 
-            var sw = Stopwatch.StartNew();
-            it.NormalSetter(count);
+            List<TestClass> classes = new List<TestClass>();
+
+            for (int i = 0; i < count; i++)
+            {
+                classes.Add(new TestClass
+                    {
+                        Id = i,
+                        Name = "Name" + i,
+                        Postcode = "GU" + i,
+                        CreationDate = DateTime.UtcNow,
+                        ModifiedDate = DateTime.UtcNow
+                    });
+            }
+
+
+            Stopwatch sw = Stopwatch.StartNew();
+            var result = dtp.ToObjects<TestClass>(DataTableFactory.GenerateDataTableFilledWithObjects<TestClass>(classes));
             sw.Stop();
-            Console.WriteLine(sw.ElapsedTicks + " Setter");
+
+            Console.WriteLine(sw.ElapsedTicks + " Ticks for default parser");
+            Console.WriteLine(sw.ElapsedMilliseconds / (double)count + " Milliseconds per object");
+
+            dtp.DataTableResolver = new ParallelDataTableResolver();
 
             sw.Restart();
-            it.DelegateSetter(count);
+            result = dtp.ToObjects<TestClass>(DataTableFactory.GenerateDataTableFilledWithObjects<TestClass>(classes));
             sw.Stop();
-            Console.WriteLine(sw.ElapsedTicks + " Delegate");
+
+            Console.WriteLine(sw.ElapsedTicks + " Ticks for parallel parser");
+            Console.WriteLine(sw.ElapsedMilliseconds / (double)count + " Milliseconds per object");
+
+            dtp.DataTableResolver = new DelegateDataTableResolver();
 
             sw.Restart();
-            it.ReflectionSetter(count);
+            result = dtp.ToObjects<TestClass>(DataTableFactory.GenerateDataTableFilledWithObjects<TestClass>(classes));
             sw.Stop();
-            Console.WriteLine(sw.ElapsedTicks + " Reflection");
 
-            sw.Restart();
-            it.DelegateExpressionSetter(count);
-            sw.Stop();
-            Console.WriteLine(sw.ElapsedTicks + " Delegate with generic invoke");
+            Console.WriteLine(sw.ElapsedTicks + " Ticks for delegate parser");
+            Console.WriteLine(sw.ElapsedMilliseconds / (double)count + " Milliseconds per object");
 
             if (Debugger.IsAttached) Debugger.Break();
         }
+    }
+
+    internal class TestClass
+    {
+        public string Name { get; set; }
+
+        public DateTime CreationDate { get; set; }
+
+        public int Id { get; set; }
+
+        public string Postcode { get; set; }
+
+        public DateTime ModifiedDate { get; set; }
     }
 
     public class Tony
