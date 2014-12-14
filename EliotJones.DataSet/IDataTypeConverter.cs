@@ -9,6 +9,6 @@
         /// <typeparam name="T">Type to convert to.</typeparam>
         /// <param name="field">Field to convert.</param>
         /// <returns>object of the correct type.</returns>
-        object FieldToObject(object field, Type type);
+        object FieldToObject(object field, Type type, DataTableParserSettings settings);
     }
 }

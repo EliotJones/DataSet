@@ -26,7 +26,7 @@
             return delegates;
         }
 
-        public IList<T> ToObjects<T>(DataTable dataTable, IDataTypeConverter dataTypeConverter, IEnumerable<ExtendedPropertyInfo> mappings) where T : new()
+        public IList<T> ToObjects<T>(DataTable dataTable, IDataTypeConverter dataTypeConverter, IEnumerable<ExtendedPropertyInfo> mappings, DataTableParserSettings settings) where T : new()
         {
             if (dataTable == null || dataTypeConverter == null || mappings == null) throw new NullReferenceException();
 
@@ -40,7 +40,7 @@
 
                 foreach (var setterDelegate in delegates)
                 {
-                    object value = dataTypeConverter.FieldToObject(dataTable.Rows[rowIndex][setterDelegate.ExtendedPropertyInfo.ColumnIndex], setterDelegate.ExtendedPropertyInfo.PropertyInfo.PropertyType);
+                    object value = dataTypeConverter.FieldToObject(dataTable.Rows[rowIndex][setterDelegate.ExtendedPropertyInfo.ColumnIndex], setterDelegate.ExtendedPropertyInfo.PropertyInfo.PropertyType, settings);
 
                     setterDelegate.SetterDelegate(returnObject, value);
                 }

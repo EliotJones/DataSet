@@ -15,35 +15,36 @@
     {
         private IDataTypeConverter dataTypeConverter = new TestConverter();
         private DefaultDataTableResolver dataTableResolver = new DefaultDataTableResolver();
+        private DataTableParserSettings dataTableParserSettings = new DataTableParserSettings();
 
         [Fact]
         public void ToObjects_NullDataTable_ThrowsException()
         {
-            Assert.Throws(typeof(NullReferenceException), () => dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(null, dataTypeConverter, CreateEmptyPropertyMappings()));
+            Assert.Throws(typeof(NullReferenceException), () => dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(null, dataTypeConverter, CreateEmptyPropertyMappings(), dataTableParserSettings));
         }
 
         [Fact]
         public void ToObjects_NullDataTypeConverter_ThrowsException()
         {
-            Assert.Throws(typeof(NullReferenceException), () => dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(new DataTable(), null, CreateEmptyPropertyMappings()));
+            Assert.Throws(typeof(NullReferenceException), () => dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(new DataTable(), null, CreateEmptyPropertyMappings(), dataTableParserSettings));
         }
 
         [Fact]
         public void ToObjects_NullMappings_ThrowsException()
         {
-            Assert.Throws(typeof(NullReferenceException), () => dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(new DataTable(), dataTypeConverter, null));
+            Assert.Throws(typeof(NullReferenceException), () => dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(new DataTable(), dataTypeConverter, null, dataTableParserSettings));
         }
 
         [Fact]
         public void ToObjects_NullArguments_ThrowsException()
         {
-            Assert.Throws(typeof(NullReferenceException), () => dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(null, null, null));
+            Assert.Throws(typeof(NullReferenceException), () => dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(null, null, null, null));
         }
 
         [Fact]
         public void ToObjects_EmptyDataTable_ReturnsEmptyEnumerableOfCorrectType()
         {
-            var results = dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(new DataTable(), dataTypeConverter, CreateEmptyPropertyMappings());
+            var results = dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(new DataTable(), dataTypeConverter, CreateEmptyPropertyMappings(), dataTableParserSettings);
 
             Assert.Equal(0, results.Count());
         }
@@ -62,7 +63,7 @@
 
             dt.Rows.Add(1, "string");
 
-            var results = dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(dt, dataTypeConverter, mappings);
+            var results = dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(dt, dataTypeConverter, mappings, dataTableParserSettings);
 
             Assert.True(results.Count == 1);
         }
@@ -92,7 +93,7 @@
                 mapping.ColumnIndex = dt.Columns.IndexOf(mapping.FieldName);
             }
 
-            var results = dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(dt, dataTypeConverter, mappings);
+            var results = dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(dt, dataTypeConverter, mappings, dataTableParserSettings);
 
             Assert.True(results.Count == rows);
         }
@@ -116,7 +117,7 @@
 
         private class TestConverter : IDataTypeConverter
         {
-            public object FieldToObject(object field, Type type)
+            public object FieldToObject(object field, Type type, DataTableParserSettings settings)
             {
                 if (type.IsValueType)
                 {

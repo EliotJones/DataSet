@@ -4,7 +4,7 @@
 
     public class DefaultDataTypeConverter : IDataTypeConverter
     {
-        public object FieldToObject(object field, Type type)
+        public object FieldToObject(object field, Type type, DataTableParserSettings settings)
         {
             Type t = field.GetType();
 

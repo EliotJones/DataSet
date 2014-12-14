@@ -22,6 +22,11 @@
             Gets or sets the settings for passing a DataTable.
             </summary>
         </member>
+        <member name="P:EliotJones.DataSet.DataTableParser.MappingResolver">
+            <summary>
+            Gets or sets the resolver used to map columns to properties.
+            </summary>
+        </member>
         <member name="T:EliotJones.DataSet.DataTableParserSettings">
             <summary>
             Settings for de-serializing a DataTable.
@@ -63,7 +68,7 @@
             Gets or sets the handling of inherited properties. True by default.
             </summary>
         </member>
-        <member name="M:EliotJones.DataSet.IDataTypeConverter.FieldToObject(System.Object,System.Type)">
+        <member name="M:EliotJones.DataSet.IDataTypeConverter.FieldToObject(System.Object,System.Type,EliotJones.DataSet.DataTableParserSettings)">
             <summary>
             Takes an object from the <see cref="!:DataTable"/> and converts it to an object of the specified type.
             </summary>

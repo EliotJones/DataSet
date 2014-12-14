@@ -13,9 +13,9 @@
         {
         }
 
-        public IList<T> ToObjects<T>(DataTable dataTable, IDataTypeConverter dataTypeConverter, IEnumerable<ExtendedPropertyInfo> mappings) where T : new()
+        public IList<T> ToObjects<T>(DataTable dataTable, IDataTypeConverter dataTypeConverter, IEnumerable<ExtendedPropertyInfo> mappings, DataTableParserSettings settings) where T : new()
         {
-            if (dataTable == null || dataTypeConverter == null || mappings == null) throw new NullReferenceException();
+            if (dataTable == null || dataTypeConverter == null || mappings == null || settings == null) throw new NullReferenceException();
 
             List<T> objectList = new List<T>(capacity: dataTable.Rows.Count);
 
@@ -25,7 +25,7 @@
 
                 foreach (var mapping in mappings)
                 {
-                    object value = dataTypeConverter.FieldToObject(dataTable.Rows[rowIndex][mapping.ColumnIndex], mapping.PropertyInfo.PropertyType);
+                    object value = dataTypeConverter.FieldToObject(dataTable.Rows[rowIndex][mapping.ColumnIndex], mapping.PropertyInfo.PropertyType, settings);
                     mapping.PropertyInfo.SetValue(returnObject, value);
                 }
 

@@ -8,15 +8,13 @@
     /// </summary>
     public class DataTableParser
     {
-        private DataTableParserSettings DefaultDataTableParserSettings = new DataTableParserSettings();
-        private IMappingResolver DefaultMappingResolver = new DefaultMappingResolver();
-
-        private DataTableParserSettings dataTableParserSettings;
-        private IMappingResolver mappingResolver;
+        private DataTableParserSettings dataTableParserSettings = new DataTableParserSettings();
+        private IMappingResolver mappingResolver = new DefaultMappingResolver();
+        private IDataTableResolver dataTableResolver = new DefaultDataTableResolver();
+        private IDataTypeConverter dataTypeConverter = new DefaultDataTypeConverter();
 
         public DataTableParser()
         {
-            dataTableParserSettings = new DataTableParserSettings();
         }
 
         /// <summary>
@@ -24,14 +22,29 @@
         /// </summary>
         public virtual DataTableParserSettings DataTableParserSettings
         {
-            get { return dataTableParserSettings ?? DefaultDataTableParserSettings; }
+            get { return dataTableParserSettings; }
             set { dataTableParserSettings = value; }
         }
 
+        public virtual IDataTypeConverter DataTypeConverter
+        {
+            get { return dataTypeConverter; }
+            set { dataTypeConverter = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the resolver used to map columns to properties.
+        /// </summary>
         public virtual IMappingResolver MappingResolver
         {
-            get { return mappingResolver ?? DefaultMappingResolver; }
+            get { return mappingResolver; }
             set { mappingResolver = MappingResolver; }
+        }
+
+        public virtual IDataTableResolver DataTableResolver
+        {
+            get { return dataTableResolver; }
+            set { dataTableResolver = value; }
         }
 
         public static DataTableParser Create()
@@ -61,7 +74,7 @@
         /// <returns>An IEnumerable&lt;T&gt; with objects initialized.</returns>
         public virtual IEnumerable<T> ToObjects<T>(DataTable table) where T : new()
         {
-            DataTableParserSettings dataTableParserSettingsLocal = dataTableParserSettings ?? DefaultDataTableParserSettings;
+            DataTableParserSettings dataTableParserSettingsLocal = dataTableParserSettings;
 
             return ToObjectsInternal<T>(table, dataTableParserSettingsLocal);
         }
@@ -80,7 +93,7 @@
 
         protected virtual DataTableConverter GetConverter(DataTableParserSettings dataTableParserSettingsLocal)
         {
-            return new DataTableConverter(dataTableParserSettings, mappingResolver);
+            return new DataTableConverter(dataTableParserSettings, mappingResolver, dataTableResolver, dataTypeConverter);
         }
     }
 }

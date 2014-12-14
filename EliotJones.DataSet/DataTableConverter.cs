@@ -10,19 +10,16 @@
     public class DataTableConverter
     {
         private DataTableParserSettings dataTableParserSettings;
-        private IDataTypeConverter dataTypeConverter = new DefaultDataTypeConverter();
+        private IDataTableResolver dataTableResolver;
         private IMappingResolver mappingResolver;
+        private IDataTypeConverter dataTypeConverter;
 
-        public IDataTypeConverter DataTypeConverter 
-        {
-            get { return dataTypeConverter; }
-            set { dataTypeConverter = value; }
-        }
-
-        public DataTableConverter(DataTableParserSettings dataTableParserSettings, IMappingResolver mappingResolver)
+        public DataTableConverter(DataTableParserSettings dataTableParserSettings, IMappingResolver mappingResolver, IDataTableResolver dataTableResolver, IDataTypeConverter dataTypeConverter)
         {
             this.dataTableParserSettings = dataTableParserSettings;
             this.mappingResolver = mappingResolver;
+            this.dataTableResolver = dataTableResolver;
+            this.dataTypeConverter = dataTypeConverter;
         }
 
         public virtual IEnumerable<T> ConvertToType<T>(DataTable dataTable) where T : new()
@@ -55,7 +52,7 @@
 
             ICollection<ExtendedPropertyInfo> mappedProperties = mappingResolver.GetPropertyMappings<T>(dataTable, dataTableParserSettings);
 
-            List<T> initializedObjects = new List<T>();
+            IList<T> initializedObjects = dataTableResolver.ToObjects<T>(dataTable, dataTypeConverter, mappedProperties, dataTableParserSettings);
 
             return initializedObjects;
         }
