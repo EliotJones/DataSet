@@ -52,7 +52,10 @@
     <Compile Include="Enums\MappingMatchOrder.cs" />
     <Compile Include="Enums\MissingMappingHandling.cs" />
     <Compile Include="Enums\NullInputHandling.cs" />
+    <Compile Include="Exceptions\DuplicateMappingException.cs" />
+    <Compile Include="Exceptions\MissingMappingException.cs" />
     <Compile Include="ExtendedPropertyInfo.cs" />
+    <Compile Include="Guard.cs" />
     <Compile Include="IDataTableResolver.cs" />
     <Compile Include="IDataTypeConverter.cs" />
     <Compile Include="IMappingResolver.cs" />

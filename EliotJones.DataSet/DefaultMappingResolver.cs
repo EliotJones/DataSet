@@ -1,6 +1,7 @@
 ﻿namespace EliotJones.DataSet
 {
     using EliotJones.DataSet.Enums;
+    using EliotJones.DataSet.Exceptions;
     using System;
     using System.Collections.Generic;
     using System.Data;
@@ -23,15 +24,12 @@
         /// <returns>A list of the mappings.</returns>
         public virtual ICollection<ExtendedPropertyInfo> GetPropertyMappings<T>(DataTable dataTable, DataTableParserSettings settings) where T : new()
         {
-            if (dataTable == null || settings == null) throw new NullReferenceException();
+            Guard.ArgumentNotNull(dataTable);
+            Guard.ArgumentNotNull(settings);
 
             var mappedProperties = new List<ExtendedPropertyInfo>();
 
-            // If we shouldn't inherit properties we need to declare the binding flags to ignore inherited properties.
-            // All 3 flags are required for correct return.
-            PropertyInfo[] typeProperties = (settings.InheritMappings) ? 
-                typeof(T).GetProperties() 
-                : typeof(T).GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
+            var typeProperties = GetPropertiesForType<T>(settings.InheritMappings);
 
             // For non-overwriting mappings the execution order is important.
             switch (settings.MappingMatchOrder)
@@ -56,13 +54,27 @@
 
             // Error in mapping handling, checks for missing mappings.
             if (settings.MissingMappingHandling == MissingMappingHandling.Error
-                && mappedProperties.Count < typeProperties.Length) throw new Exception();
+                && mappedProperties.Count < typeProperties.Length)
+            {
+                throw new MissingMappingException<T>();
+            }
 
             // Checks for duplicate mappings in the list.
             if (!settings.AllowDuplicateMappings
-                && mappedProperties.Select(p => p.ColumnIndex).Distinct().Count() != mappedProperties.Count) throw new Exception();
+                && mappedProperties.Select(p => p.ColumnIndex).Distinct().Count() != mappedProperties.Count)
+            {
+                throw new DuplicateMappingException<T>();
+            }
 
             return mappedProperties;
+        }
+
+        private PropertyInfo[] GetPropertiesForType<T>(bool inheritMappings) where T : new()
+        {
+            // If we shouldn't inherit properties we need to declare the binding flags to ignore inherited properties.
+            // All 3 flags are required for correct return.
+            return inheritMappings ? typeof(T).GetProperties()
+                : typeof(T).GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
         }
 
         private void GenerateMappingsFromAttributes(ref List<ExtendedPropertyInfo> mappedProperties, PropertyInfo[] properties, DataTable dataTable, DataTableParserSettings settings)

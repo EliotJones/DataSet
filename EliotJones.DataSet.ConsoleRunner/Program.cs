@@ -3,6 +3,7 @@
     using EliotJones.DataSet.Tests.Factories;
     using System;
     using System.Collections.Generic;
+    using System.Data;
     using System.Diagnostics;
     using System.Linq;
     using System.Linq.Expressions;
@@ -15,7 +16,7 @@
         {
             DataTableParser dtp = new DataTableParser();
 
-            int count = 1000000;
+            int count = 100000;
 
             List<TestClass> classes = new List<TestClass>();
 
@@ -31,32 +32,17 @@
                     });
             }
 
+            DataTable dt = DataTableFactory.GenerateDataTableFilledWithObjects<TestClass>(classes);
 
-            Stopwatch sw = Stopwatch.StartNew();
-            var result = dtp.ToObjects<TestClass>(DataTableFactory.GenerateDataTableFilledWithObjects<TestClass>(classes));
-            sw.Stop();
-
-            Console.WriteLine(sw.ElapsedTicks + " Ticks for default parser");
-            Console.WriteLine(sw.ElapsedMilliseconds / (double)count + " Milliseconds per object");
-
-            dtp.DataTableResolver = new ParallelDataTableResolver();
-
-            sw.Restart();
-            result = dtp.ToObjects<TestClass>(DataTableFactory.GenerateDataTableFilledWithObjects<TestClass>(classes));
-            sw.Stop();
-
-            Console.WriteLine(sw.ElapsedTicks + " Ticks for parallel parser");
-            Console.WriteLine(sw.ElapsedMilliseconds / (double)count + " Milliseconds per object");
-
+            
             dtp.DataTableResolver = new DelegateDataTableResolver();
 
-            sw.Restart();
-            result = dtp.ToObjects<TestClass>(DataTableFactory.GenerateDataTableFilledWithObjects<TestClass>(classes));
+            Stopwatch sw = Stopwatch.StartNew();
+            dtp.ToObjects<TestClass>(dt);
             sw.Stop();
-
-            Console.WriteLine(sw.ElapsedTicks + " Ticks for delegate parser");
-            Console.WriteLine(sw.ElapsedMilliseconds / (double)count + " Milliseconds per object");
-
+            Console.WriteLine(sw.ElapsedMilliseconds + " Milliseconds Total");
+            Console.WriteLine(sw.ElapsedMilliseconds/(decimal)count + " Milliseconds Per Object");
+            
             if (Debugger.IsAttached) Debugger.Break();
         }
     }

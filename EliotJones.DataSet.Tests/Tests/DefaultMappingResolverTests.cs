@@ -1,6 +1,7 @@
 ﻿namespace EliotJones.DataSet.Tests.Tests
 {
     using EliotJones.DataSet.Enums;
+    using EliotJones.DataSet.Exceptions;
     using EliotJones.DataSet.Tests.Factories;
     using EliotJones.DataSet.Tests.POCOs;
     using System;
@@ -16,23 +17,23 @@
         DataTableParserSettings defaultDataTableParserSettings = new DataTableParserSettings();
 
         [Fact]
-        public void GetPropertyMappings_NullDataTable_ThrowsNullReferenceException()
+        public void GetPropertyMappings_NullDataTable_ThrowsArgumentNullException()
         {
-            Assert.Throws(typeof(NullReferenceException), () => defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoAttributes>(null, defaultDataTableParserSettings));
+            Assert.Throws(typeof(ArgumentNullException), () => defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoAttributes>(null, defaultDataTableParserSettings));
         }
 
         [Fact]
-        public void GetPropertyMappings_NullSettings_ThrowsNullReferenceException()
+        public void GetPropertyMappings_NullSettings_ThrowsArgumentNullException()
         {
             DataTable dt = DataTableFactory.GenerateEmptyDataTableWithStringColumns();
 
-            Assert.Throws(typeof(NullReferenceException), () => defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoAttributes>(dt, null));
+            Assert.Throws(typeof(ArgumentNullException), () => defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoAttributes>(dt, null));
         }
 
         [Fact]
-        public void GetPropertyMappings_NullSettingsAndDataTable_ThrowsNullReferenceException()
+        public void GetPropertyMappings_NullSettingsAndDataTable_ThrowsArgumentNullException()
         {
-            Assert.Throws(typeof(NullReferenceException), () => defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoAttributes>(null, null));
+            Assert.Throws(typeof(ArgumentNullException), () => defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoAttributes>(null, null));
         }
 
         [Fact]
@@ -118,13 +119,13 @@
         }
 
         [Fact]
-        public void GetPropertyMappings_TwoPropertiesOneMatching_MissingMappingHandlingCausesError()
+        public void GetPropertyMappings_TwoPropertiesOneMatching_ThrowsMissingMappingException()
         {
             DataTable dt = DataTableFactory.GenerateEmptyDataTableWithStringColumns("PropertyOne");
 
             DataTableParserSettings dtps = new DataTableParserSettings { MissingMappingHandling = MissingMappingHandling.Error };
 
-            Assert.Throws(typeof(Exception), () => defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoAttributes>(dt, dtps));
+            Assert.Throws(typeof(MissingMappingException<SimpleNoIdNoAttributes>), () => defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoAttributes>(dt, dtps));
         }
 
         [Fact]
@@ -264,7 +265,7 @@
         }
 
         [Fact]
-        public void GetPropertyMappings_TwoAttributesWithOneMatchingColumnErrorOnMissingMapping_ThrowsException()
+        public void GetPropertyMappings_TwoAttributesWithOneMatchingColumnErrorOnMissingMapping_ThrowsMissingMappingException()
         {
             DataTable dt = DataTableFactory.GenerateEmptyDataTableWithStringColumns("prop1", "PropertyTwo");
 
@@ -274,7 +275,7 @@
                 MappingMatchOrder = MappingMatchOrder.IgnorePropertyNames
             };
 
-            Assert.Throws(typeof(Exception), () => defaultMappingResolver.GetPropertyMappings<SimpleClassWithAttributes>(dt, dtps));
+            Assert.Throws(typeof(MissingMappingException<SimpleClassWithAttributes>), () => defaultMappingResolver.GetPropertyMappings<SimpleClassWithAttributes>(dt, dtps));
         }
 
         [Fact]
