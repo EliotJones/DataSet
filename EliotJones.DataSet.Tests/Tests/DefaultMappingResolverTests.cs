@@ -4,6 +4,7 @@
     using EliotJones.DataSet.Exceptions;
     using EliotJones.DataSet.Tests.Factories;
     using EliotJones.DataSet.Tests.POCOs;
+    using EliotJones.DataSet.MappingResolvers;
     using System;
     using System.Collections.Generic;
     using System.Data;

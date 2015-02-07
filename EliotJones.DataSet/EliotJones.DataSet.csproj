@@ -46,7 +46,7 @@
     <Compile Include="DataTableParserSettings.cs" />
     <Compile Include="DefaultDataTableResolver.cs" />
     <Compile Include="DefaultDataTypeConverter.cs" />
-    <Compile Include="DefaultMappingResolver.cs" />
+    <Compile Include="MappingResolvers\DefaultMappingResolver.cs" />
     <Compile Include="DelegateDataTableResolver.cs" />
     <Compile Include="Enums\EmptyInputHandling.cs" />
     <Compile Include="Enums\MappingMatchOrder.cs" />
@@ -58,7 +58,7 @@
     <Compile Include="Guard.cs" />
     <Compile Include="IDataTableResolver.cs" />
     <Compile Include="IDataTypeConverter.cs" />
-    <Compile Include="IMappingResolver.cs" />
+    <Compile Include="MappingResolvers\MappingResolver.cs" />
     <Compile Include="ParallelDataTableResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

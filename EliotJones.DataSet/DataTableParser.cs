@@ -1,5 +1,6 @@
 ﻿namespace EliotJones.DataSet
 {
+    using MappingResolvers;
     using System.Collections.Generic;
     using System.Data;
 
@@ -9,7 +10,7 @@
     public class DataTableParser
     {
         private DataTableParserSettings dataTableParserSettings = new DataTableParserSettings();
-        private IMappingResolver mappingResolver = new DefaultMappingResolver();
+        private MappingResolver mappingResolver = new DefaultMappingResolver();
         private IDataTableResolver dataTableResolver = new DefaultDataTableResolver();
         private IDataTypeConverter dataTypeConverter = new DefaultDataTypeConverter();
 
@@ -35,7 +36,7 @@
         /// <summary>
         /// Gets or sets the resolver used to map columns to properties.
         /// </summary>
-        public virtual IMappingResolver MappingResolver
+        public virtual MappingResolver MappingResolver
         {
             get { return mappingResolver; }
             set { mappingResolver = MappingResolver; }

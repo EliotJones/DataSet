@@ -1,4 +1,4 @@
-﻿namespace EliotJones.DataSet
+﻿namespace EliotJones.DataSet.MappingResolvers
 {
     using EliotJones.DataSet.Enums;
     using EliotJones.DataSet.Exceptions;
@@ -11,7 +11,7 @@
     /// <summary>
     /// Resolves mappings from an object's properties to DataTable columns.
     /// </summary>
-    public class DefaultMappingResolver : IMappingResolver
+    public class DefaultMappingResolver : MappingResolver
     {
         private const string Id = "id";
 
@@ -22,7 +22,7 @@
         /// <param name="dataTable">The DataTable to map from.</param>
         /// <param name="settings">The settings to use while mapping.</param>
         /// <returns>A list of the mappings.</returns>
-        public virtual ICollection<ExtendedPropertyInfo> GetPropertyMappings<T>(DataTable dataTable, DataTableParserSettings settings) where T : new()
+        public override ICollection<ExtendedPropertyInfo> GetPropertyMappings<T>(DataTable dataTable, DataTableParserSettings settings)
         {
             Guard.ArgumentNotNull(dataTable);
             Guard.ArgumentNotNull(settings);

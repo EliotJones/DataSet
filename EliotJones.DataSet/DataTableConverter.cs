@@ -1,6 +1,7 @@
 ﻿namespace EliotJones.DataSet
 {
-    using EliotJones.DataSet.Enums;
+    using Enums;
+    using MappingResolvers;
     using System;
     using System.Collections.Generic;
     using System.Data;
@@ -11,10 +12,10 @@
     {
         private DataTableParserSettings dataTableParserSettings;
         private IDataTableResolver dataTableResolver;
-        private IMappingResolver mappingResolver;
+        private MappingResolver mappingResolver;
         private IDataTypeConverter dataTypeConverter;
 
-        public DataTableConverter(DataTableParserSettings dataTableParserSettings, IMappingResolver mappingResolver, IDataTableResolver dataTableResolver, IDataTypeConverter dataTypeConverter)
+        public DataTableConverter(DataTableParserSettings dataTableParserSettings, MappingResolver mappingResolver, IDataTableResolver dataTableResolver, IDataTypeConverter dataTypeConverter)
         {
             this.dataTableParserSettings = dataTableParserSettings;
             this.mappingResolver = mappingResolver;
