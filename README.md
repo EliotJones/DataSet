@@ -1,3 +1,5 @@
-# Read Me #
+# EliotJones.DataTable #
 
-A small project for practice with Git/GitHub which will provide a small configurable class library that parses ADO.NET DataTables to a collection of POCOs.
+## Introduction ##
+
+This is a small class library mainly used for practice with Git and GitHub. The intended aim of the library is a small configurable ORM for mapping results in a DataTable to a collection of POCOs.
