@@ -1,13 +1,13 @@
 ﻿namespace EliotJones.DataTable.Tests.Unit.Tests
 {
+    using EliotJones.DataTable.Exceptions;
     using EliotJones.DataTable.Tests.Unit.Factories;
     using EliotJones.DataTable.Tests.Unit.POCOs;
-    using FakeItEasy;
+    using EliotJones.DataTable.Tests.Unit.TestStubs;
     using System;
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
-    using System.Text;
     using Xunit;
     using Xunit.Extensions;
 
@@ -20,25 +20,25 @@
         [Fact]
         public void ToObjects_NullDataTable_ThrowsException()
         {
-            Assert.Throws(typeof(NullReferenceException), () => dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(null, dataTypeConverter, CreateEmptyPropertyMappings(), dataTableParserSettings));
+            Assert.Throws(typeof(ArgumentNullException), () => dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(null, dataTypeConverter, CreateEmptyPropertyMappings(), dataTableParserSettings));
         }
 
         [Fact]
         public void ToObjects_NullDataTypeConverter_ThrowsException()
         {
-            Assert.Throws(typeof(NullReferenceException), () => dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(new DataTable(), null, CreateEmptyPropertyMappings(), dataTableParserSettings));
+            Assert.Throws(typeof(ArgumentNullException), () => dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(new DataTable(), null, CreateEmptyPropertyMappings(), dataTableParserSettings));
         }
 
         [Fact]
         public void ToObjects_NullMappings_ThrowsException()
         {
-            Assert.Throws(typeof(NullReferenceException), () => dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(new DataTable(), dataTypeConverter, null, dataTableParserSettings));
+            Assert.Throws(typeof(ArgumentNullException), () => dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(new DataTable(), dataTypeConverter, null, dataTableParserSettings));
         }
 
         [Fact]
         public void ToObjects_NullArguments_ThrowsException()
         {
-            Assert.Throws(typeof(NullReferenceException), () => dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(null, null, null, null));
+            Assert.Throws(typeof(ArgumentNullException), () => dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(null, null, null, null));
         }
 
         [Fact]
@@ -66,6 +66,52 @@
             var results = dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(dt, dataTypeConverter, mappings, dataTableParserSettings);
 
             Assert.True(results.Count == 1);
+        }
+
+        [Theory]
+        [InlineData(1, "string")]
+        [InlineData(-3, "")]
+        [InlineData(0, "\r\n\0")]
+        [InlineData(int.MinValue, "string")]
+        [InlineData(int.MaxValue, "string")]
+        public void ToObjects_DataTableWithIncorrectColumnIndexButCorrectColumn_ReturnsCorrectResult(int propertyOne, string propertyTwo)
+        {
+            var mappings = CreatePropertyMappingsDirectlyMatchingObject(typeof(SimpleNoIdNoAttributes));
+
+            DataTable dt = DataTableFactory.GenerateEmptyDataTableMatchingObjectProperties<SimpleNoIdNoAttributes>();
+
+            dt.Rows.Add(propertyOne, propertyTwo);
+
+            var results = dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(dt, dataTypeConverter, mappings, dataTableParserSettings);
+
+            Assert.Equal(GetAssertObject<int>(propertyOne), results.First().PropertyOne);
+            Assert.Equal(GetAssertObject<string>(propertyTwo), results.First().PropertyTwo);
+        }
+
+        [Fact]
+        public void ToObjects_IncorrectMapping_ThrowsInvalidMappingException()
+        {
+            var mappings = CreatePropertyMappingsDirectlyMatchingObject(typeof(SimpleNoIdNoAttributes));
+
+            mappings.First().FieldName = string.Empty;
+
+            DataTable dt = DataTableFactory.GenerateEmptyDataTableMatchingObjectProperties<SimpleNoIdNoAttributes>();
+
+            Assert.Throws<InvalidMappingException<SimpleNoIdNoAttributes>>(() => dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(dt, dataTypeConverter, mappings, dataTableParserSettings));
+        }
+
+        [Fact]
+        public void ToObjects_NullMapping_ThrowsInvalidMappingException()
+        {
+            var mappings = CreatePropertyMappingsDirectlyMatchingObject(typeof(SimpleNoIdNoAttributes));
+
+            var mappingsList = mappings.ToList();
+
+            mappingsList[0] = null;
+
+            DataTable dt = DataTableFactory.GenerateEmptyDataTableMatchingObjectProperties<SimpleNoIdNoAttributes>();
+
+            Assert.Throws<InvalidMappingException<SimpleNoIdNoAttributes>>(() => dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(dt, dataTypeConverter, mappingsList, dataTableParserSettings));
         }
 
         [Fact]
@@ -115,16 +161,9 @@
             return returnList;
         }
 
-        private class TestConverter : IDataTypeConverter
+        private object GetAssertObject<T>(object field)
         {
-            public object FieldToObject(object field, Type type, DataTableParserSettings settings)
-            {
-                if (type.IsValueType)
-                {
-                    return Activator.CreateInstance(type);
-                }
-                return null;
-            }
+            return dataTypeConverter.FieldToObject(field, typeof(T), dataTableParserSettings);
         }
     }
 }

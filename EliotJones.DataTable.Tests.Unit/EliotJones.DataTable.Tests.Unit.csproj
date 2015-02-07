@@ -50,6 +50,10 @@
     <Compile Include="POCOs\InheritancePocos.cs" />
     <Compile Include="POCOs\SimplePocos.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestStubs\TestDataTableResolver.cs" />
+    <Compile Include="TestStubs\TestDataTypeConverter.cs" />
+    <Compile Include="TestStubs\TestMappingResolver.cs" />
+    <Compile Include="Tests\DataTableConverterTests.cs" />
     <Compile Include="Tests\MappingResolvers\DefaultMappingResolverTests.cs" />
     <Compile Include="Tests\DefaultDataTableResolverTests.cs" />
   </ItemGroup>

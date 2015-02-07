@@ -47,6 +47,7 @@
     <Compile Include="DataTableParserSettings.cs" />
     <Compile Include="DefaultDataTableResolver.cs" />
     <Compile Include="DefaultDataTypeConverter.cs" />
+    <Compile Include="Exceptions\InvalidMappingException.cs" />
     <Compile Include="MappingResolvers\AttributeResolverHelper.cs" />
     <Compile Include="MappingResolvers\DefaultMappingResolver.cs" />
     <Compile Include="DelegateDataTableResolver.cs" />
