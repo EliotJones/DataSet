@@ -1,4 +1,4 @@
-﻿namespace EliotJones.DataTable.Tests.Unit.Tests
+﻿namespace EliotJones.DataTable.Tests.Unit.MappingResolvers.Tests
 {
     using EliotJones.DataTable.Enums;
     using EliotJones.DataTable.Exceptions;
