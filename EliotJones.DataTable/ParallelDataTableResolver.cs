@@ -11,7 +11,10 @@
     {
         public IList<T> ToObjects<T>(DataTable dataTable, IDataTypeConverter dataTypeConverter, IEnumerable<ExtendedPropertyInfo> mappings, DataTableParserSettings settings) where T : new()
         {
-            if (dataTable == null || dataTypeConverter == null || mappings == null) throw new NullReferenceException();
+            Guard.ArgumentNotNull(dataTable);
+            Guard.ArgumentNotNull(dataTypeConverter);
+            Guard.ArgumentNotNull(mappings);
+            Guard.ArgumentNotNull(settings);
 
             ConcurrentBag<T> objectList = new ConcurrentBag<T>();
 

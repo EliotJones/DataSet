@@ -16,7 +16,10 @@
                 // If we must avoid overwrites we do so here.
                 if (!isFirstMapper && !mappingObjects.Settings.SubsequentMappingsShouldOverwrite)
                 {
-                    if (mappedProperties.Count(p => p.PropertyInfo.Name == property.Name) > 0) continue;
+                    if (mappedProperties.Count(p => p.PropertyInfo.Name == property.Name) > 0)
+                    {
+                        continue;
+                    }
                 }
 
                 bool mappingFound = false;

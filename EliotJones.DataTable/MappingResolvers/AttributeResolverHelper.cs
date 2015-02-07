@@ -17,13 +17,19 @@
                 // If we must avoid overwrites we do so here.
                 if (!isFirstMapper && !mappingObjects.Settings.SubsequentMappingsShouldOverwrite)
                 {
-                    if (mappedProperties.Count(p => p.PropertyInfo.Name == property.Name) > 0) continue;
+                    if (mappedProperties.Count(p => p.PropertyInfo.Name == property.Name) > 0)
+                    {
+                        continue;
+                    }
                 }
 
                 // Use the static method in order to inspect inherited properties.
                 Attribute[] attributes = Attribute.GetCustomAttributes(property, typeof(ColumnMapping), mappingObjects.Settings.InheritMappings);
 
-                if (attributes.Length == 0) continue;
+                if (attributes.Length == 0)
+                {
+                    continue;
+                }
 
                 // Find the matching attribute if it exists, null if not.
                 ColumnMapping matchedAttribute = FindMappedAttribute(attributes, mappingObjects.DataTable.Columns);
