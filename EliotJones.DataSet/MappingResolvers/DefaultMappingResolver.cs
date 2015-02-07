@@ -2,7 +2,6 @@
 {
     using EliotJones.DataSet.Enums;
     using EliotJones.DataSet.Exceptions;
-    using System;
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
@@ -13,8 +12,6 @@
     /// </summary>
     public class DefaultMappingResolver : MappingResolver
     {
-        private const string Id = "id";
-
         /// <summary>
         /// Gets property mappings for a specified type from a DataTable.
         /// </summary>
@@ -29,38 +26,43 @@
 
             var mappedProperties = new List<ExtendedPropertyInfo>();
 
+            var attributeResolver = new AttributeResolverHelper();
+            var propertyResolver = new PropertyResolverHelper();
+
             var typeProperties = GetPropertiesForType<T>(settings.InheritMappings);
 
+            var mappingObjects = new MappingObjects(typeProperties, dataTable, settings);
+
             // For non-overwriting mappings the execution order is important.
-            switch (settings.MappingMatchOrder)
+            switch (mappingObjects.Settings.MappingMatchOrder)
             {
                 case MappingMatchOrder.PropertyNameFirst:
-                    GenerateMappingsFromProperties(ref mappedProperties, typeProperties, dataTable, settings);
-                    GenerateMappingsFromAttributes(ref mappedProperties, typeProperties, dataTable, settings);
+                    propertyResolver.GenerateMappingsFromProperties(ref mappedProperties, mappingObjects, Id);
+                    attributeResolver.GenerateMappingsFromAttributes(ref mappedProperties, mappingObjects);
                     break;
                 case MappingMatchOrder.AttributeValueFirst:
-                    GenerateMappingsFromAttributes(ref mappedProperties, typeProperties, dataTable, settings);
-                    GenerateMappingsFromProperties(ref mappedProperties, typeProperties, dataTable, settings);
+                    attributeResolver.GenerateMappingsFromAttributes(ref mappedProperties, mappingObjects);
+                    propertyResolver.GenerateMappingsFromProperties(ref mappedProperties, mappingObjects, Id);
                     break;
                 case MappingMatchOrder.IgnorePropertyNames:
-                    GenerateMappingsFromAttributes(ref mappedProperties, typeProperties, dataTable, settings);
+                    attributeResolver.GenerateMappingsFromAttributes(ref mappedProperties, mappingObjects);
                     break;
                 case MappingMatchOrder.IgnoreAttributes:
-                    GenerateMappingsFromProperties(ref mappedProperties, typeProperties, dataTable, settings);
+                    propertyResolver.GenerateMappingsFromProperties(ref mappedProperties, mappingObjects, Id);
                     break;
                 default:
                     break;
             }
 
             // Error in mapping handling, checks for missing mappings.
-            if (settings.MissingMappingHandling == MissingMappingHandling.Error
+            if (mappingObjects.Settings.MissingMappingHandling == MissingMappingHandling.Error
                 && mappedProperties.Count < typeProperties.Length)
             {
                 throw new MissingMappingException<T>();
             }
 
             // Checks for duplicate mappings in the list.
-            if (!settings.AllowDuplicateMappings
+            if (!mappingObjects.Settings.AllowDuplicateMappings
                 && mappedProperties.Select(p => p.ColumnIndex).Distinct().Count() != mappedProperties.Count)
             {
                 throw new DuplicateMappingException<T>();
@@ -75,96 +77,6 @@
             // All 3 flags are required for correct return.
             return inheritMappings ? typeof(T).GetProperties()
                 : typeof(T).GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
-        }
-
-        private void GenerateMappingsFromAttributes(ref List<ExtendedPropertyInfo> mappedProperties, PropertyInfo[] properties, DataTable dataTable, DataTableParserSettings settings)
-        {
-            bool isFirstMapper = mappedProperties.Count == 0;
-
-            foreach (PropertyInfo property in properties)
-            {
-                // If we must avoid overwrites we do so here.
-                if (!isFirstMapper && !settings.SubsequentMappingsShouldOverwrite)
-                {
-                    if (mappedProperties.Count(p => p.PropertyInfo.Name == property.Name) > 0) continue;
-                }
-
-                // Use the static method in order to inspect inherited properties.
-                Attribute[] attributes = Attribute.GetCustomAttributes(property, typeof(ColumnMapping), settings.InheritMappings);
-
-                if (attributes.Length == 0) continue;
-
-                // Find the matching attribute if it exists, null if not.
-                ColumnMapping matchedAttribute = FindMappedAttribute(attributes, dataTable.Columns);
-
-                if (matchedAttribute != null)
-                {
-                    mappedProperties.Add(new ExtendedPropertyInfo(
-                            fieldName: matchedAttribute.Name,
-                            propertyInfo: property,
-                            columnIndex: dataTable.Columns.IndexOf(matchedAttribute.Name)));
-                }
-            }
-        }
-
-        private ColumnMapping FindMappedAttribute(Attribute[] attributes, DataColumnCollection columns)
-        {
-            ColumnMapping returnColumnMapping = null;
-
-            foreach (var attribute in attributes)
-            {
-                ColumnMapping columnMapping = attribute as ColumnMapping;
-
-                if (columnMapping != null && columns.Contains(columnMapping.Name))
-                {
-                    returnColumnMapping = columnMapping;
-                    break;
-                }
-            }
-
-            return returnColumnMapping;
-        }
-
-        private void GenerateMappingsFromProperties(ref List<ExtendedPropertyInfo> mappedProperties, PropertyInfo[] properties, DataTable dataTable, DataTableParserSettings settings)
-        {
-            bool isFirstMapper = mappedProperties.Count == 0;
-
-            foreach (PropertyInfo property in properties)
-            {
-                // If we must avoid overwrites we do so here.
-                if (!isFirstMapper && !settings.SubsequentMappingsShouldOverwrite)
-                {
-                    if (mappedProperties.Count(p => p.PropertyInfo.Name == property.Name) > 0) continue;
-                }
-
-                bool mappingFound = false;
-
-                if (dataTable.Columns.Contains(property.Name))
-                {
-                    mappedProperties.Add(new ExtendedPropertyInfo(fieldName: property.Name, propertyInfo: property, columnIndex: dataTable.Columns.IndexOf(property.Name)));
-                    mappingFound = true;
-                }
-
-                // Special case handling for Id columns/properties.
-                if (!mappingFound && property.Name.ToLowerInvariant().Contains(Id))
-                {
-                    string searchTerm = null;
-
-                    if (property.Name.ToLowerInvariant() == Id)
-                    {
-                        searchTerm = property.DeclaringType.Name + Id;
-                    }
-                    else
-                    {
-                        searchTerm = Id;
-                    }
-
-                    if (dataTable.Columns.Contains(searchTerm))
-                    {
-                        mappedProperties.Add(new ExtendedPropertyInfo(fieldName: searchTerm, propertyInfo: property, columnIndex: dataTable.Columns.IndexOf(searchTerm)));
-                    }
-                }
-            }
         }
     }
 }
