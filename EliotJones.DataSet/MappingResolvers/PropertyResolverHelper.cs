@@ -1,7 +1,6 @@
 ﻿namespace EliotJones.DataSet.MappingResolvers
 {
     using System.Collections.Generic;
-    using System.Data;
     using System.Globalization;
     using System.Linq;
     using System.Reflection;
