@@ -5,7 +5,7 @@
 
     internal class TestConverter : IDataTypeConverter
     {
-        public object FieldToObject(object field, Type type, DataTableParserSettings settings)
+        public object FieldToObject(object field, Type type, DataTableParserSettings settings, DbNullConverter dbNullConverter)
         {
             if (type.IsValueType)
             {

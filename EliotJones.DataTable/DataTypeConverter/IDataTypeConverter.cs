@@ -4,6 +4,6 @@
 
     public interface IDataTypeConverter
     {
-        object FieldToObject(object field, Type type, DataTableParserSettings settings);
+        object FieldToObject(object field, Type type, DataTableParserSettings settings, DbNullConverter dbNullConverter);
     }
 }

@@ -14,7 +14,6 @@
         private bool subsequentMappingsShouldOverwrite = false;
         private bool allowDuplicateMappings = false;
         private bool inheritMappings = true;
-        private bool strictTypeMappings = true;
         private bool allowDbNullForNonNullableTypes = true;
 
         /// <summary>
@@ -31,12 +30,6 @@
         {
             get { return allowDbNullForNonNullableTypes; }
             set { allowDbNullForNonNullableTypes = value; } 
-        }
-
-        public bool StrictTypeMappings 
-        {
-            get { return strictTypeMappings; }
-            set { strictTypeMappings = value; }
         }
 
         /// <summary>

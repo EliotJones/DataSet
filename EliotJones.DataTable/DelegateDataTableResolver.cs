@@ -35,6 +35,7 @@
             Guard.ArgumentNotNull(settings);
 
             List<T> objectList = new List<T>(capacity: dataTable.Rows.Count);
+            var dbNullConverter = new DbNullConverter(settings);
 
             IEnumerable<DelegateColumnMapping<T>> delegates = GetDelegatesForType<T>(mappings);
 
@@ -44,7 +45,7 @@
 
                 foreach (var setterDelegate in delegates)
                 {
-                    object value = dataTypeConverter.FieldToObject(dataTable.Rows[rowIndex][setterDelegate.ExtendedPropertyInfo.ColumnIndex], setterDelegate.ExtendedPropertyInfo.PropertyInfo.PropertyType, settings);
+                    object value = dataTypeConverter.FieldToObject(dataTable.Rows[rowIndex][setterDelegate.ExtendedPropertyInfo.ColumnIndex], setterDelegate.ExtendedPropertyInfo.PropertyInfo.PropertyType, settings, dbNullConverter);
 
                     setterDelegate.SetterDelegate(returnObject, value);
                 }

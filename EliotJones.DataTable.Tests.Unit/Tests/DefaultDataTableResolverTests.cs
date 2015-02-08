@@ -164,7 +164,7 @@
 
         private object GetAssertObject<T>(object field)
         {
-            return dataTypeConverter.FieldToObject(field, typeof(T), dataTableParserSettings);
+            return dataTypeConverter.FieldToObject(field, typeof(T), dataTableParserSettings, new DbNullConverter(dataTableParserSettings));
         }
     }
 }

@@ -18,6 +18,7 @@
             Guard.ArgumentNotNull(settings);
 
             ConcurrentBag<T> objectList = new ConcurrentBag<T>();
+            var dbNullConverter = new DbNullConverter(settings);
 
             Parallel.For(0, dataTable.Rows.Count, (rowIndex) =>
             {
@@ -25,7 +26,7 @@
 
                 foreach (var mapping in mappings)
                 {
-                    object value = dataTypeConverter.FieldToObject(dataTable.Rows[rowIndex][mapping.ColumnIndex], mapping.PropertyInfo.PropertyType, settings);
+                    object value = dataTypeConverter.FieldToObject(dataTable.Rows[rowIndex][mapping.ColumnIndex], mapping.PropertyInfo.PropertyType, settings, dbNullConverter);
                     mapping.PropertyInfo.SetValue(returnObject, value);
                 }
 

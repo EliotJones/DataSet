@@ -2,12 +2,8 @@
 {
     using EliotJones.DataTable.DataTypeConverter;
     using EliotJones.DataTable.Exceptions;
-    using System;
     using System.Collections.Generic;
     using System.Data;
-    using System.Linq;
-    using System.Reflection;
-    using System.Text;
 
     public class DefaultDataTableResolver : IDataTableResolver
     {
@@ -19,6 +15,7 @@
             Guard.ArgumentNotNull(settings);
 
             VerifyMappingIndexIntegrity<T>(dataTable.Columns, ref mappings);
+            var dbNullConverter = GetDbNullConverter(settings);
 
             List<T> objectList = new List<T>(capacity: dataTable.Rows.Count);
 
@@ -28,7 +25,7 @@
 
                 foreach (var mapping in mappings)
                 {
-                    object value = dataTypeConverter.FieldToObject(dataTable.Rows[rowIndex][mapping.ColumnIndex], mapping.PropertyInfo.PropertyType, settings);
+                    object value = dataTypeConverter.FieldToObject(dataTable.Rows[rowIndex][mapping.ColumnIndex], mapping.PropertyInfo.PropertyType, settings, dbNullConverter);
                     mapping.PropertyInfo.SetValue(returnObject, value);
                 }
 
@@ -61,6 +58,11 @@
                     }
                 }
             }
+        }
+
+        protected virtual DbNullConverter GetDbNullConverter(DataTableParserSettings settings)
+        {
+            return new DbNullConverter(settings);
         }
     }
 }

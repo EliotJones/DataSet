@@ -5,33 +5,32 @@
 
     public class DefaultDataTypeConverter : IDataTypeConverter
     {
-        public object FieldToObject(object field, Type type, DataTableParserSettings settings)
+        private Type stringType = typeof(string);
+
+        public virtual object FieldToObject(object field, 
+            Type type, 
+            DataTableParserSettings settings, 
+            DbNullConverter dbNullConverter)
         {
-            if (settings.StrictTypeMappings)
+            if (field == DBNull.Value || field == null)
             {
-                return FieldToObjectStrict(field, type, settings);
+                return dbNullConverter.DbNullToObject(type);
             }
-            else
+
+            if (type == stringType)
             {
-                return FieldToObjectRelaxed(field, type, settings);
+                return field.ToString();
             }
+
+            if (!type.IsValueType && type != stringType)
+            {
+                throw new NotImplementedException("No Conversion exists for class of type: " + type.Name);
+            }
+
+            return ValueTypeFieldToObject(field, type, settings);            
         }
 
-        private object FieldToObjectStrict(object field, Type type, DataTableParserSettings settings)
-        {
-            Type t = field.GetType();
-
-            if (t == type)
-            {
-                return field;
-            }
-            else
-            {
-                throw new InvalidCastException();
-            }
-        }
-
-        private object FieldToObjectRelaxed(object field, Type type, DataTableParserSettings settings)
+        protected virtual object ValueTypeFieldToObject(object field, Type type, DataTableParserSettings settings)
         {
             throw new NotImplementedException();
         }

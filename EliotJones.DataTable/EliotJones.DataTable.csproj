@@ -47,6 +47,7 @@
     <Compile Include="DataTableConverter.cs" />
     <Compile Include="DataTableParser.cs" />
     <Compile Include="DataTableParserSettings.cs" />
+    <Compile Include="DataTypeConverter\DbNullConverter.cs" />
     <Compile Include="DefaultDataTableResolver.cs" />
     <Compile Include="DataTypeConverter\DefaultDataTypeConverter.cs" />
     <Compile Include="Exceptions\InvalidMappingException.cs" />
