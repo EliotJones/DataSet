@@ -1,5 +1,6 @@
 ﻿namespace EliotJones.DataTable.Tests.Unit.Tests
 {
+    using EliotJones.DataTable.DataTypeConverter;
     using EliotJones.DataTable.Exceptions;
     using EliotJones.DataTable.Tests.Unit.Factories;
     using EliotJones.DataTable.Tests.Unit.POCOs;

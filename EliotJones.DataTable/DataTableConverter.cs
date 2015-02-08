@@ -1,5 +1,6 @@
 ﻿namespace EliotJones.DataTable
 {
+    using EliotJones.DataTable.DataTypeConverter;
     using Enums;
     using MappingResolvers;
     using System;

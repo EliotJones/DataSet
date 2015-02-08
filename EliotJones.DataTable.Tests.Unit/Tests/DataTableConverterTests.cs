@@ -1,5 +1,6 @@
 ﻿namespace EliotJones.DataTable.Tests.Unit.Tests
 {
+    using EliotJones.DataTable.DataTypeConverter;
     using EliotJones.DataTable.Enums;
     using EliotJones.DataTable.MappingResolvers;
     using EliotJones.DataTable.Tests.Unit.POCOs;

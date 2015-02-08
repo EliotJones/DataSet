@@ -1,5 +1,6 @@
 ﻿namespace EliotJones.DataTable
 {
+    using EliotJones.DataTable.DataTypeConverter;
     using EliotJones.DataTable.Exceptions;
     using System;
     using System.Collections.Generic;

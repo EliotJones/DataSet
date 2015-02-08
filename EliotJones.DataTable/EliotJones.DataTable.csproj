@@ -48,7 +48,7 @@
     <Compile Include="DataTableParser.cs" />
     <Compile Include="DataTableParserSettings.cs" />
     <Compile Include="DefaultDataTableResolver.cs" />
-    <Compile Include="DefaultDataTypeConverter.cs" />
+    <Compile Include="DataTypeConverter\DefaultDataTypeConverter.cs" />
     <Compile Include="Exceptions\InvalidMappingException.cs" />
     <Compile Include="MappingResolvers\AttributeResolverHelper.cs" />
     <Compile Include="MappingResolvers\DefaultMappingResolver.cs" />
@@ -62,7 +62,7 @@
     <Compile Include="ExtendedPropertyInfo.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="IDataTableResolver.cs" />
-    <Compile Include="IDataTypeConverter.cs" />
+    <Compile Include="DataTypeConverter\IDataTypeConverter.cs" />
     <Compile Include="MappingResolvers\MappingObjects.cs" />
     <Compile Include="MappingResolvers\MappingResolver.cs" />
     <Compile Include="MappingResolvers\PropertyResolverHelper.cs" />

@@ -1,4 +1,4 @@
-﻿namespace EliotJones.DataTable
+﻿namespace EliotJones.DataTable.DataTypeConverter
 {
     using System;
     using System.Collections.Generic;
