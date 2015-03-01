@@ -49,6 +49,13 @@
             databaseBootstrapper.ClearPools();
         }
 
+        public static string GetConnectionString()
+        {
+            var databaseBootstrapper = new DatabaseBootstrapper();
+
+            return databaseBootstrapper.GetConnectionString(true);
+        }
+
         protected virtual void CreateDatabase(IEnumerable<string> createFiles)
         {
             var createScript = GetCreateScript(createFiles);
@@ -153,6 +160,8 @@
 
         protected virtual void DropDatabase()
         {
+            ClearPools();
+
             var connectionString = GetConnectionString(false);
 
             using (var connection = new SqlConnection(connectionString))

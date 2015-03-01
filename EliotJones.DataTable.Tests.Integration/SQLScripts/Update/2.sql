@@ -7,3 +7,12 @@ AS
 			CreatedDate
 	FROM	Area
 GO
+
+CREATE PROCEDURE uspGetAllStatuses
+AS 
+    SET NOCOUNT ON;
+    SELECT	Id,
+			Description,
+			IsPublic
+	FROM	Status
+GO
