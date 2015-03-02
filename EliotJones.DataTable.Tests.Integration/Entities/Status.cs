@@ -8,4 +8,11 @@
 
         public bool IsPublic { get; set; }
     }
+
+    public class StatusPropertyNameMissing
+    {
+        public int Id { get; set; }
+
+        public string Description { get; set; }
+    }
 }

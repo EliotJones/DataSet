@@ -53,5 +53,21 @@
                 && r.Description == dataTable.Rows[0]["Description"].ToString()
                 && r.IsPublic == (bool)dataTable.Rows[0]["IsPublic"]).Count() == 1);
         }
+
+        [Fact]
+        public void GetAllStatuses_ReturnsResults_CanBeParsedWithMissingFields()
+        {
+            DatabaseBootstrapper.CreateAndPopulate();
+
+            DataTable dataTable = QueryRunner.ExecuteStoredProcedure("uspGetAllStatuses");
+
+            DatabaseBootstrapper.Drop();
+
+            DataTableParser dtp = new DataTableParser();
+
+            var results = dtp.ToObjects<StatusPropertyNameMissing>(dataTable);
+
+            Assert.Equal(dataTable.Rows.Count, results.Count());
+        }
     }
 }

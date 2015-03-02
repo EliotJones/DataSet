@@ -20,7 +20,7 @@
         }
 
         /// <summary>
-        /// Gets or sets the settings for passing a DataTable.
+        /// Gets or sets the settings for parsing a DataTable.
         /// </summary>
         public virtual DataTableParserSettings DataTableParserSettings
         {
