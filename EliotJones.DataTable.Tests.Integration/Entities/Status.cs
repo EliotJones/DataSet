@@ -15,4 +15,13 @@
 
         public string Description { get; set; }
     }
+
+    public class StatusExtraProperty
+    {
+        public int Id { get; set; }
+
+        public string Description { get; set; }
+
+        public string Extra { get; set; }
+    }
 }

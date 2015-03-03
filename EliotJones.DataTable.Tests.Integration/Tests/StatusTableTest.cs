@@ -1,5 +1,6 @@
 ﻿namespace EliotJones.DataTable.Tests.Integration.Tests
 {
+    using EliotJones.DataTable.Exceptions;
     using Entities;
     using System.Data;
     using System.Data.SqlClient;
@@ -66,6 +67,40 @@
             DataTableParser dtp = new DataTableParser();
 
             var results = dtp.ToObjects<StatusPropertyNameMissing>(dataTable);
+
+            Assert.Equal(dataTable.Rows.Count, results.Count());
+        }
+
+        [Fact]
+        public void GetAllStatuses_ReturnsResults_ThrowsOnExtraProperty()
+        {
+            DatabaseBootstrapper.CreateAndPopulate();
+
+            DataTable dataTable = QueryRunner.ExecuteStoredProcedure("uspGetAllStatuses");
+
+            DatabaseBootstrapper.Drop();
+
+            DataTableParser dtp = new DataTableParser();
+
+            dtp.DataTableParserSettings.MissingMappingHandling = Enums.MissingMappingHandling.Error;
+
+            Assert.Throws<MissingMappingException<StatusExtraProperty>>(() => dtp.ToObjects<StatusExtraProperty>(dataTable));
+        }
+
+        [Fact]
+        public void GetAllStatuses_ReturnsResults_IgnoresExtraProperty()
+        {
+            DatabaseBootstrapper.CreateAndPopulate();
+
+            DataTable dataTable = QueryRunner.ExecuteStoredProcedure("uspGetAllStatuses");
+
+            DatabaseBootstrapper.Drop();
+
+            DataTableParser dtp = new DataTableParser();
+
+            dtp.DataTableParserSettings.MissingMappingHandling = Enums.MissingMappingHandling.Ignore;
+
+            var results = dtp.ToObjects<StatusExtraProperty>(dataTable);
 
             Assert.Equal(dataTable.Rows.Count, results.Count());
         }
