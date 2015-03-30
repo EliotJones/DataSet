@@ -76,6 +76,10 @@
                 {
                     return FieldToDouble(field);
                 }
+                else if (type == typeof(long))
+                {
+                    return FieldToLong(field);
+                }
 
                 throw new NotImplementedException(string.Format("No conversion for field with value: {0} to type: {1}", field.ToString(), type.Name));
             }
@@ -83,6 +87,25 @@
             {
                 throw new NotImplementedException(string.Format("No conversion for field with value: {0} to type: {1}", field.ToString(), type.Name), ex);
             }
+        }
+
+        private object FieldToLong(object field)
+        {
+            if (field is long || field is int)
+            {
+                return field;
+            }
+            else if (field is string)
+            {
+                long l;
+
+                if (long.TryParse(field.ToString(), out l))
+                {
+                    return l;
+                }
+            }
+
+            throw new NotImplementedException(string.Format("No conversion for field with value: {0} to long", field.ToString()));
         }
 
         protected virtual object FieldToDateTime(object field)

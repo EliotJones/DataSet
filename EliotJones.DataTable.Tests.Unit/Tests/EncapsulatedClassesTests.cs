@@ -1,0 +1,150 @@
+﻿namespace EliotJones.DataTable.Tests.Unit.Tests
+{
+    using EliotJones.DataTable.DataTypeConverter;
+    using EliotJones.DataTable.MappingResolvers;
+    using Factories;
+    using Helpers;
+    using POCOs;
+    using System;
+    using System.Linq;
+    using TestStubs;
+    using Xunit;
+
+    public class EncapsulatedClassesTests
+    {
+        private DataTableParserSettings defaultSettings = new DataTableParserSettings();
+        private MappingResolver defaultMappingResolver = new TestMappingResolver();
+        private IDataTableResolver defaultDataTableResolver = new TestDataTableResolver();
+        private IDataTypeConverter defaultDataTypeConverter = new TestConverter();
+
+        private IDataTableResolver dataTableResolver = new DefaultDataTableResolver();
+
+        [Fact]
+        public void ToObjects_WithPrivateConstructor_CanMapObjects()
+        {
+            Guid guid = new Guid("07494404-072A-4BE3-962E-AA3E839AD330");
+
+            var mappings = MappingHelper.CreatePropertyMappingsDirectlyMatchingObject<PrivateConstructorPublicProperty>();
+
+            var dataTable = DataTableFactory.GenerateEmptyDataTableMatchingObjectProperties<PrivateConstructorPublicProperty>();
+
+            var dataRow = dataTable.NewRow();
+            dataRow["Id"] = guid;
+            dataTable.Rows.Add(dataRow);
+
+            var results = dataTableResolver.ToObjects<PrivateConstructorPublicProperty>(dataTable, new DefaultDataTypeConverter(), mappings, defaultSettings);
+
+            Assert.Equal(1, results.Count);
+            Assert.Equal(guid, results.Single().Id);
+        }
+
+        [Fact]
+        public void ToObjects_WithPublicConstructorTakingArguments_CanMapObjects()
+        {
+            Guid guid = new Guid("098DE9E5-50FF-4C8C-921D-DDAA90795A63");
+
+            var mappings = MappingHelper.CreatePropertyMappingsDirectlyMatchingObject<PublicConstructorTakingArguments>();
+
+            var dataTable = DataTableFactory.GenerateEmptyDataTableMatchingObjectProperties<PublicConstructorTakingArguments>();
+
+            var dataRow = dataTable.NewRow();
+
+            dataRow["Id"] = guid;
+            dataRow["ResolutionDetails"] = "Fixed the problem";
+
+            dataTable.Rows.Add(dataRow);
+
+            var results = dataTableResolver.ToObjects<PublicConstructorTakingArguments>(dataTable, new DefaultDataTypeConverter(), mappings, defaultSettings);
+
+            Assert.Equal(1, results.Count(r => r.Id == guid && r.ResolutionDetails == "Fixed the problem"));
+        }
+
+        [Fact]
+        public void ToObjects_WithInternalConstructor_CanMapObjects()
+        {
+            int id = 15447;
+            string dateTime = new DateTime(2001, 1, 1).ToShortDateString();
+
+            var mappings = MappingHelper.CreatePropertyMappingsDirectlyMatchingObject<InternalConstructor>();
+
+            var dataTable = DataTableFactory.GenerateEmptyDataTableMatchingObjectProperties<InternalConstructor>();
+
+            var dataRow = dataTable.NewRow();
+
+            dataRow["Id"] = id;
+            dataRow["ConstructionDate"] = dateTime;
+
+            dataTable.Rows.Add(dataRow);
+
+            var results = dataTableResolver.ToObjects<InternalConstructor>(dataTable, new DefaultDataTypeConverter(), mappings, defaultSettings);
+
+            Assert.Equal(1, results.Count(r => r.Id == id && r.ConstructionDate == DateTime.Parse(dateTime)));
+        }
+
+        [Fact]
+        public void ToObjects_WithProtectedConstructor_CanMapObjects()
+        {
+            int id = 15447;
+            long longValue = 6546545665446556;
+
+            var mappings = MappingHelper.CreatePropertyMappingsDirectlyMatchingObject<ProtectedConstructor>();
+
+            var dataTable = DataTableFactory.GenerateEmptyDataTableMatchingObjectProperties<ProtectedConstructor>();
+
+            var dataRow = dataTable.NewRow();
+
+            dataRow["Id"] = id;
+            dataRow["Long"] = longValue;
+
+            dataTable.Rows.Add(dataRow);
+
+            var results = dataTableResolver.ToObjects<ProtectedConstructor>(dataTable, new DefaultDataTypeConverter(), mappings, defaultSettings);
+
+            Assert.Equal(1, results.Count(r => r.Id == id && r.Long == longValue));
+        }
+
+        [Fact]
+        public void ToObjects_WithPrivateSetters_CanMapObjects()
+        {
+            string id = "50 X0001RM";
+            decimal decimalValue = (decimal)0.05;
+
+            var mappings = MappingHelper.CreatePropertyMappingsDirectlyMatchingObject<PrivateSetters>();
+
+            var dataTable = DataTableFactory.GenerateEmptyDataTableMatchingObjectProperties<PrivateSetters>();
+
+            var dataRow = dataTable.NewRow();
+
+            dataRow["Id"] = id;
+            dataRow["Decimal"] = decimalValue;
+
+            dataTable.Rows.Add(dataRow);
+
+            var results = dataTableResolver.ToObjects<PrivateSetters>(dataTable, new DefaultDataTypeConverter(), mappings, defaultSettings);
+
+            Assert.Equal(1, results.Count(r => r.Id == id && r.Decimal == decimalValue));
+        }
+
+        [Fact]
+        public void ToObjects_WithMixedSetters_CanMapObjects()
+        {
+            int id = 65446468;
+            string color = "#333";
+
+            var mappings = MappingHelper.CreatePropertyMappingsDirectlyMatchingObject<MixedSetters>();
+
+            var dataTable = DataTableFactory.GenerateEmptyDataTableMatchingObjectProperties<MixedSetters>();
+
+            var dataRow = dataTable.NewRow();
+
+            dataRow["Id"] = id;
+            dataRow["Color"] = color;
+
+            dataTable.Rows.Add(dataRow);
+
+            var results = dataTableResolver.ToObjects<MixedSetters>(dataTable, new DefaultDataTypeConverter(), mappings, defaultSettings);
+
+            Assert.Equal(1, results.Count(r => r.Id == id && r.Color == color));
+        }
+    }
+}

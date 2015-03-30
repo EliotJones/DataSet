@@ -55,7 +55,7 @@
     <Compile Include="Helpers\MappingHelper.cs" />
     <Compile Include="POCOs\AttributePocos.cs" />
     <Compile Include="POCOs\InheritancePocos.cs" />
-    <Compile Include="POCOs\ProtectedPocos.cs" />
+    <Compile Include="POCOs\EncapsulatedPocos.cs" />
     <Compile Include="POCOs\SimplePocos.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestStubs\TestDataTableResolver.cs" />
@@ -65,7 +65,7 @@
     <Compile Include="Tests\DataTypeConverters\DefaultDataTypeConverterTests.cs" />
     <Compile Include="Tests\MappingResolvers\DefaultMappingResolverTests.cs" />
     <Compile Include="Tests\DefaultDataTableResolverTests.cs" />
-    <Compile Include="Tests\ProtectedClassesTests.cs" />
+    <Compile Include="Tests\EncapsulatedClassesTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
