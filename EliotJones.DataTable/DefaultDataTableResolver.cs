@@ -1,13 +1,14 @@
 ﻿namespace EliotJones.DataTable
 {
-    using EliotJones.DataTable.DataTypeConverter;
-    using EliotJones.DataTable.Exceptions;
+    using DataTypeConverter;
+    using Exceptions;
+    using Factories;
     using System.Collections.Generic;
     using System.Data;
 
     public class DefaultDataTableResolver : IDataTableResolver
     {
-        public virtual IList<T> ToObjects<T>(DataTable dataTable, IDataTypeConverter dataTypeConverter, IEnumerable<ExtendedPropertyInfo> mappings, DataTableParserSettings settings) where T : new()
+        public virtual IList<T> ToObjects<T>(DataTable dataTable, IDataTypeConverter dataTypeConverter, IEnumerable<ExtendedPropertyInfo> mappings, DataTableParserSettings settings)
         {
             Guard.ArgumentNotNull(dataTable);
             Guard.ArgumentNotNull(dataTypeConverter);
@@ -21,7 +22,7 @@
 
             for (int rowIndex = 0; rowIndex < dataTable.Rows.Count; rowIndex++)
             {
-                T returnObject = new T();
+                T returnObject = ObjectInstantiator<T>.CreateNew();
 
                 foreach (var mapping in mappings)
                 {
@@ -35,7 +36,7 @@
             return objectList;
         }
 
-        protected virtual void VerifyMappingIndexIntegrity<T>(DataColumnCollection columns, ref IEnumerable<ExtendedPropertyInfo> mappings) where T : new()
+        protected virtual void VerifyMappingIndexIntegrity<T>(DataColumnCollection columns, ref IEnumerable<ExtendedPropertyInfo> mappings)
         {
             int columnsCount = columns.Count;
 

@@ -51,6 +51,7 @@
     <Compile Include="DefaultDataTableResolver.cs" />
     <Compile Include="DataTypeConverter\DefaultDataTypeConverter.cs" />
     <Compile Include="Exceptions\InvalidMappingException.cs" />
+    <Compile Include="Factories\ObjectInstantiator.cs" />
     <Compile Include="MappingResolvers\AttributeResolverHelper.cs" />
     <Compile Include="MappingResolvers\DefaultMappingResolver.cs" />
     <Compile Include="DelegateDataTableResolver.cs" />

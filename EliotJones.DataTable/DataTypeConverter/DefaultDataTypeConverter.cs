@@ -247,7 +247,7 @@
                 }
                 else
                 {
-                    throw new NotImplementedException(string.Format("Cannot convert field: {0} to Guid", field.ToString()));
+                    throw new NotImplementedException(string.Format("Cannot convert field: {0} to float", field.ToString()));
                 }
             }
         }

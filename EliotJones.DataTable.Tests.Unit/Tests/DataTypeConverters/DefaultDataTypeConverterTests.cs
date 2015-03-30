@@ -82,7 +82,7 @@
         }
 
         [Theory]
-        [PropertyData("StringTestData")]
+        [MemberData("StringTestData")]
         public void FieldToObject_TypeToString_ReturnsString(object input)
         {
             DefaultDataTypeConverter converter = new DefaultDataTypeConverter();
@@ -97,7 +97,7 @@
         }
 
         [Theory]
-        [PropertyData("UnsupportedClassTestData")]
+        [MemberData("UnsupportedClassTestData")]
         public void FieldToObject_TypeToUnsupportedClass_ThrowsNotImplementedException(object input)
         {
             var converter = new DefaultDataTypeConverter();
@@ -106,7 +106,7 @@
         }
 
         [Theory]
-        [PropertyData("IntTestDataGood")]
+        [MemberData("IntTestDataGood")]
         public void FieldToObject_SupportedTypeToInt_ReturnsInt(object toConvert)
         {
             var converter = new DefaultDataTypeConverter();
@@ -119,7 +119,7 @@
         }
 
         [Theory]
-        [PropertyData("IntTestDataBad")]
+        [MemberData("IntTestDataBad")]
         public void FieldToObject_UnsupportedTypeToInt_ThrowsNotImplementedException(object toConvert)
         {
             var converter = new DefaultDataTypeConverter();

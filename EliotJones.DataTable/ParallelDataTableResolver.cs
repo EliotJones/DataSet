@@ -1,6 +1,7 @@
 ﻿namespace EliotJones.DataTable
 {
-    using EliotJones.DataTable.DataTypeConverter;
+    using DataTypeConverter;
+    using Factories;
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
@@ -10,7 +11,7 @@
 
     public class ParallelDataTableResolver : IDataTableResolver
     {
-        public IList<T> ToObjects<T>(DataTable dataTable, IDataTypeConverter dataTypeConverter, IEnumerable<ExtendedPropertyInfo> mappings, DataTableParserSettings settings) where T : new()
+        public IList<T> ToObjects<T>(DataTable dataTable, IDataTypeConverter dataTypeConverter, IEnumerable<ExtendedPropertyInfo> mappings, DataTableParserSettings settings)
         {
             Guard.ArgumentNotNull(dataTable);
             Guard.ArgumentNotNull(dataTypeConverter);
@@ -22,7 +23,7 @@
 
             Parallel.For(0, dataTable.Rows.Count, (rowIndex) =>
             {
-                T returnObject = new T();
+                T returnObject = ObjectInstantiator<T>.CreateNew();
 
                 foreach (var mapping in mappings)
                 {

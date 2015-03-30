@@ -2,9 +2,10 @@
 {
     using EliotJones.DataTable.DataTypeConverter;
     using EliotJones.DataTable.Exceptions;
-    using EliotJones.DataTable.Tests.Unit.Factories;
-    using EliotJones.DataTable.Tests.Unit.POCOs;
-    using EliotJones.DataTable.Tests.Unit.TestStubs;
+    using Factories;
+    using Helpers;
+    using POCOs;
+    using TestStubs;
     using System;
     using System.Collections.Generic;
     using System.Data;
@@ -53,7 +54,7 @@
         [Fact]
         public void ToObjects_DataTableWithOneRowCorrectTypes_ReturnsEnumerableWithCorrectResult()
         {
-            var mappings = CreatePropertyMappingsDirectlyMatchingObject(typeof(SimpleNoIdNoAttributes));
+            var mappings = MappingHelper.CreatePropertyMappingsDirectlyMatchingObject<SimpleNoIdNoAttributes>();
 
             DataTable dt = DataTableFactory.GenerateEmptyDataTableMatchingObjectProperties<SimpleNoIdNoAttributes>();
 
@@ -77,7 +78,7 @@
         [InlineData(int.MaxValue, "string")]
         public void ToObjects_DataTableWithIncorrectColumnIndexButCorrectColumn_ReturnsCorrectResult(int propertyOne, string propertyTwo)
         {
-            var mappings = CreatePropertyMappingsDirectlyMatchingObject(typeof(SimpleNoIdNoAttributes));
+            var mappings = MappingHelper.CreatePropertyMappingsDirectlyMatchingObject<SimpleNoIdNoAttributes>();
 
             DataTable dt = DataTableFactory.GenerateEmptyDataTableMatchingObjectProperties<SimpleNoIdNoAttributes>();
 
@@ -92,7 +93,7 @@
         [Fact]
         public void ToObjects_IncorrectMapping_ThrowsInvalidMappingException()
         {
-            var mappings = CreatePropertyMappingsDirectlyMatchingObject(typeof(SimpleNoIdNoAttributes));
+            var mappings = MappingHelper.CreatePropertyMappingsDirectlyMatchingObject<SimpleNoIdNoAttributes>();
 
             mappings.First().FieldName = string.Empty;
 
@@ -104,7 +105,7 @@
         [Fact]
         public void ToObjects_NullMapping_ThrowsInvalidMappingException()
         {
-            var mappings = CreatePropertyMappingsDirectlyMatchingObject(typeof(SimpleNoIdNoAttributes));
+            var mappings = MappingHelper.CreatePropertyMappingsDirectlyMatchingObject<SimpleNoIdNoAttributes>();
 
             var mappingsList = mappings.ToList();
 
@@ -131,7 +132,7 @@
                     });
             }
 
-            var mappings = CreatePropertyMappingsDirectlyMatchingObject(typeof(SimpleNoIdNoAttributes));
+            var mappings = MappingHelper.CreatePropertyMappingsDirectlyMatchingObject<SimpleNoIdNoAttributes>();
 
             DataTable dt = DataTableFactory.GenerateDataTableFilledWithObjects<SimpleNoIdNoAttributes>(objects);
 
@@ -148,18 +149,6 @@
         private IEnumerable<ExtendedPropertyInfo> CreateEmptyPropertyMappings()
         {
             return new List<ExtendedPropertyInfo>();
-        }
-
-        private IEnumerable<ExtendedPropertyInfo> CreatePropertyMappingsDirectlyMatchingObject(Type type)
-        {
-            List<ExtendedPropertyInfo> returnList = new List<ExtendedPropertyInfo>();
-
-            foreach (var p in type.GetProperties())
-            {
-                returnList.Add(new ExtendedPropertyInfo(p.Name, p, -1));
-            }
-
-            return returnList;
         }
 
         private object GetAssertObject<T>(object field)

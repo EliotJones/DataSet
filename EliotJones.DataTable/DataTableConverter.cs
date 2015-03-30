@@ -22,7 +22,7 @@
             this.dataTypeConverter = dataTypeConverter;
         }
 
-        public virtual IEnumerable<T> ConvertToType<T>(DataTable dataTable) where T : new()
+        public virtual IEnumerable<T> ConvertToType<T>(DataTable dataTable)
         {
             if (dataTable == null)
             {

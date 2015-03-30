@@ -1,6 +1,7 @@
 ﻿namespace EliotJones.DataTable
 {
-    using EliotJones.DataTable.DataTypeConverter;
+    using DataTypeConverter;
+    using Factories;
     using System;
     using System.Collections.Generic;
     using System.Data;
@@ -27,7 +28,7 @@
             return delegates;
         }
 
-        public IList<T> ToObjects<T>(DataTable dataTable, IDataTypeConverter dataTypeConverter, IEnumerable<ExtendedPropertyInfo> mappings, DataTableParserSettings settings) where T : new()
+        public IList<T> ToObjects<T>(DataTable dataTable, IDataTypeConverter dataTypeConverter, IEnumerable<ExtendedPropertyInfo> mappings, DataTableParserSettings settings)
         {
             Guard.ArgumentNotNull(dataTable);
             Guard.ArgumentNotNull(dataTypeConverter);
@@ -41,7 +42,7 @@
 
             for (int rowIndex = 0; rowIndex < dataTable.Rows.Count; rowIndex++)
             {
-                T returnObject = new T();
+                T returnObject = ObjectInstantiator<T>.CreateNew();
 
                 foreach (var setterDelegate in delegates)
                 {

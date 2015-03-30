@@ -71,7 +71,7 @@
             return mappedProperties;
         }
 
-        private PropertyInfo[] GetPropertiesForType<T>(bool inheritMappings) where T : new()
+        private PropertyInfo[] GetPropertiesForType<T>(bool inheritMappings)
         {
             // If we shouldn't inherit properties we need to declare the binding flags to ignore inherited properties.
             // All 3 flags are required for correct return.
