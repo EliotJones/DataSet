@@ -30,7 +30,7 @@
 
             DatabaseBootstrapper.Drop();
 
-            DataTableParser dtp = new DataTableParser();
+            DataTableConverter dtp = new DataTableConverter();
 
             var results = dtp.ToObjects<StatusPropertyNamesMatch>(dataTable);
 
@@ -46,7 +46,7 @@
 
             DatabaseBootstrapper.Drop();
 
-            DataTableParser dtp = new DataTableParser();
+            DataTableConverter dtp = new DataTableConverter();
 
             var results = dtp.ToObjects<StatusPropertyNamesMatch>(dataTable);
 
@@ -64,7 +64,7 @@
 
             DatabaseBootstrapper.Drop();
 
-            DataTableParser dtp = new DataTableParser();
+            DataTableConverter dtp = new DataTableConverter();
 
             var results = dtp.ToObjects<StatusPropertyNameMissing>(dataTable);
 
@@ -80,7 +80,7 @@
 
             DatabaseBootstrapper.Drop();
 
-            DataTableParser dtp = new DataTableParser();
+            DataTableConverter dtp = new DataTableConverter();
 
             dtp.DataTableParserSettings.MissingMappingHandling = MissingMappingHandling.Error;
 
@@ -96,7 +96,7 @@
 
             DatabaseBootstrapper.Drop();
 
-            DataTableParser dtp = new DataTableParser();
+            DataTableConverter dtp = new DataTableConverter();
 
             dtp.DataTableParserSettings.MissingMappingHandling = MissingMappingHandling.Ignore;
 

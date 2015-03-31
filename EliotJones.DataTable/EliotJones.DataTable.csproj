@@ -45,7 +45,7 @@
   <ItemGroup>
     <Compile Include="Enums\Resolver.cs" />
     <Compile Include="Types\ColumnMapping.cs" />
-    <Compile Include="DataTableParser.cs" />
+    <Compile Include="DataTableConverter.cs" />
     <Compile Include="DataTableParserSettings.cs" />
     <Compile Include="ConversionManager.cs" />
     <Compile Include="DataTypeConverter\DbNullConverter.cs" />

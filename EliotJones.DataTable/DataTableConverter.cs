@@ -10,7 +10,7 @@
     /// <summary>
     /// Class responsible for converting <see cref="DataTable"/> to list of specified type with default or custom conversion settings./>
     /// </summary>
-    public class DataTableParser
+    public class DataTableConverter
     {
         private DataTableParserSettings dataTableParserSettings = new DataTableParserSettings();
         private MappingResolver mappingResolver = new DefaultMappingResolver();
@@ -50,16 +50,21 @@
             }
         }
 
-        public static DataTableParser Create()
+        public static DataTableConverter Create()
         {
-            return new DataTableParser();
+            return new DataTableConverter();
         }
 
-        public static DataTableParser Create(DataTableParserSettings settings)
+        public static DataTableConverter Create(DataTableParserSettings settings)
         {
-            var parser = new DataTableParser {DataTableParserSettings = settings};
+            var parser = new DataTableConverter {DataTableParserSettings = settings};
 
             return parser;
+        }
+
+        public static IEnumerable<T> ToObjectsStatic<T>(DataTable dataTable)
+        {
+            return new DataTableConverter().ToObjects<T>(dataTable);
         }
 
         /// <summary>

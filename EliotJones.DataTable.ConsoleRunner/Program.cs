@@ -12,7 +12,7 @@
     {
         static void Main(string[] args)
         {
-            DataTableParser dtp = new DataTableParser();
+            DataTableConverter dtp = new DataTableConverter();
 
             int count = 100000;
 
