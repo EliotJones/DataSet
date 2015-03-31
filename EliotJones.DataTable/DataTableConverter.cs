@@ -6,14 +6,16 @@
     using DataTypeConverter;
     using Enums;
     using MappingResolvers;
+    using Types;
 
     /// <summary>
-    /// Class responsible for converting <see cref="DataTable"/> to list of specified type with default or custom conversion settings./>
+    /// Class responsible for converting <see cref="DataTable"/> to list of 
+    /// specified type with default or custom conversion settings./>
     /// </summary>
     public class DataTableConverter
     {
         private DataTableParserSettings dataTableParserSettings = new DataTableParserSettings();
-        private MappingResolver mappingResolver = new DefaultMappingResolver();
+        private IMappingResolver mappingResolver = new DefaultMappingResolver();
         private IDataTypeConverter dataTypeConverter = new DefaultDataTypeConverter();
 
         private IDataTableResolver customResolver;
@@ -41,7 +43,7 @@
         /// <summary>
         /// Gets or sets the resolver used to map columns to properties.
         /// </summary>
-        public virtual MappingResolver MappingResolver
+        public virtual IMappingResolver MappingResolver
         {
             get { return mappingResolver; }
             set

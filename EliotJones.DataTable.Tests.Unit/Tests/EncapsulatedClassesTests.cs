@@ -9,6 +9,7 @@
     using Helpers;
     using POCOs;
     using TestStubs;
+    using Types;
     using Xunit;
 
     public class EncapsulatedClassesTests
@@ -17,7 +18,7 @@
         private readonly DataTableParserSettings defaultSettings = new DataTableParserSettings();
         private IDataTableResolver defaultDataTableResolver = new TestDataTableResolver();
         private IDataTypeConverter defaultDataTypeConverter = new TestConverter();
-        private MappingResolver defaultMappingResolver = new TestMappingResolver();
+        private IMappingResolver defaultMappingResolver = new TestMappingResolver();
 
         [Fact]
         public void ToObjects_WithPrivateConstructor_CanMapObjects()

@@ -2,6 +2,7 @@
 {
     using System;
     using DataTypeConverter;
+    using Types;
 
     internal class TestConverter : IDataTypeConverter
     {

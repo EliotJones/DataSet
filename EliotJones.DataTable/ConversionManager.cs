@@ -13,11 +13,11 @@ namespace EliotJones.DataTable
     {
         private readonly DataTableParserSettings dataTableParserSettings;
         private readonly IDataTableResolver dataTableResolver;
-        private readonly MappingResolver mappingResolver;
+        private readonly IMappingResolver mappingResolver;
         private readonly IDataTypeConverter dataTypeConverter;
 
         public ConversionManager(DataTableParserSettings dataTableParserSettings,
-            MappingResolver mappingResolver,
+            IMappingResolver mappingResolver,
             IDataTableResolver dataTableResolver,
             IDataTypeConverter dataTypeConverter)
         {

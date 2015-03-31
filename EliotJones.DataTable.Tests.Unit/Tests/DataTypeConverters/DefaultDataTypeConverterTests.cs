@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Text;
     using DataTypeConverter;
+    using Types;
     using Xunit;
 
     public class DefaultDataTypeConverterTests

@@ -9,23 +9,25 @@
 
     internal class AttributeResolverHelper
     {
-        public virtual void GenerateMappingsFromAttributes(ref List<ExtendedPropertyInfo> mappedProperties, MappingObjects mappingObjects)
+        public virtual void GenerateMappingsFromAttributes(List<ExtendedPropertyInfo> mappedProperties, 
+            DataTable dataTable,
+            DataTableParserSettings settings,
+            PropertyInfo[] properties)
         {
             bool isFirstMapper = mappedProperties.Count == 0;
 
-            foreach (PropertyInfo property in mappingObjects.Properties)
+            foreach (PropertyInfo property in properties)
             {
                 // If we must avoid overwrites we do so here.
-                if (!isFirstMapper && !mappingObjects.Settings.SubsequentMappingsShouldOverwrite)
+                if (!isFirstMapper && 
+                    !settings.SubsequentMappingsShouldOverwrite &&
+                    mappedProperties.Count(p => p.PropertyInfo.Name == property.Name) > 0)
                 {
-                    if (mappedProperties.Count(p => p.PropertyInfo.Name == property.Name) > 0)
-                    {
                         continue;
-                    }
                 }
 
                 // Use the static method in order to inspect inherited properties.
-                Attribute[] attributes = Attribute.GetCustomAttributes(property, typeof(ColumnMapping), mappingObjects.Settings.InheritMappings);
+                Attribute[] attributes = Attribute.GetCustomAttributes(property, typeof(ColumnMapping), settings.InheritMappings);
 
                 if (attributes.Length == 0)
                 {
@@ -33,14 +35,14 @@
                 }
 
                 // Find the matching attribute if it exists, null if not.
-                ColumnMapping matchedAttribute = FindMappedAttribute(attributes, mappingObjects.DataTable.Columns);
+                ColumnMapping matchedAttribute = FindMappedAttribute(attributes, dataTable.Columns);
 
                 if (matchedAttribute != null)
                 {
                     mappedProperties.Add(new ExtendedPropertyInfo(
                             fieldName: matchedAttribute.Name,
                             propertyInfo: property,
-                            columnIndex: mappingObjects.DataTable.Columns.IndexOf(matchedAttribute.Name)));
+                            columnIndex: dataTable.Columns.IndexOf(matchedAttribute.Name)));
                 }
             }
         }

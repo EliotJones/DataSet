@@ -46,7 +46,7 @@
     <Compile Include="Enums\Resolver.cs" />
     <Compile Include="Types\ColumnMapping.cs" />
     <Compile Include="DataTableConverter.cs" />
-    <Compile Include="DataTableParserSettings.cs" />
+    <Compile Include="Types\DataTableParserSettings.cs" />
     <Compile Include="ConversionManager.cs" />
     <Compile Include="DataTypeConverter\DbNullConverter.cs" />
     <Compile Include="DataTableResolver\DefaultDataTableResolver.cs" />
@@ -66,7 +66,6 @@
     <Compile Include="Guard.cs" />
     <Compile Include="DataTableResolver\IDataTableResolver.cs" />
     <Compile Include="DataTypeConverter\IDataTypeConverter.cs" />
-    <Compile Include="MappingResolvers\MappingObjects.cs" />
     <Compile Include="MappingResolvers\MappingResolver.cs" />
     <Compile Include="MappingResolvers\PropertyResolverHelper.cs" />
     <Compile Include="DataTableResolver\ParallelDataTableResolver.cs" />

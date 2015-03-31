@@ -4,11 +4,9 @@
     using System.Data;
     using Types;
 
-    public abstract class MappingResolver
+    public interface IMappingResolver
     {
-        protected const string Id = "id";
-
-        public abstract ICollection<ExtendedPropertyInfo> GetPropertyMappings<T>(DataTable dataTable, 
+        ICollection<ExtendedPropertyInfo> GetPropertyMappings<T>(DataTable dataTable, 
             DataTableParserSettings settings);
     }
 }

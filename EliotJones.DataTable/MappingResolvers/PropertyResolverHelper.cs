@@ -1,6 +1,7 @@
 ﻿namespace EliotJones.DataTable.MappingResolvers
 {
     using System.Collections.Generic;
+    using System.Data;
     using System.Globalization;
     using System.Linq;
     using System.Reflection;
@@ -8,14 +9,19 @@
 
     internal class PropertyResolverHelper
     {
-        public virtual void GenerateMappingsFromProperties(ref List<ExtendedPropertyInfo> mappedProperties, MappingObjects mappingObjects, string id)
+        private const string Id = "id";
+
+        public virtual void GenerateMappingsFromProperties(IList<ExtendedPropertyInfo> mappedProperties, 
+            DataTable dataTable, 
+            DataTableParserSettings settings, 
+            PropertyInfo[] properties)
         {
             bool isFirstMapper = mappedProperties.Count == 0;
 
-            foreach (PropertyInfo property in mappingObjects.Properties)
+            foreach (PropertyInfo property in properties)
             {
                 // If we must avoid overwrites we do so here.
-                if (!isFirstMapper && !mappingObjects.Settings.SubsequentMappingsShouldOverwrite)
+                if (!isFirstMapper && !settings.SubsequentMappingsShouldOverwrite)
                 {
                     if (mappedProperties.Count(p => p.PropertyInfo.Name == property.Name) > 0)
                     {
@@ -25,29 +31,27 @@
 
                 bool mappingFound = false;
 
-                if (mappingObjects.DataTable.Columns.Contains(property.Name))
+                if (dataTable.Columns.Contains(property.Name))
                 {
-                    mappedProperties.Add(new ExtendedPropertyInfo(fieldName: property.Name, propertyInfo: property, columnIndex: mappingObjects.DataTable.Columns.IndexOf(property.Name)));
+                    mappedProperties.Add(new ExtendedPropertyInfo(fieldName: property.Name, propertyInfo: property, columnIndex: dataTable.Columns.IndexOf(property.Name)));
                     mappingFound = true;
                 }
 
                 // Special case handling for Id columns/properties.
-                if (!mappingFound && property.Name.ToLowerInvariant().Contains(id))
+                if (!mappingFound && property.Name.ToLowerInvariant().Contains(Id))
                 {
-                    GenerateIdSpecificPropertyMappings(ref mappedProperties, mappingObjects, property, id);
+                    GenerateIdSpecificPropertyMappings(mappedProperties, dataTable, property);
                 }
             }
         }
 
-        private void GenerateIdSpecificPropertyMappings(ref List<ExtendedPropertyInfo> mappedProperties, MappingObjects mappingObjects, PropertyInfo property, string id)
+        private void GenerateIdSpecificPropertyMappings(IList<ExtendedPropertyInfo> mappedProperties, DataTable dataTable, PropertyInfo property)
         {
-            string searchTerm = null;
+            string searchTerm = (string.Compare(property.Name, Id, true, CultureInfo.InvariantCulture) == 0) ? property.DeclaringType.Name + Id : Id;
 
-            searchTerm = (string.Compare(property.Name, id, true, CultureInfo.InvariantCulture) == 0) ? property.DeclaringType.Name + id : id;
-
-            if (mappingObjects.DataTable.Columns.Contains(searchTerm))
+            if (dataTable.Columns.Contains(searchTerm))
             {
-                mappedProperties.Add(new ExtendedPropertyInfo(fieldName: searchTerm, propertyInfo: property, columnIndex: mappingObjects.DataTable.Columns.IndexOf(searchTerm)));
+                mappedProperties.Add(new ExtendedPropertyInfo(fieldName: searchTerm, propertyInfo: property, columnIndex: dataTable.Columns.IndexOf(searchTerm)));
             }
         }
     }

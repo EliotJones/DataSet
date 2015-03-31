@@ -11,8 +11,11 @@
     /// <summary>
     /// Resolves mappings from an object's properties to DataTable columns.
     /// </summary>
-    internal class DefaultMappingResolver : MappingResolver
+    internal class DefaultMappingResolver : IMappingResolver
     {
+        private static readonly AttributeResolverHelper AttributeResolver = new AttributeResolverHelper();
+        private static readonly PropertyResolverHelper PropertyResolver = new PropertyResolverHelper();
+
         /// <summary>
         /// Gets property mappings for a specified type from a DataTable.
         /// </summary>
@@ -20,57 +23,59 @@
         /// <param name="dataTable">The DataTable to map from.</param>
         /// <param name="settings">The settings to use while mapping.</param>
         /// <returns>A list of the mappings.</returns>
-        public override ICollection<ExtendedPropertyInfo> GetPropertyMappings<T>(DataTable dataTable, DataTableParserSettings settings)
+        public ICollection<ExtendedPropertyInfo> GetPropertyMappings<T>(DataTable dataTable, DataTableParserSettings settings)
         {
             Guard.ArgumentNotNull(dataTable);
             Guard.ArgumentNotNull(settings);
 
             var mappedProperties = new List<ExtendedPropertyInfo>();
 
-            var attributeResolver = new AttributeResolverHelper();
-            var propertyResolver = new PropertyResolverHelper();
-
             var typeProperties = GetPropertiesForType<T>(settings.InheritMappings);
 
-            var mappingObjects = new MappingObjects(typeProperties, dataTable, settings);
-
             // For non-overwriting mappings the execution order is important.
-            switch (mappingObjects.Settings.MappingMatchOrder)
+            switch (settings.MappingMatchOrder)
             {
                 case MappingMatchOrder.PropertyNameFirst:
-                    propertyResolver.GenerateMappingsFromProperties(ref mappedProperties, mappingObjects, Id);
-                    attributeResolver.GenerateMappingsFromAttributes(ref mappedProperties, mappingObjects);
+                    PropertyResolver.GenerateMappingsFromProperties(mappedProperties, dataTable, settings, typeProperties);
+                    AttributeResolver.GenerateMappingsFromAttributes(mappedProperties, dataTable, settings, typeProperties);
                     break;
                 case MappingMatchOrder.AttributeValueFirst:
-                    attributeResolver.GenerateMappingsFromAttributes(ref mappedProperties, mappingObjects);
-                    propertyResolver.GenerateMappingsFromProperties(ref mappedProperties, mappingObjects, Id);
+                    AttributeResolver.GenerateMappingsFromAttributes(mappedProperties, dataTable, settings, typeProperties);
+                    PropertyResolver.GenerateMappingsFromProperties(mappedProperties, dataTable, settings, typeProperties);
                     break;
                 case MappingMatchOrder.IgnorePropertyNames:
-                    attributeResolver.GenerateMappingsFromAttributes(ref mappedProperties, mappingObjects);
+                    AttributeResolver.GenerateMappingsFromAttributes(mappedProperties, dataTable, settings, typeProperties);
                     break;
                 case MappingMatchOrder.IgnoreAttributes:
-                    propertyResolver.GenerateMappingsFromProperties(ref mappedProperties, mappingObjects, Id);
+                    PropertyResolver.GenerateMappingsFromProperties(mappedProperties, dataTable, settings, typeProperties);
                     break;
             }
 
+            CheckForErrors<T>(settings, mappedProperties, typeProperties);
+
+            return mappedProperties;
+        }
+
+        private static void CheckForErrors<T>(DataTableParserSettings settings, 
+            List<ExtendedPropertyInfo> mappedProperties,
+            PropertyInfo[] typeProperties)
+        {
             // Error in mapping handling, checks for missing mappings.
-            if (mappingObjects.Settings.MissingMappingHandling == MissingMappingHandling.Error
+            if (settings.MissingMappingHandling == MissingMappingHandling.Error
                 && mappedProperties.Count < typeProperties.Length)
             {
                 throw new MissingMappingException<T>();
             }
 
             // Checks for duplicate mappings in the list.
-            if (!mappingObjects.Settings.AllowDuplicateMappings
+            if (!settings.AllowDuplicateMappings
                 && mappedProperties.Select(p => p.ColumnIndex).Distinct().Count() != mappedProperties.Count)
             {
                 throw new DuplicateMappingException<T>();
             }
-
-            return mappedProperties;
         }
 
-        private PropertyInfo[] GetPropertiesForType<T>(bool inheritMappings)
+        private static PropertyInfo[] GetPropertiesForType<T>(bool inheritMappings)
         {
             // If we shouldn't inherit properties we need to declare the binding flags to ignore inherited properties.
             // All 3 flags are required for correct return.

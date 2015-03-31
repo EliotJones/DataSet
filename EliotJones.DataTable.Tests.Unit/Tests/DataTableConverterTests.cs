@@ -9,12 +9,13 @@
     using Enums;
     using POCOs;
     using TestStubs;
+    using Types;
     using Xunit;
 
     public class DataTableConverterTests
     {
         private DataTableParserSettings defaultSettings = new DataTableParserSettings();
-        private MappingResolver defaultMappingResolver = new TestMappingResolver();
+        private IMappingResolver defaultMappingResolver = new TestMappingResolver();
         private IDataTableResolver defaultDataTableResolver = new TestDataTableResolver();
         private IDataTypeConverter defaultDataTypeConverter = new TestConverter();
 

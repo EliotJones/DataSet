@@ -5,7 +5,7 @@
     using MappingResolvers;
     using Types;
 
-    internal class TestMappingResolver : MappingResolver
+    internal class TestMappingResolver : IMappingResolver
     {
         private ICollection<ExtendedPropertyInfo> mappings;
 
@@ -18,7 +18,7 @@
             this.mappings = mappings;
         }
 
-        public override ICollection<ExtendedPropertyInfo> GetPropertyMappings<T>(DataTable dataTable, DataTableParserSettings settings)
+        public ICollection<ExtendedPropertyInfo> GetPropertyMappings<T>(DataTable dataTable, DataTableParserSettings settings)
         {
             return new ExtendedPropertyInfo[] { };
         }

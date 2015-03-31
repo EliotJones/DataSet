@@ -1,4 +1,4 @@
-﻿namespace EliotJones.DataTable
+﻿namespace EliotJones.DataTable.Types
 {
     using Enums;
 
