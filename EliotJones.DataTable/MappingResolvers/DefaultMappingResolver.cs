@@ -23,7 +23,7 @@
         /// <param name="dataTable">The DataTable to map from.</param>
         /// <param name="settings">The settings to use while mapping.</param>
         /// <returns>A list of the mappings.</returns>
-        public IList<ExtendedPropertyInfo> GetPropertyMappings<T>(DataTable dataTable, DataTableParserSettings settings)
+        public ExtendedPropertyInfo[] GetPropertyMappings<T>(DataTable dataTable, DataTableParserSettings settings)
         {
             Guard.ArgumentNotNull(dataTable);
             Guard.ArgumentNotNull(settings);
@@ -56,7 +56,7 @@
 
             CheckForErrors<T>(settings, mappedProperties, typeProperties);
 
-            return mappedProperties;
+            return mappedProperties.ToArray();
         }
 
         private static void CheckForErrors<T>(DataTableParserSettings settings, 

@@ -1,5 +1,6 @@
 ﻿namespace EliotJones.DataTable.DataTableResolver
 {
+    using System;
     using System.Collections.Generic;
     using System.Data;
     using DataTypeConverter;
@@ -11,7 +12,7 @@
     {
         public virtual IList<T> ToObjects<T>(DataTable dataTable, 
             IDataTypeConverter dataTypeConverter, 
-            IList<ExtendedPropertyInfo> mappings, 
+            ExtendedPropertyInfo[] mappings, 
             DataTableParserSettings settings)
         {
             Guard.ArgumentNotNull(dataTable);
@@ -23,15 +24,18 @@
 
             var dbNullConverter = GetDbNullConverter(settings);
 
-            var objectList = new List<T>(capacity: dataTable.Rows.Count);
+            var objectList = new T[dataTable.Rows.Count];
 
-            for (int rowIndex = 0; rowIndex < dataTable.Rows.Count; rowIndex++)
+            DataRow[] datarows = new DataRow[dataTable.Rows.Count];
+            dataTable.Rows.CopyTo(datarows, 0);
+
+            for (int rowIndex = 0; rowIndex < datarows.Length; rowIndex++)
             {
                 var returnObject = ObjectInstantiator<T>.CreateNew();
 
                 foreach (var mapping in mappings)
                 {
-                    object value = dataTypeConverter.FieldToObject(dataTable.Rows[rowIndex][mapping.ColumnIndex], 
+                    object value = dataTypeConverter.FieldToObject(datarows[rowIndex][mapping.ColumnIndex], 
                         mapping.PropertyInfo.PropertyType, 
                         settings, 
                         dbNullConverter);
@@ -39,7 +43,7 @@
                     mapping.PropertyInfo.SetValue(returnObject, value);
                 }
 
-                objectList.Add(returnObject);
+                objectList[rowIndex] = returnObject;
             }
 
             return objectList;

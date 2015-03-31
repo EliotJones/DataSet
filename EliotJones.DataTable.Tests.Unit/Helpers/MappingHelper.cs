@@ -5,7 +5,7 @@
 
     internal class MappingHelper
     {
-        public static IList<ExtendedPropertyInfo> CreatePropertyMappingsDirectlyMatchingObject<T>()
+        public static ExtendedPropertyInfo[] CreatePropertyMappingsDirectlyMatchingObject<T>()
         {
             List<ExtendedPropertyInfo> returnList = new List<ExtendedPropertyInfo>();
 
@@ -14,7 +14,7 @@
                 returnList.Add(new ExtendedPropertyInfo(p.Name, p, -1));
             }
 
-            return returnList;
+            return returnList.ToArray();
         }
     }
 }

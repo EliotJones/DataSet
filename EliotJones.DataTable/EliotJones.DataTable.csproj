@@ -66,7 +66,7 @@
     <Compile Include="Guard.cs" />
     <Compile Include="DataTableResolver\IDataTableResolver.cs" />
     <Compile Include="DataTypeConverter\IDataTypeConverter.cs" />
-    <Compile Include="MappingResolvers\MappingResolver.cs" />
+    <Compile Include="MappingResolvers\IMappingResolver.cs" />
     <Compile Include="MappingResolvers\PropertyResolver.cs" />
     <Compile Include="DataTableResolver\ParallelDataTableResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

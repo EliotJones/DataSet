@@ -107,14 +107,12 @@
         public void ToObjects_NullMapping_ThrowsInvalidMappingException()
         {
             var mappings = MappingHelper.CreatePropertyMappingsDirectlyMatchingObject<SimpleNoIdNoAttributes>();
-
-            var mappingsList = mappings.ToList();
-
-            mappingsList[0] = null;
+            
+            mappings[0] = null;
 
             DataTable dt = DataTableFactory.GenerateEmptyDataTableMatchingObjectProperties<SimpleNoIdNoAttributes>();
 
-            Assert.Throws<InvalidMappingException<SimpleNoIdNoAttributes>>(() => dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(dt, dataTypeConverter, mappingsList, dataTableParserSettings));
+            Assert.Throws<InvalidMappingException<SimpleNoIdNoAttributes>>(() => dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(dt, dataTypeConverter, mappings, dataTableParserSettings));
         }
 
         [Fact]
@@ -147,9 +145,9 @@
             Assert.True(results.Count == rows);
         }
 
-        private IList<ExtendedPropertyInfo> CreateEmptyPropertyMappings()
+        private ExtendedPropertyInfo[] CreateEmptyPropertyMappings()
         {
-            return new List<ExtendedPropertyInfo>();
+            return new ExtendedPropertyInfo[0];
         }
 
         private object GetAssertObject<T>(object field)

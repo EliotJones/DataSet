@@ -116,7 +116,7 @@
 
             var results = defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoAttributes>(dt, defaultDataTableParserSettings);
 
-            Assert.True(results.Count == 2);
+            Assert.True(results.Length == 2);
         }
 
         [Fact]
@@ -138,7 +138,7 @@
 
             var results = defaultMappingResolver.GetPropertyMappings<SimpleNoIdNoAttributes>(dt, dtps);
 
-            Assert.True(results.Count == 1);
+            Assert.True(results.Length == 1);
         }
 
         [Fact]
@@ -152,7 +152,7 @@
 
             var results = defaultMappingResolver.GetPropertyMappings<ChildNoAttributes>(dt, dtps);
 
-            Assert.True(results.Count == 4);
+            Assert.True(results.Length == 4);
         }
 
         [Fact]
@@ -166,7 +166,7 @@
 
             var results = defaultMappingResolver.GetPropertyMappings<LeafClassNoAttributes>(dt, dtps);
 
-            Assert.True(results.Count == 5);
+            Assert.True(results.Length == 5);
         }
 
         [Fact]
@@ -180,7 +180,7 @@
 
             var results = defaultMappingResolver.GetPropertyMappings<ChildNoAttributes>(dt, dtps);
 
-            Assert.True(results.Count == 2);
+            Assert.True(results.Length == 2);
         }
 
         [Fact]
@@ -192,7 +192,7 @@
 
             var results = defaultMappingResolver.GetPropertyMappings<SimpleIdNoAttributes>(dt, defaultDataTableParserSettings);
 
-            Assert.True(results.Count == 2);
+            Assert.True(results.Length == 2);
 
             Assert.True(results.Select(r => r.FieldName).Contains("Id", StringComparer.InvariantCultureIgnoreCase));
         }
@@ -206,7 +206,7 @@
 
             var results = defaultMappingResolver.GetPropertyMappings<SimpleIdNoAttributes>(dt, defaultDataTableParserSettings);
 
-            Assert.True(results.Count == 2);
+            Assert.True(results.Length == 2);
 
             Assert.True(results.Select(r => r.FieldName).Contains("id", StringComparer.InvariantCultureIgnoreCase));
         }
@@ -220,7 +220,7 @@
 
             var results = defaultMappingResolver.GetPropertyMappings<SimpleIdNoAttributes>(dt, defaultDataTableParserSettings);
 
-            Assert.True(results.Count == 2);
+            Assert.True(results.Length == 2);
 
             Assert.True(results.Select(r => r.PropertyInfo.Name).Contains("Id", StringComparer.InvariantCultureIgnoreCase));
         }
@@ -234,7 +234,7 @@
 
             var results = defaultMappingResolver.GetPropertyMappings<SimpleIdNoAttributes>(dt, defaultDataTableParserSettings);
 
-            Assert.True(results.Count == 2);
+            Assert.True(results.Length == 2);
 
             Assert.True(results.Select(r => r.PropertyInfo.Name).Contains("Id", StringComparer.InvariantCultureIgnoreCase));
         }
@@ -246,7 +246,7 @@
 
             var results = defaultMappingResolver.GetPropertyMappings<SimpleClassWithAttributes>(dt, defaultDataTableParserSettings);
 
-            Assert.True(results.Count == 2);
+            Assert.True(results.Length == 2);
         }
 
         [Fact]
@@ -262,7 +262,7 @@
 
             var results = defaultMappingResolver.GetPropertyMappings<SimpleClassWithAttributes>(dt, dtps);
 
-            Assert.True(results.Count == 1);
+            Assert.True(results.Length == 1);
         }
 
         [Fact]
@@ -292,7 +292,7 @@
 
             var results = defaultMappingResolver.GetPropertyMappings<SimpleClassWithAttributes>(dt, dtps);
 
-            Assert.True(results.Count == 2);
+            Assert.True(results.Length == 2);
         }
     }
 }

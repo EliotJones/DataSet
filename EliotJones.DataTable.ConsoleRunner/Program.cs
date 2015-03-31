@@ -14,7 +14,7 @@
         {
             DataTableConverter dtp = new DataTableConverter();
 
-            int count = 100000;
+            int count = 2000000;
 
             List<TestClass> classes = new List<TestClass>();
 
@@ -25,15 +25,15 @@
                         Id = i,
                         Name = "Name" + i,
                         Postcode = "GU" + i,
-                        CreationDate = DateTime.UtcNow,
-                        ModifiedDate = DateTime.UtcNow
+                        CreationDate = new DateTime(2001, 1, 1),
+                        ModifiedDate = new DateTime(2001, 1, 1)
                     });
             }
 
-            DataTable dt = DataTableFactory.GenerateDataTableFilledWithObjects<TestClass>(classes);
+            DataTable dt = DataTableFactory.GenerateDataTableFilledWithObjects(classes);
 
             
-            dtp.DataTableParserSettings.Resolver = Resolver.Delegate;
+            dtp.DataTableParserSettings.Resolver = Resolver.Default;
 
             Stopwatch sw = Stopwatch.StartNew();
             dtp.ToObjects<TestClass>(dt);

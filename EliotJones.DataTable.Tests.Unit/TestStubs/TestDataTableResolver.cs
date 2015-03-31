@@ -8,7 +8,7 @@
 
     internal class TestDataTableResolver : IDataTableResolver
     {
-        public IList<T> ToObjects<T>(DataTable dataTable, IDataTypeConverter dataTypeConverter, IList<ExtendedPropertyInfo> mappings, DataTableParserSettings settings)
+        public IList<T> ToObjects<T>(DataTable dataTable, IDataTypeConverter dataTypeConverter, ExtendedPropertyInfo[] mappings, DataTableParserSettings settings)
         {
             return new List<T>();
         }
