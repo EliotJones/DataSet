@@ -61,6 +61,7 @@
     <Compile Include="TestStubs\TestDataTableResolver.cs" />
     <Compile Include="TestStubs\TestDataTypeConverter.cs" />
     <Compile Include="TestStubs\TestMappingResolver.cs" />
+    <Compile Include="Tests\ConversionManagerTests.cs" />
     <Compile Include="Tests\DataTableConverterTests.cs" />
     <Compile Include="Tests\DataTypeConverters\DefaultDataTypeConverterTests.cs" />
     <Compile Include="Tests\MappingResolvers\DefaultMappingResolverTests.cs" />
