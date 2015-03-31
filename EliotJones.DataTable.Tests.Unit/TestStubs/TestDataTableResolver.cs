@@ -1,9 +1,10 @@
 ﻿namespace EliotJones.DataTable.Tests.Unit.TestStubs
 {
-    using DataTypeConverter;
     using System.Collections.Generic;
     using System.Data;
     using DataTableResolver;
+    using DataTypeConverter;
+    using Types;
 
     internal class TestDataTableResolver : IDataTableResolver
     {

@@ -1,10 +1,10 @@
 ﻿namespace EliotJones.DataTable.Tests.Integration.Tests
 {
-    using EliotJones.DataTable.Exceptions;
-    using Entities;
     using System.Data;
-    using System.Data.SqlClient;
     using System.Linq;
+    using Entities;
+    using Enums;
+    using Exceptions;
     using Xunit;
 
     public class StatusTableTest
@@ -82,7 +82,7 @@
 
             DataTableParser dtp = new DataTableParser();
 
-            dtp.DataTableParserSettings.MissingMappingHandling = Enums.MissingMappingHandling.Error;
+            dtp.DataTableParserSettings.MissingMappingHandling = MissingMappingHandling.Error;
 
             Assert.Throws<MissingMappingException<StatusExtraProperty>>(() => dtp.ToObjects<StatusExtraProperty>(dataTable));
         }
@@ -98,7 +98,7 @@
 
             DataTableParser dtp = new DataTableParser();
 
-            dtp.DataTableParserSettings.MissingMappingHandling = Enums.MissingMappingHandling.Ignore;
+            dtp.DataTableParserSettings.MissingMappingHandling = MissingMappingHandling.Ignore;
 
             var results = dtp.ToObjects<StatusExtraProperty>(dataTable);
 

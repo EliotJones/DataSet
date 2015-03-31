@@ -5,8 +5,9 @@
     using DataTypeConverter;
     using Exceptions;
     using Factories;
+    using Types;
 
-    public class DefaultDataTableResolver : IDataTableResolver
+    internal class DefaultDataTableResolver : IDataTableResolver
     {
         public virtual IList<T> ToObjects<T>(DataTable dataTable, IDataTypeConverter dataTypeConverter, IEnumerable<ExtendedPropertyInfo> mappings, DataTableParserSettings settings)
         {

@@ -1,10 +1,11 @@
 ﻿namespace EliotJones.DataTable
 {
-    using DataTypeConverter;
-    using MappingResolvers;
     using System.Collections.Generic;
     using System.Data;
     using DataTableResolver;
+    using DataTypeConverter;
+    using Enums;
+    using MappingResolvers;
 
     /// <summary>
     /// Class responsible for converting <see cref="DataTable"/> to list of specified type with default or custom conversion settings./>
@@ -13,8 +14,14 @@
     {
         private DataTableParserSettings dataTableParserSettings = new DataTableParserSettings();
         private MappingResolver mappingResolver = new DefaultMappingResolver();
-        private IDataTableResolver dataTableResolver = new DefaultDataTableResolver();
         private IDataTypeConverter dataTypeConverter = new DefaultDataTypeConverter();
+
+        private IDataTableResolver customResolver;
+
+        public void UseCustomResolver(IDataTableResolver customResolver)
+        {
+            this.customResolver = customResolver;
+        }
 
         /// <summary>
         /// Gets or sets the settings for parsing a DataTable.
@@ -41,12 +48,6 @@
             {
                 mappingResolver = value;
             }
-        }
-
-        public virtual IDataTableResolver DataTableResolver
-        {
-            get { return dataTableResolver; }
-            set { dataTableResolver = value; }
         }
 
         public static DataTableParser Create()
@@ -79,14 +80,33 @@
 
         protected virtual IEnumerable<T> ToObjectsInternal<T>(DataTable table, DataTableParserSettings dataTableParserSettings)
         {
-            ConversionManager conversionManager = GetConverter(dataTableParserSettings);
-
-            return conversionManager.ConvertToType<T>(table);
+            return GetConverter(dataTableParserSettings).ConvertToType<T>(table);
         }
 
-        private ConversionManager GetConverter(DataTableParserSettings dataTableParserSettingsLocal)
+        private ConversionManager GetConverter(DataTableParserSettings dataTableParserSettings)
         {
-            return new ConversionManager(dataTableParserSettings, mappingResolver, dataTableResolver, dataTypeConverter);
+            return new ConversionManager(dataTableParserSettings, 
+                mappingResolver, 
+                GetResolver(), 
+                dataTypeConverter);
+        }
+
+        private IDataTableResolver GetResolver()
+        {
+            if (customResolver != null)
+            {
+                return customResolver;
+            }
+
+            switch (dataTableParserSettings.Resolver)
+            {
+                case Resolver.Delegate:
+                    return new DelegateDataTableResolver();
+                case Resolver.Parallel:
+                    return new ParallelDataTableResolver();
+                default:
+                    return new DefaultDataTableResolver();
+            }
         }
     }
 }

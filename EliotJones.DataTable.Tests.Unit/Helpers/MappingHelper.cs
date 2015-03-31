@@ -1,7 +1,8 @@
 ﻿namespace EliotJones.DataTable.Tests.Unit.Helpers
 {
     using System.Collections.Generic;
-    
+    using Types;
+
     internal class MappingHelper
     {
         public static IEnumerable<ExtendedPropertyInfo> CreatePropertyMappingsDirectlyMatchingObject<T>()

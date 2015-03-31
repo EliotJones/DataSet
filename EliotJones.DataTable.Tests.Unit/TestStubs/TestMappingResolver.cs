@@ -1,8 +1,9 @@
 ﻿namespace EliotJones.DataTable.Tests.Unit.TestStubs
 {
-    using EliotJones.DataTable.MappingResolvers;
     using System.Collections.Generic;
     using System.Data;
+    using MappingResolvers;
+    using Types;
 
     internal class TestMappingResolver : MappingResolver
     {

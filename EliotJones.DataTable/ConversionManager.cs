@@ -7,6 +7,7 @@ namespace EliotJones.DataTable
     using DataTypeConverter;
     using Enums;
     using MappingResolvers;
+    using Types;
 
     internal class ConversionManager
     {

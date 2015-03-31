@@ -1,7 +1,6 @@
 ﻿namespace EliotJones.DataTable.DataTypeConverter
 {
     using System;
-    using System.Collections.Generic;
 
     public class DefaultDataTypeConverter : IDataTypeConverter
     {

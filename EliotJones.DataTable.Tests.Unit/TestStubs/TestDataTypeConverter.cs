@@ -1,7 +1,7 @@
 ﻿namespace EliotJones.DataTable.Tests.Unit.TestStubs
 {
-    using EliotJones.DataTable.DataTypeConverter;
     using System;
+    using DataTypeConverter;
 
     internal class TestConverter : IDataTypeConverter
     {

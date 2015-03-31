@@ -1,11 +1,12 @@
 ﻿namespace EliotJones.DataTable.MappingResolvers
 {
-    using Enums;
-    using Exceptions;
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
     using System.Reflection;
+    using Enums;
+    using Exceptions;
+    using Types;
 
     /// <summary>
     /// Resolves mappings from an object's properties to DataTable columns.

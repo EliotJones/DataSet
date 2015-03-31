@@ -9,6 +9,7 @@
     using Exceptions;
     using Factories;
     using POCOs;
+    using Types;
     using Xunit;
 
     public class DefaultMappingResolverTests

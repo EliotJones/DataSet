@@ -1,11 +1,10 @@
 ﻿namespace EliotJones.DataTable.Tests.Unit.Tests.DataTypeConverters
 {
-    using EliotJones.DataTable.DataTypeConverter;
     using System;
     using System.Collections.Generic;
     using System.Text;
+    using DataTypeConverter;
     using Xunit;
-    using Xunit.Extensions;
 
     public class DefaultDataTypeConverterTests
     {

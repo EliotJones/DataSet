@@ -5,6 +5,7 @@
     using System.Data;
     using System.Linq;
     using System.Reflection;
+    using Types;
 
     internal class AttributeResolverHelper
     {

@@ -1,18 +1,18 @@
 ﻿namespace EliotJones.DataTable.Tests.Unit.Tests
 {
-    using EliotJones.DataTable.DataTypeConverter;
-    using EliotJones.DataTable.Exceptions;
-    using Factories;
-    using Helpers;
-    using POCOs;
-    using TestStubs;
     using System;
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
     using DataTableResolver;
+    using DataTypeConverter;
+    using Exceptions;
+    using Factories;
+    using Helpers;
+    using POCOs;
+    using TestStubs;
+    using Types;
     using Xunit;
-    using Xunit.Extensions;
 
     public class DefaultDataTableResolverTests
     {

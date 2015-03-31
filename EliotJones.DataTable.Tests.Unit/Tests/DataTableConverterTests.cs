@@ -1,14 +1,14 @@
 ﻿namespace EliotJones.DataTable.Tests.Unit.Tests
 {
-    using EliotJones.DataTable.DataTypeConverter;
-    using EliotJones.DataTable.Enums;
-    using EliotJones.DataTable.MappingResolvers;
-    using EliotJones.DataTable.Tests.Unit.POCOs;
-    using EliotJones.DataTable.Tests.Unit.TestStubs;
     using System;
     using System.Data;
     using System.Linq;
+    using DataTable.MappingResolvers;
     using DataTableResolver;
+    using DataTypeConverter;
+    using Enums;
+    using POCOs;
+    using TestStubs;
     using Xunit;
 
     public class DataTableConverterTests

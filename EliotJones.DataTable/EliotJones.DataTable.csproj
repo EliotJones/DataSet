@@ -43,7 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ColumnMapping.cs" />
+    <Compile Include="Enums\Resolver.cs" />
+    <Compile Include="Types\ColumnMapping.cs" />
     <Compile Include="DataTableParser.cs" />
     <Compile Include="DataTableParserSettings.cs" />
     <Compile Include="ConversionManager.cs" />
@@ -61,7 +62,7 @@
     <Compile Include="Enums\NullInputHandling.cs" />
     <Compile Include="Exceptions\DuplicateMappingException.cs" />
     <Compile Include="Exceptions\MissingMappingException.cs" />
-    <Compile Include="ExtendedPropertyInfo.cs" />
+    <Compile Include="Types\ExtendedPropertyInfo.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="DataTableResolver\IDataTableResolver.cs" />
     <Compile Include="DataTypeConverter\IDataTypeConverter.cs" />

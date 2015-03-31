@@ -1,7 +1,6 @@
-﻿namespace EliotJones.DataTable
+﻿namespace EliotJones.DataTable.Types
 {
-    using System;
-using System.Reflection;
+    using System.Reflection;
 
     public class ExtendedPropertyInfo
     {

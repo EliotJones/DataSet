@@ -1,5 +1,7 @@
 ﻿namespace EliotJones.DataTable.Tests.Unit.POCOs
 {
+    using Types;
+
     internal class SimpleClassWithAttributes
     {
         [ColumnMapping(Name = "Prop1")]

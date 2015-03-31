@@ -6,8 +6,9 @@
     using System.Reflection;
     using DataTypeConverter;
     using Factories;
+    using Types;
 
-    public class DelegateDataTableResolver : IDataTableResolver
+    internal class DelegateDataTableResolver : IDataTableResolver
     {
         private IEnumerable<DelegateColumnMapping<T>> GetDelegatesForType<T>(IEnumerable<ExtendedPropertyInfo> mappings)
         {

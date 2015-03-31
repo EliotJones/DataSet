@@ -1,6 +1,6 @@
 ﻿namespace EliotJones.DataTable
 {
-    using EliotJones.DataTable.Enums;
+    using Enums;
 
     /// <summary>
     /// Settings for de-serializing a DataTable.
@@ -11,10 +11,11 @@
         private MappingMatchOrder mappingMatchOrder = MappingMatchOrder.PropertyNameFirst;
         private NullInputHandling nullInputHandling = NullInputHandling.ReturnNull;
         private EmptyInputHandling emptyInputHandling = EmptyInputHandling.ReturnEmptyEnumerable;
-        private bool subsequentMappingsShouldOverwrite = false;
-        private bool allowDuplicateMappings = false;
+        private bool subsequentMappingsShouldOverwrite;
+        private bool allowDuplicateMappings;
         private bool inheritMappings = true;
         private bool allowDbNullForNonNullableTypes = true;
+        private Resolver resolver = Resolver.Default;
 
         /// <summary>
         /// Gets or sets whether the mappings that come after the first set (property after attribute or vice versa) should
@@ -84,6 +85,12 @@
         {
             get { return inheritMappings; }
             set { inheritMappings = value; }
+        }
+
+        public Resolver Resolver
+        {
+            get { return resolver; }
+            set { resolver = value; } 
         }
     }
 }

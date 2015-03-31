@@ -1,15 +1,12 @@
 ﻿namespace EliotJones.DataTable.ConsoleRunner
 {
-    using EliotJones.DataTable.Tests.Unit.Factories;
     using System;
     using System.Collections.Generic;
     using System.Data;
     using System.Diagnostics;
-    using System.Linq;
-    using System.Linq.Expressions;
     using System.Reflection;
-    using System.Text;
-    using DataTableResolver;
+    using Enums;
+    using Tests.Unit.Factories;
 
     public class Program
     {
@@ -36,7 +33,7 @@
             DataTable dt = DataTableFactory.GenerateDataTableFilledWithObjects<TestClass>(classes);
 
             
-            dtp.DataTableResolver = new DelegateDataTableResolver();
+            dtp.DataTableParserSettings.Resolver = Resolver.Delegate;
 
             Stopwatch sw = Stopwatch.StartNew();
             dtp.ToObjects<TestClass>(dt);

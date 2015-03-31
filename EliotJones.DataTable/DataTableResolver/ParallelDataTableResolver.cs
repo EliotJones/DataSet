@@ -7,6 +7,7 @@
     using System.Threading.Tasks;
     using DataTypeConverter;
     using Factories;
+    using Types;
 
     public class ParallelDataTableResolver : IDataTableResolver
     {
