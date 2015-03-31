@@ -8,6 +8,7 @@
     using System;
     using System.Data;
     using System.Linq;
+    using DataTableResolver;
     using Xunit;
 
     public class DataTableConverterTests
@@ -93,14 +94,14 @@
             Assert.NotNull(results);
         }
 
-        private DataTableConverter GetDefaultDataTableConverter()
+        private ConversionManager GetDefaultDataTableConverter()
         {
-            return new DataTableConverter(defaultSettings, defaultMappingResolver, defaultDataTableResolver, defaultDataTypeConverter);
+            return new ConversionManager(defaultSettings, defaultMappingResolver, defaultDataTableResolver, defaultDataTypeConverter);
         }
 
-        private DataTableConverter GetDataTableConverterWithCustomSettings(DataTableParserSettings settings)
+        private ConversionManager GetDataTableConverterWithCustomSettings(DataTableParserSettings settings)
         {
-            return new DataTableConverter(settings, defaultMappingResolver, defaultDataTableResolver, defaultDataTypeConverter);
+            return new ConversionManager(settings, defaultMappingResolver, defaultDataTableResolver, defaultDataTypeConverter);
         }
     }
 }

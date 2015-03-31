@@ -1,9 +1,10 @@
 ﻿namespace EliotJones.DataTable
 {
-    using EliotJones.DataTable.DataTypeConverter;
+    using DataTypeConverter;
     using MappingResolvers;
     using System.Collections.Generic;
     using System.Data;
+    using DataTableResolver;
 
     /// <summary>
     /// Class responsible for converting <see cref="DataTable"/> to list of specified type with default or custom conversion settings./>
@@ -14,10 +15,6 @@
         private MappingResolver mappingResolver = new DefaultMappingResolver();
         private IDataTableResolver dataTableResolver = new DefaultDataTableResolver();
         private IDataTypeConverter dataTypeConverter = new DefaultDataTypeConverter();
-
-        public DataTableParser()
-        {
-        }
 
         /// <summary>
         /// Gets or sets the settings for parsing a DataTable.
@@ -40,7 +37,10 @@
         public virtual MappingResolver MappingResolver
         {
             get { return mappingResolver; }
-            set { mappingResolver = MappingResolver; }
+            set
+            {
+                mappingResolver = value;
+            }
         }
 
         public virtual IDataTableResolver DataTableResolver
@@ -56,16 +56,9 @@
 
         public static DataTableParser Create(DataTableParserSettings settings)
         {
-            var parser = new DataTableParser();
-
-            parser.DataTableParserSettings = settings;
+            var parser = new DataTableParser {DataTableParserSettings = settings};
 
             return parser;
-        }
-
-        public virtual IEnumerable<T> AddToExistingCollection<T>(DataTable table, IEnumerable<T> enumerable)
-        {
-            return this.ToObjects<T>(table);
         }
 
         /// <summary>
@@ -76,26 +69,24 @@
         /// <returns>An IEnumerable&lt;T&gt; with objects initialized.</returns>
         public virtual IEnumerable<T> ToObjects<T>(DataTable table)
         {
-            DataTableParserSettings dataTableParserSettingsLocal = dataTableParserSettings;
-
-            return ToObjectsInternal<T>(table, dataTableParserSettingsLocal);
+            return ToObjectsInternal<T>(table, dataTableParserSettings);
         }
 
-        public virtual IEnumerable<T> ToObjects<T>(DataTable table, DataTableParserSettings dataTableParserSettingsLocal)
+        public virtual IEnumerable<T> ToObjects<T>(DataTable table, DataTableParserSettings dataTableParserSettings)
         {
-            return ToObjectsInternal<T>(table, dataTableParserSettingsLocal);
+            return ToObjectsInternal<T>(table, dataTableParserSettings);
         }
 
-        protected virtual IEnumerable<T> ToObjectsInternal<T>(DataTable table, DataTableParserSettings dataTableParserSettingsLocal)
+        protected virtual IEnumerable<T> ToObjectsInternal<T>(DataTable table, DataTableParserSettings dataTableParserSettings)
         {
-            DataTableConverter dataTableConverter = GetConverter(dataTableParserSettingsLocal);
+            ConversionManager conversionManager = GetConverter(dataTableParserSettings);
 
-            return dataTableConverter.ConvertToType<T>(table);
+            return conversionManager.ConvertToType<T>(table);
         }
 
-        protected virtual DataTableConverter GetConverter(DataTableParserSettings dataTableParserSettingsLocal)
+        private ConversionManager GetConverter(DataTableParserSettings dataTableParserSettingsLocal)
         {
-            return new DataTableConverter(dataTableParserSettings, mappingResolver, dataTableResolver, dataTypeConverter);
+            return new ConversionManager(dataTableParserSettings, mappingResolver, dataTableResolver, dataTypeConverter);
         }
     }
 }

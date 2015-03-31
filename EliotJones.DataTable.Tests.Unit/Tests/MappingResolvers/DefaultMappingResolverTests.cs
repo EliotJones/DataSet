@@ -1,16 +1,15 @@
-﻿namespace EliotJones.DataTable.Tests.Unit.MappingResolvers.Tests
+﻿namespace EliotJones.DataTable.Tests.Unit.Tests.MappingResolvers
 {
-    using EliotJones.DataTable.Enums;
-    using EliotJones.DataTable.Exceptions;
-    using EliotJones.DataTable.Tests.Unit.Factories;
-    using EliotJones.DataTable.Tests.Unit.POCOs;
-    using EliotJones.DataTable.MappingResolvers;
     using System;
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
+    using DataTable.MappingResolvers;
+    using Enums;
+    using Exceptions;
+    using Factories;
+    using POCOs;
     using Xunit;
-    using Xunit.Extensions;
 
     public class DefaultMappingResolverTests
     {

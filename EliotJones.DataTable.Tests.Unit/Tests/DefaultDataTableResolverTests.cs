@@ -10,6 +10,7 @@
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
+    using DataTableResolver;
     using Xunit;
     using Xunit.Extensions;
 

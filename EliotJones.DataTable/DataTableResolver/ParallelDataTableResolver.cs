@@ -1,13 +1,12 @@
-﻿namespace EliotJones.DataTable
+﻿namespace EliotJones.DataTable.DataTableResolver
 {
-    using DataTypeConverter;
-    using Factories;
-    using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
     using System.Threading.Tasks;
+    using DataTypeConverter;
+    using Factories;
 
     public class ParallelDataTableResolver : IDataTableResolver
     {

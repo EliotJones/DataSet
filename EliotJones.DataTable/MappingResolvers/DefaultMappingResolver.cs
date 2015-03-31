@@ -1,7 +1,7 @@
 ﻿namespace EliotJones.DataTable.MappingResolvers
 {
-    using EliotJones.DataTable.Enums;
-    using EliotJones.DataTable.Exceptions;
+    using Enums;
+    using Exceptions;
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
@@ -10,7 +10,7 @@
     /// <summary>
     /// Resolves mappings from an object's properties to DataTable columns.
     /// </summary>
-    public class DefaultMappingResolver : MappingResolver
+    internal class DefaultMappingResolver : MappingResolver
     {
         /// <summary>
         /// Gets property mappings for a specified type from a DataTable.
@@ -49,8 +49,6 @@
                     break;
                 case MappingMatchOrder.IgnoreAttributes:
                     propertyResolver.GenerateMappingsFromProperties(ref mappedProperties, mappingObjects, Id);
-                    break;
-                default:
                     break;
             }
 

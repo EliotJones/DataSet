@@ -5,19 +5,19 @@
 
     internal class MappingObjects
     {
-        private PropertyInfo[] properties;
+        private readonly PropertyInfo[] properties;
         public PropertyInfo[] Properties
         {
             get { return properties; }
         }
 
-        private DataTable dataTable;
+        private readonly DataTable dataTable;
         public DataTable DataTable
         {
             get { return dataTable; }
         }
 
-        private DataTableParserSettings settings;
+        private readonly DataTableParserSettings settings;
         public DataTableParserSettings Settings
         {
             get { return settings; }

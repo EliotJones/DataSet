@@ -1,10 +1,10 @@
-﻿namespace EliotJones.DataTable
+﻿namespace EliotJones.DataTable.DataTableResolver
 {
+    using System.Collections.Generic;
+    using System.Data;
     using DataTypeConverter;
     using Exceptions;
     using Factories;
-    using System.Collections.Generic;
-    using System.Data;
 
     public class DefaultDataTableResolver : IDataTableResolver
     {

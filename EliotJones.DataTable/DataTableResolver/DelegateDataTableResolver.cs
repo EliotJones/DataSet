@@ -1,11 +1,11 @@
-﻿namespace EliotJones.DataTable
+﻿namespace EliotJones.DataTable.DataTableResolver
 {
-    using DataTypeConverter;
-    using Factories;
     using System;
     using System.Collections.Generic;
     using System.Data;
     using System.Reflection;
+    using DataTypeConverter;
+    using Factories;
 
     public class DelegateDataTableResolver : IDataTableResolver
     {

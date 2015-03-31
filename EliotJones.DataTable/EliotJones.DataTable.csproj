@@ -44,17 +44,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ColumnMapping.cs" />
-    <Compile Include="DataTableConverter.cs" />
     <Compile Include="DataTableParser.cs" />
     <Compile Include="DataTableParserSettings.cs" />
+    <Compile Include="ConversionManager.cs" />
     <Compile Include="DataTypeConverter\DbNullConverter.cs" />
-    <Compile Include="DefaultDataTableResolver.cs" />
+    <Compile Include="DataTableResolver\DefaultDataTableResolver.cs" />
     <Compile Include="DataTypeConverter\DefaultDataTypeConverter.cs" />
     <Compile Include="Exceptions\InvalidMappingException.cs" />
     <Compile Include="Factories\ObjectInstantiator.cs" />
     <Compile Include="MappingResolvers\AttributeResolverHelper.cs" />
     <Compile Include="MappingResolvers\DefaultMappingResolver.cs" />
-    <Compile Include="DelegateDataTableResolver.cs" />
+    <Compile Include="DataTableResolver\DelegateDataTableResolver.cs" />
     <Compile Include="Enums\EmptyInputHandling.cs" />
     <Compile Include="Enums\MappingMatchOrder.cs" />
     <Compile Include="Enums\MissingMappingHandling.cs" />
@@ -63,12 +63,12 @@
     <Compile Include="Exceptions\MissingMappingException.cs" />
     <Compile Include="ExtendedPropertyInfo.cs" />
     <Compile Include="Guard.cs" />
-    <Compile Include="IDataTableResolver.cs" />
+    <Compile Include="DataTableResolver\IDataTableResolver.cs" />
     <Compile Include="DataTypeConverter\IDataTypeConverter.cs" />
     <Compile Include="MappingResolvers\MappingObjects.cs" />
     <Compile Include="MappingResolvers\MappingResolver.cs" />
     <Compile Include="MappingResolvers\PropertyResolverHelper.cs" />
-    <Compile Include="ParallelDataTableResolver.cs" />
+    <Compile Include="DataTableResolver\ParallelDataTableResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
