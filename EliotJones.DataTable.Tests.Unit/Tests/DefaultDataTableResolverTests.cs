@@ -147,7 +147,7 @@
             Assert.True(results.Count == rows);
         }
 
-        private IEnumerable<ExtendedPropertyInfo> CreateEmptyPropertyMappings()
+        private IList<ExtendedPropertyInfo> CreateEmptyPropertyMappings()
         {
             return new List<ExtendedPropertyInfo>();
         }

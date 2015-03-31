@@ -7,7 +7,7 @@
     using System.Reflection;
     using Types;
 
-    internal class AttributeResolverHelper
+    internal class AttributeResolver
     {
         public virtual void GenerateMappingsFromAttributes(List<ExtendedPropertyInfo> mappedProperties, 
             DataTable dataTable,

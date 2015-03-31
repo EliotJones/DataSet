@@ -6,7 +6,7 @@
 
     public interface IMappingResolver
     {
-        ICollection<ExtendedPropertyInfo> GetPropertyMappings<T>(DataTable dataTable, 
+        IList<ExtendedPropertyInfo> GetPropertyMappings<T>(DataTable dataTable, 
             DataTableParserSettings settings);
     }
 }

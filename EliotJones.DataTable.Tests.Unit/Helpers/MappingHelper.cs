@@ -5,7 +5,7 @@
 
     internal class MappingHelper
     {
-        public static IEnumerable<ExtendedPropertyInfo> CreatePropertyMappingsDirectlyMatchingObject<T>()
+        public static IList<ExtendedPropertyInfo> CreatePropertyMappingsDirectlyMatchingObject<T>()
         {
             List<ExtendedPropertyInfo> returnList = new List<ExtendedPropertyInfo>();
 

@@ -13,8 +13,8 @@
     /// </summary>
     internal class DefaultMappingResolver : IMappingResolver
     {
-        private static readonly AttributeResolverHelper AttributeResolver = new AttributeResolverHelper();
-        private static readonly PropertyResolverHelper PropertyResolver = new PropertyResolverHelper();
+        private static readonly AttributeResolver AttributeResolver = new AttributeResolver();
+        private static readonly PropertyResolver PropertyResolver = new PropertyResolver();
 
         /// <summary>
         /// Gets property mappings for a specified type from a DataTable.
@@ -23,7 +23,7 @@
         /// <param name="dataTable">The DataTable to map from.</param>
         /// <param name="settings">The settings to use while mapping.</param>
         /// <returns>A list of the mappings.</returns>
-        public ICollection<ExtendedPropertyInfo> GetPropertyMappings<T>(DataTable dataTable, DataTableParserSettings settings)
+        public IList<ExtendedPropertyInfo> GetPropertyMappings<T>(DataTable dataTable, DataTableParserSettings settings)
         {
             Guard.ArgumentNotNull(dataTable);
             Guard.ArgumentNotNull(settings);
@@ -39,13 +39,16 @@
                     PropertyResolver.GenerateMappingsFromProperties(mappedProperties, dataTable, settings, typeProperties);
                     AttributeResolver.GenerateMappingsFromAttributes(mappedProperties, dataTable, settings, typeProperties);
                     break;
+
                 case MappingMatchOrder.AttributeValueFirst:
                     AttributeResolver.GenerateMappingsFromAttributes(mappedProperties, dataTable, settings, typeProperties);
                     PropertyResolver.GenerateMappingsFromProperties(mappedProperties, dataTable, settings, typeProperties);
                     break;
+
                 case MappingMatchOrder.IgnorePropertyNames:
                     AttributeResolver.GenerateMappingsFromAttributes(mappedProperties, dataTable, settings, typeProperties);
                     break;
+
                 case MappingMatchOrder.IgnoreAttributes:
                     PropertyResolver.GenerateMappingsFromProperties(mappedProperties, dataTable, settings, typeProperties);
                     break;

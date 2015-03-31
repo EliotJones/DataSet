@@ -53,7 +53,7 @@
     <Compile Include="DataTypeConverter\DefaultDataTypeConverter.cs" />
     <Compile Include="Exceptions\InvalidMappingException.cs" />
     <Compile Include="Factories\ObjectInstantiator.cs" />
-    <Compile Include="MappingResolvers\AttributeResolverHelper.cs" />
+    <Compile Include="MappingResolvers\AttributeResolver.cs" />
     <Compile Include="MappingResolvers\DefaultMappingResolver.cs" />
     <Compile Include="DataTableResolver\DelegateDataTableResolver.cs" />
     <Compile Include="Enums\EmptyInputHandling.cs" />
@@ -67,7 +67,7 @@
     <Compile Include="DataTableResolver\IDataTableResolver.cs" />
     <Compile Include="DataTypeConverter\IDataTypeConverter.cs" />
     <Compile Include="MappingResolvers\MappingResolver.cs" />
-    <Compile Include="MappingResolvers\PropertyResolverHelper.cs" />
+    <Compile Include="MappingResolvers\PropertyResolver.cs" />
     <Compile Include="DataTableResolver\ParallelDataTableResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

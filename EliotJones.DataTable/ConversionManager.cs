@@ -39,7 +39,7 @@ namespace EliotJones.DataTable
                 return ReturnFromEmptyInput<T>(dataTable);
             }
 
-            ICollection<ExtendedPropertyInfo> mappedProperties = mappingResolver.GetPropertyMappings<T>(dataTable, 
+            IList<ExtendedPropertyInfo> mappedProperties = mappingResolver.GetPropertyMappings<T>(dataTable, 
                 dataTableParserSettings);
 
             return dataTableResolver.ToObjects<T>(dataTable, 

@@ -7,9 +7,6 @@
 
     public interface IDataTableResolver
     {
-        IList<T> ToObjects<T>(DataTable dataTable, 
-            IDataTypeConverter dataTypeConverter, 
-            IEnumerable<ExtendedPropertyInfo> mappings, 
-            DataTableParserSettings settings);
+        IList<T> ToObjects<T>(DataTable dataTable, IDataTypeConverter dataTypeConverter, IList<ExtendedPropertyInfo> mappings, DataTableParserSettings settings);
     }
 }

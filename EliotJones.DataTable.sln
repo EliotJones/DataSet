@@ -16,8 +16,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{F51892
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliotJones.DataTable.ConsoleRunner", "EliotJones.DataTable.ConsoleRunner\EliotJones.DataTable.ConsoleRunner.csproj", "{6D01BC25-24CB-4467-94B8-C7CD6521C7B4}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C14EC6F6-9126-4425-9A9E-630113EF46C7}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliotJones.DataTable.Tests.Integration", "EliotJones.DataTable.Tests.Integration\EliotJones.DataTable.Tests.Integration.csproj", "{148D5E85-CA51-41AA-BD8B-12FF2BB28119}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D2352D42-B37E-45B0-9F49-1715A484B996}"

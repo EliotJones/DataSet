@@ -18,7 +18,7 @@
             this.mappings = mappings;
         }
 
-        public ICollection<ExtendedPropertyInfo> GetPropertyMappings<T>(DataTable dataTable, DataTableParserSettings settings)
+        public IList<ExtendedPropertyInfo> GetPropertyMappings<T>(DataTable dataTable, DataTableParserSettings settings)
         {
             return new ExtendedPropertyInfo[] { };
         }

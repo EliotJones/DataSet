@@ -7,7 +7,7 @@
     using System.Reflection;
     using Types;
 
-    internal class PropertyResolverHelper
+    internal class PropertyResolver
     {
         private const string Id = "id";
 
