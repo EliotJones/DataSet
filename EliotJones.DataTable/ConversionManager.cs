@@ -42,7 +42,10 @@ namespace EliotJones.DataTable
             ExtendedPropertyInfo[] mappedProperties = mappingResolver.GetPropertyMappings<T>(dataTable, 
                 dataTableParserSettings);
 
-            return dataTableResolver.ToObjects<T>(dataTable, 
+            var dataRows = new DataRow[dataTable.Rows.Count];
+            dataTable.Rows.CopyTo(dataRows, 0);
+
+            return dataTableResolver.ToObjects<T>(dataRows, 
                 dataTypeConverter, 
                 mappedProperties, 
                 dataTableParserSettings);

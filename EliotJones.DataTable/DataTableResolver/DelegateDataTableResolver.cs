@@ -29,25 +29,25 @@
             return delegates;
         }
 
-        public IList<T> ToObjects<T>(DataTable dataTable, IDataTypeConverter dataTypeConverter, ExtendedPropertyInfo[] mappings, DataTableParserSettings settings)
+        public IList<T> ToObjects<T>(DataRow[] dataRows, IDataTypeConverter dataTypeConverter, ExtendedPropertyInfo[] mappings, DataTableParserSettings settings)
         {
-            Guard.ArgumentNotNull(dataTable);
+            Guard.ArgumentNotNull(dataRows);
             Guard.ArgumentNotNull(dataTypeConverter);
             Guard.ArgumentNotNull(mappings);
             Guard.ArgumentNotNull(settings);
 
-            List<T> objectList = new List<T>(capacity: dataTable.Rows.Count);
+            List<T> objectList = new List<T>(capacity: dataRows.Length);
             var dbNullConverter = new DbNullConverter(settings);
 
             IEnumerable<DelegateColumnMapping<T>> delegates = GetDelegatesForType<T>(mappings);
 
-            for (int rowIndex = 0; rowIndex < dataTable.Rows.Count; rowIndex++)
+            for (int rowIndex = 0; rowIndex < dataRows.Length; rowIndex++)
             {
                 T returnObject = ObjectInstantiator<T>.CreateNew();
 
                 foreach (var setterDelegate in delegates)
                 {
-                    object value = dataTypeConverter.FieldToObject(dataTable.Rows[rowIndex][setterDelegate.ExtendedPropertyInfo.ColumnIndex], setterDelegate.ExtendedPropertyInfo.PropertyInfo.PropertyType, settings, dbNullConverter);
+                    object value = dataTypeConverter.FieldToObject(dataRows[rowIndex][setterDelegate.ExtendedPropertyInfo.ColumnIndex], setterDelegate.ExtendedPropertyInfo.PropertyInfo.PropertyType, settings, dbNullConverter);
 
                     setterDelegate.SetterDelegate(returnObject, value);
                 }

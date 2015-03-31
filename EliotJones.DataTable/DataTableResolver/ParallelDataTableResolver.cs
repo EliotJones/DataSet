@@ -11,9 +11,9 @@
 
     public class ParallelDataTableResolver : IDataTableResolver
     {
-        public IList<T> ToObjects<T>(DataTable dataTable, IDataTypeConverter dataTypeConverter, ExtendedPropertyInfo[] mappings, DataTableParserSettings settings)
+        public IList<T> ToObjects<T>(DataRow[] dataRows, IDataTypeConverter dataTypeConverter, ExtendedPropertyInfo[] mappings, DataTableParserSettings settings)
         {
-            Guard.ArgumentNotNull(dataTable);
+            Guard.ArgumentNotNull(dataRows);
             Guard.ArgumentNotNull(dataTypeConverter);
             Guard.ArgumentNotNull(mappings);
             Guard.ArgumentNotNull(settings);
@@ -21,13 +21,13 @@
             ConcurrentBag<T> objectList = new ConcurrentBag<T>();
             var dbNullConverter = new DbNullConverter(settings);
 
-            Parallel.For(0, dataTable.Rows.Count, (rowIndex) =>
+            Parallel.For(0, dataRows.Length, (rowIndex) =>
             {
                 T returnObject = ObjectInstantiator<T>.CreateNew();
 
                 foreach (var mapping in mappings)
                 {
-                    object value = dataTypeConverter.FieldToObject(dataTable.Rows[rowIndex][mapping.ColumnIndex], mapping.PropertyInfo.PropertyType, settings, dbNullConverter);
+                    object value = dataTypeConverter.FieldToObject(dataRows[rowIndex][mapping.ColumnIndex], mapping.PropertyInfo.PropertyType, settings, dbNullConverter);
                     mapping.PropertyInfo.SetValue(returnObject, value);
                 }
 

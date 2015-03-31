@@ -1,20 +1,35 @@
 ﻿namespace EliotJones.DataTable.Tests.Unit.Helpers
 {
-    using System.Collections.Generic;
+    using System.Data;
+    using System.Reflection;
     using Types;
 
     internal class MappingHelper
     {
         public static ExtendedPropertyInfo[] CreatePropertyMappingsDirectlyMatchingObject<T>()
         {
-            List<ExtendedPropertyInfo> returnList = new List<ExtendedPropertyInfo>();
+            PropertyInfo[] properties = typeof(T).GetProperties();
 
-            foreach (var p in typeof(T).GetProperties())
+            var extendedProperties = new ExtendedPropertyInfo[properties.Length];
+
+            for (int i = 0; i < properties.Length; i++)
             {
-                returnList.Add(new ExtendedPropertyInfo(p.Name, p, -1));
+                extendedProperties[i] = new ExtendedPropertyInfo(properties[i].Name, properties[i], -1);
             }
 
-            return returnList.ToArray();
+            return extendedProperties;
+        }
+
+        public static ExtendedPropertyInfo[] CreatePropertyMappingsMatchingTable<T>(DataTable dataTable)
+        {
+            var propertyInfos = CreatePropertyMappingsDirectlyMatchingObject<T>();
+
+            foreach (var extendedPropertyInfo in propertyInfos)
+            {
+                extendedPropertyInfo.ColumnIndex = dataTable.Columns.IndexOf(extendedPropertyInfo.FieldName);
+            }
+
+            return propertyInfos;
         }
     }
 }

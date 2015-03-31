@@ -78,6 +78,34 @@
             }
         }
 
+        protected virtual void VerifyMappingIndexIntegrity<T>(DataTable dataTable,
+            IList<ExtendedPropertyInfo> mappings)
+        {
+            var columns = dataTable.Columns;
+
+            int columnsCount = columns.Count;
+
+            foreach (var mapping in mappings)
+            {
+                if (mapping == null)
+                {
+                    throw new InvalidMappingException<T>();
+                }
+
+                if (mapping.ColumnIndex < 0 || mapping.ColumnIndex >= columnsCount)
+                {
+                    if (columns.Contains(mapping.FieldName))
+                    {
+                        mapping.ColumnIndex = columns.IndexOf(mapping.FieldName);
+                    }
+                    else
+                    {
+                        throw new InvalidMappingException<T>();
+                    }
+                }
+            }
+        }
+
         private static PropertyInfo[] GetPropertiesForType<T>(bool inheritMappings)
         {
             // If we shouldn't inherit properties we need to declare the binding flags to ignore inherited properties.

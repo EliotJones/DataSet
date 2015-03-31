@@ -47,5 +47,22 @@
 
             return dt;
         }
+
+        public static DataRow[] RowsForTable(DataTable dataTable)
+        {
+            if (dataTable == null || dataTable.Rows == null)
+            {
+                return new DataRow[0];
+            }
+            DataRow[] dataRows = new DataRow[dataTable.Rows.Count];
+            dataTable.Rows.CopyTo(dataRows, 0);
+
+            return dataRows;
+        }
+
+        public static DataRow[] RowsForTable()
+        {
+            return new DataRow[0];
+        }
     }
 }

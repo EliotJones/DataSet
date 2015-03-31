@@ -29,13 +29,13 @@
         [Fact]
         public void ToObjects_NullDataTypeConverter_ThrowsException()
         {
-            Assert.Throws(typeof(ArgumentNullException), () => dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(new DataTable(), null, CreateEmptyPropertyMappings(), dataTableParserSettings));
+            Assert.Throws(typeof(ArgumentNullException), () => dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(DataTableFactory.RowsForTable(), null, CreateEmptyPropertyMappings(), dataTableParserSettings));
         }
 
         [Fact]
         public void ToObjects_NullMappings_ThrowsException()
         {
-            Assert.Throws(typeof(ArgumentNullException), () => dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(new DataTable(), dataTypeConverter, null, dataTableParserSettings));
+            Assert.Throws(typeof(ArgumentNullException), () => dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(DataTableFactory.RowsForTable(), dataTypeConverter, null, dataTableParserSettings));
         }
 
         [Fact]
@@ -47,7 +47,7 @@
         [Fact]
         public void ToObjects_EmptyDataTable_ReturnsEmptyEnumerableOfCorrectType()
         {
-            var results = dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(new DataTable(), dataTypeConverter, CreateEmptyPropertyMappings(), dataTableParserSettings);
+            var results = dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(DataTableFactory.RowsForTable(), dataTypeConverter, CreateEmptyPropertyMappings(), dataTableParserSettings);
 
             Assert.Equal(0, results.Count());
         }
@@ -66,7 +66,7 @@
 
             dt.Rows.Add(1, "string");
 
-            var results = dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(dt, dataTypeConverter, mappings, dataTableParserSettings);
+            var results = dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(DataTableFactory.RowsForTable(dt), dataTypeConverter, mappings, dataTableParserSettings);
 
             Assert.True(results.Count == 1);
         }
@@ -79,40 +79,16 @@
         [InlineData(int.MaxValue, "string")]
         public void ToObjects_DataTableWithIncorrectColumnIndexButCorrectColumn_ReturnsCorrectResult(int propertyOne, string propertyTwo)
         {
-            var mappings = MappingHelper.CreatePropertyMappingsDirectlyMatchingObject<SimpleNoIdNoAttributes>();
-
             DataTable dt = DataTableFactory.GenerateEmptyDataTableMatchingObjectProperties<SimpleNoIdNoAttributes>();
 
             dt.Rows.Add(propertyOne, propertyTwo);
 
-            var results = dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(dt, dataTypeConverter, mappings, dataTableParserSettings);
+            var mappings = MappingHelper.CreatePropertyMappingsMatchingTable<SimpleNoIdNoAttributes>(dt);
+
+            var results = dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(DataTableFactory.RowsForTable(dt), dataTypeConverter, mappings, dataTableParserSettings);
 
             Assert.Equal(GetAssertObject<int>(propertyOne), results.First().PropertyOne);
             Assert.Equal(GetAssertObject<string>(propertyTwo), results.First().PropertyTwo);
-        }
-
-        [Fact]
-        public void ToObjects_IncorrectMapping_ThrowsInvalidMappingException()
-        {
-            var mappings = MappingHelper.CreatePropertyMappingsDirectlyMatchingObject<SimpleNoIdNoAttributes>();
-
-            mappings.First().FieldName = string.Empty;
-
-            DataTable dt = DataTableFactory.GenerateEmptyDataTableMatchingObjectProperties<SimpleNoIdNoAttributes>();
-
-            Assert.Throws<InvalidMappingException<SimpleNoIdNoAttributes>>(() => dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(dt, dataTypeConverter, mappings, dataTableParserSettings));
-        }
-
-        [Fact]
-        public void ToObjects_NullMapping_ThrowsInvalidMappingException()
-        {
-            var mappings = MappingHelper.CreatePropertyMappingsDirectlyMatchingObject<SimpleNoIdNoAttributes>();
-            
-            mappings[0] = null;
-
-            DataTable dt = DataTableFactory.GenerateEmptyDataTableMatchingObjectProperties<SimpleNoIdNoAttributes>();
-
-            Assert.Throws<InvalidMappingException<SimpleNoIdNoAttributes>>(() => dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(dt, dataTypeConverter, mappings, dataTableParserSettings));
         }
 
         [Fact]
@@ -140,7 +116,7 @@
                 mapping.ColumnIndex = dt.Columns.IndexOf(mapping.FieldName);
             }
 
-            var results = dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(dt, dataTypeConverter, mappings, dataTableParserSettings);
+            var results = dataTableResolver.ToObjects<SimpleNoIdNoAttributes>(DataTableFactory.RowsForTable(dt), dataTypeConverter, mappings, dataTableParserSettings);
 
             Assert.True(results.Count == rows);
         }

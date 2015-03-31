@@ -25,9 +25,6 @@
         {
             var guid = new Guid("07494404-072A-4BE3-962E-AA3E839AD330");
 
-            var mappings =
-                MappingHelper.CreatePropertyMappingsDirectlyMatchingObject<PrivateConstructorPublicProperty>();
-
             var dataTable =
                 DataTableFactory.GenerateEmptyDataTableMatchingObjectProperties<PrivateConstructorPublicProperty>();
 
@@ -35,7 +32,10 @@
             dataRow["Id"] = guid;
             dataTable.Rows.Add(dataRow);
 
-            var results = dataTableResolver.ToObjects<PrivateConstructorPublicProperty>(dataTable,
+            var mappings =
+                MappingHelper.CreatePropertyMappingsMatchingTable<PrivateConstructorPublicProperty>(dataTable);
+
+            var results = dataTableResolver.ToObjects<PrivateConstructorPublicProperty>(DataTableFactory.RowsForTable(dataTable),
                 new DefaultDataTypeConverter(), mappings, defaultSettings);
 
             Assert.Equal(1, results.Count);
@@ -47,9 +47,6 @@
         {
             var guid = new Guid("098DE9E5-50FF-4C8C-921D-DDAA90795A63");
 
-            var mappings =
-                MappingHelper.CreatePropertyMappingsDirectlyMatchingObject<PublicConstructorTakingArguments>();
-
             var dataTable =
                 DataTableFactory.GenerateEmptyDataTableMatchingObjectProperties<PublicConstructorTakingArguments>();
 
@@ -60,7 +57,10 @@
 
             dataTable.Rows.Add(dataRow);
 
-            var results = dataTableResolver.ToObjects<PublicConstructorTakingArguments>(dataTable,
+            var mappings =
+                MappingHelper.CreatePropertyMappingsMatchingTable<PublicConstructorTakingArguments>(dataTable);
+
+            var results = dataTableResolver.ToObjects<PublicConstructorTakingArguments>(DataTableFactory.RowsForTable(dataTable),
                 new DefaultDataTypeConverter(), mappings, defaultSettings);
 
             Assert.Equal(1, results.Count(r => r.Id == guid && r.ResolutionDetails == "Fixed the problem"));
@@ -72,8 +72,6 @@
             var id = 15447;
             var dateTime = new DateTime(2001, 1, 1).ToShortDateString();
 
-            var mappings = MappingHelper.CreatePropertyMappingsDirectlyMatchingObject<InternalConstructor>();
-
             var dataTable = DataTableFactory.GenerateEmptyDataTableMatchingObjectProperties<InternalConstructor>();
 
             var dataRow = dataTable.NewRow();
@@ -83,7 +81,9 @@
 
             dataTable.Rows.Add(dataRow);
 
-            var results = dataTableResolver.ToObjects<InternalConstructor>(dataTable, new DefaultDataTypeConverter(),
+            var mappings = MappingHelper.CreatePropertyMappingsMatchingTable<InternalConstructor>(dataTable);
+
+            var results = dataTableResolver.ToObjects<InternalConstructor>(DataTableFactory.RowsForTable(dataTable), new DefaultDataTypeConverter(),
                 mappings, defaultSettings);
 
             Assert.Equal(1, results.Count(r => r.Id == id && r.ConstructionDate == DateTime.Parse(dateTime)));
@@ -94,9 +94,7 @@
         {
             const int id = 15447;
             const long longValue = 6546545665446556;
-
-            var mappings = MappingHelper.CreatePropertyMappingsDirectlyMatchingObject<ProtectedConstructor>();
-
+            
             var dataTable = DataTableFactory.GenerateEmptyDataTableMatchingObjectProperties<ProtectedConstructor>();
 
             var dataRow = dataTable.NewRow();
@@ -106,7 +104,9 @@
 
             dataTable.Rows.Add(dataRow);
 
-            var results = dataTableResolver.ToObjects<ProtectedConstructor>(dataTable, new DefaultDataTypeConverter(),
+            var mappings = MappingHelper.CreatePropertyMappingsMatchingTable<ProtectedConstructor>(dataTable);
+
+            var results = dataTableResolver.ToObjects<ProtectedConstructor>(DataTableFactory.RowsForTable(dataTable), new DefaultDataTypeConverter(),
                 mappings, defaultSettings);
 
             Assert.Equal(1, results.Count(r => r.Id == id && r.Long == longValue));
@@ -118,8 +118,6 @@
             var id = "50 X0001RM";
             var decimalValue = (decimal) 0.05;
 
-            var mappings = MappingHelper.CreatePropertyMappingsDirectlyMatchingObject<PrivateSetters>();
-
             var dataTable = DataTableFactory.GenerateEmptyDataTableMatchingObjectProperties<PrivateSetters>();
 
             var dataRow = dataTable.NewRow();
@@ -129,7 +127,9 @@
 
             dataTable.Rows.Add(dataRow);
 
-            var results = dataTableResolver.ToObjects<PrivateSetters>(dataTable, new DefaultDataTypeConverter(),
+            var mappings = MappingHelper.CreatePropertyMappingsMatchingTable<PrivateSetters>(dataTable);
+
+            var results = dataTableResolver.ToObjects<PrivateSetters>(DataTableFactory.RowsForTable(dataTable), new DefaultDataTypeConverter(),
                 mappings, defaultSettings);
 
             Assert.Equal(1, results.Count(r => r.Id == id && r.Decimal == decimalValue));
@@ -141,8 +141,6 @@
             var id = 65446468;
             var color = "#333";
 
-            var mappings = MappingHelper.CreatePropertyMappingsDirectlyMatchingObject<MixedSetters>();
-
             var dataTable = DataTableFactory.GenerateEmptyDataTableMatchingObjectProperties<MixedSetters>();
 
             var dataRow = dataTable.NewRow();
@@ -152,7 +150,9 @@
 
             dataTable.Rows.Add(dataRow);
 
-            var results = dataTableResolver.ToObjects<MixedSetters>(dataTable, new DefaultDataTypeConverter(), mappings,
+            var mappings = MappingHelper.CreatePropertyMappingsMatchingTable<MixedSetters>(dataTable);
+
+            var results = dataTableResolver.ToObjects<MixedSetters>(DataTableFactory.RowsForTable(dataTable), new DefaultDataTypeConverter(), mappings,
                 defaultSettings);
 
             Assert.Equal(1, results.Count(r => r.Id == id && r.Color == color));
@@ -175,7 +175,7 @@
 
             var results = mappingResolver.GetPropertyMappings<PrivateSetters>(dataTable, defaultSettings);
 
-            var objects = dataTableResolver.ToObjects<PrivateSetters>(dataTable, new DefaultDataTypeConverter(), results,
+            var objects = dataTableResolver.ToObjects<PrivateSetters>(DataTableFactory.RowsForTable(dataTable), new DefaultDataTypeConverter(), results,
                 defaultSettings);
 
             Assert.Equal(1, objects.Count(ps => ps.Id == id && ps.Decimal == decimalValue));
