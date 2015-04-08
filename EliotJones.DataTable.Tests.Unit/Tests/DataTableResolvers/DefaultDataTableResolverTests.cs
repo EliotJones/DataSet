@@ -1,4 +1,4 @@
-﻿namespace EliotJones.DataTable.Tests.Unit.Tests
+﻿namespace EliotJones.DataTable.Tests.Unit.Tests.DataTableResolvers
 {
     using System;
     using System.Collections.Generic;
@@ -6,7 +6,6 @@
     using System.Linq;
     using DataTableResolver;
     using DataTypeConverter;
-    using Exceptions;
     using Factories;
     using Helpers;
     using POCOs;
@@ -16,9 +15,9 @@
 
     public class DefaultDataTableResolverTests
     {
-        private IDataTypeConverter dataTypeConverter = new TestConverter();
-        private DefaultDataTableResolver dataTableResolver = new DefaultDataTableResolver();
-        private DataTableParserSettings dataTableParserSettings = new DataTableParserSettings();
+        private readonly IDataTypeConverter dataTypeConverter = new TestConverter();
+        private readonly DefaultDataTableResolver dataTableResolver = new DefaultDataTableResolver();
+        private readonly DataTableParserSettings dataTableParserSettings = new DataTableParserSettings();
 
         [Fact]
         public void ToObjects_NullDataTable_ThrowsException()
@@ -94,7 +93,7 @@
         [Fact]
         public void ToObjects_DataTableWithManyRowsMatchingColumns_ReturnsEnumerableWithCorrectResult()
         {
-            int rows = 1000;
+            const int rows = 1000;
 
             List<SimpleNoIdNoAttributes> objects = new List<SimpleNoIdNoAttributes>(capacity: rows);
 

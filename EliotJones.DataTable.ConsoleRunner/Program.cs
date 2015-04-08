@@ -36,7 +36,7 @@
             dtp.DataTableParserSettings.Resolver = Resolver.Default;
 
             Stopwatch sw = Stopwatch.StartNew();
-            dtp.ToObjects<TestClass>(dt);
+            dtp.ConvertToObjectList<TestClass>(dt);
             sw.Stop();
             Console.WriteLine(sw.ElapsedMilliseconds + " Milliseconds Total");
             Console.WriteLine(sw.ElapsedMilliseconds/(decimal)count + " Milliseconds Per Object");

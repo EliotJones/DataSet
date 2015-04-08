@@ -27,7 +27,7 @@ namespace EliotJones.DataTable
             this.dataTypeConverter = dataTypeConverter;
         }
 
-        public virtual IEnumerable<T> ConvertToType<T>(DataTable dataTable)
+        public virtual IList<T> ConvertToType<T>(DataTable dataTable)
         {
             if (ReturnNullFromInput(dataTable))
             {
@@ -71,7 +71,7 @@ namespace EliotJones.DataTable
             return false;
         }
 
-        protected virtual IEnumerable<T> ReturnFromEmptyInput<T>(DataTable dataTable)
+        protected virtual IList<T> ReturnFromEmptyInput<T>(DataTable dataTable)
         {
             switch (dataTableParserSettings.EmptyInputHandling)
             {

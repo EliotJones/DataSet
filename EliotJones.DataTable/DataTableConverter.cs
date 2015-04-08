@@ -64,9 +64,14 @@
             return parser;
         }
 
-        public static IEnumerable<T> ToObjectsStatic<T>(DataTable dataTable)
+        public static IList<T> Convert<T>(DataTable table)
         {
-            return new DataTableConverter().ToObjects<T>(dataTable);
+            return Convert<T>(table, new DataTableParserSettings());
+        }
+
+        public static IList<T> Convert<T>(DataTable table, DataTableParserSettings settings)
+        {
+            return new DataTableConverter().ConvertToObjectList<T>(table, settings);
         }
 
         /// <summary>
@@ -75,17 +80,17 @@
         /// <typeparam name="T">The type of object to return.</typeparam>
         /// <param name="table">The <see cref="DataTable"/> to convert.</param>
         /// <returns>An IEnumerable&lt;T&gt; with objects initialized.</returns>
-        public virtual IEnumerable<T> ToObjects<T>(DataTable table)
+        public virtual IList<T> ConvertToObjectList<T>(DataTable table)
         {
             return ToObjectsInternal<T>(table, dataTableParserSettings);
         }
 
-        public virtual IEnumerable<T> ToObjects<T>(DataTable table, DataTableParserSettings dataTableParserSettings)
+        public virtual IList<T> ConvertToObjectList<T>(DataTable table, DataTableParserSettings dataTableParserSettings)
         {
             return ToObjectsInternal<T>(table, dataTableParserSettings);
         }
 
-        protected virtual IEnumerable<T> ToObjectsInternal<T>(DataTable table, DataTableParserSettings dataTableParserSettings)
+        protected virtual IList<T> ToObjectsInternal<T>(DataTable table, DataTableParserSettings dataTableParserSettings)
         {
             return GetConverter(dataTableParserSettings).ConvertToType<T>(table);
         }

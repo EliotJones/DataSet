@@ -65,7 +65,7 @@
     <Compile Include="Tests\DataTableConverterTests.cs" />
     <Compile Include="Tests\DataTypeConverters\DefaultDataTypeConverterTests.cs" />
     <Compile Include="Tests\MappingResolvers\DefaultMappingResolverTests.cs" />
-    <Compile Include="Tests\DefaultDataTableResolverTests.cs" />
+    <Compile Include="Tests\DataTableResolvers\DefaultDataTableResolverTests.cs" />
     <Compile Include="Tests\EncapsulatedClassesTests.cs" />
   </ItemGroup>
   <ItemGroup>

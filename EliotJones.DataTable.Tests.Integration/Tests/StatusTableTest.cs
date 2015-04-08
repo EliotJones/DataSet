@@ -32,7 +32,7 @@
 
             DataTableConverter dtp = new DataTableConverter();
 
-            var results = dtp.ToObjects<StatusPropertyNamesMatch>(dataTable);
+            var results = dtp.ConvertToObjectList<StatusPropertyNamesMatch>(dataTable);
 
             Assert.Equal(dataTable.Rows.Count, results.Count());
         }
@@ -48,7 +48,7 @@
 
             DataTableConverter dtp = new DataTableConverter();
 
-            var results = dtp.ToObjects<StatusPropertyNamesMatch>(dataTable);
+            var results = dtp.ConvertToObjectList<StatusPropertyNamesMatch>(dataTable);
 
             Assert.True(results.Where(r => r.Id == (int)dataTable.Rows[0]["Id"]
                 && r.Description == dataTable.Rows[0]["Description"].ToString()
@@ -66,7 +66,7 @@
 
             DataTableConverter dtp = new DataTableConverter();
 
-            var results = dtp.ToObjects<StatusPropertyNameMissing>(dataTable);
+            var results = dtp.ConvertToObjectList<StatusPropertyNameMissing>(dataTable);
 
             Assert.Equal(dataTable.Rows.Count, results.Count());
         }
@@ -84,7 +84,7 @@
 
             dtp.DataTableParserSettings.MissingMappingHandling = MissingMappingHandling.Error;
 
-            Assert.Throws<MissingMappingException<StatusExtraProperty>>(() => dtp.ToObjects<StatusExtraProperty>(dataTable));
+            Assert.Throws<MissingMappingException<StatusExtraProperty>>(() => dtp.ConvertToObjectList<StatusExtraProperty>(dataTable));
         }
 
         [Fact]
@@ -100,7 +100,7 @@
 
             dtp.DataTableParserSettings.MissingMappingHandling = MissingMappingHandling.Ignore;
 
-            var results = dtp.ToObjects<StatusExtraProperty>(dataTable);
+            var results = dtp.ConvertToObjectList<StatusExtraProperty>(dataTable);
 
             Assert.Equal(dataTable.Rows.Count, results.Count());
         }
